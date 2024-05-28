@@ -142,7 +142,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="grid gap-2 h-96 overflow-hidden relative min-w-0">
+            <div className="grid gap-2 h-96 overflow-y-scroll tx-scrollbar relative min-w-0">
               {aggData &&
                 aggData.map((tx) => <Donation key={`tx_${tx.hash}`} tx={tx} />)}
               <div className="absolute -bottom-0 left-0 right-0 h-16 transactions-gradient-bg" />
@@ -169,7 +169,7 @@ function Donation({ tx }: { tx: any }) {
             <span>
               {formatBalance(tx.erc20_transfers[0].value_formatted, 2)}
             </span>
-            <span>{tx.erc20_transfers[0].token_symbol}</span>
+            <span>{tx.erc20_transfers[0].token_symbol.split(" ")[0]}</span>
           </>
         ) : tx.native_transfers.length ? (
           <>
