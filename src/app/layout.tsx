@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
-import { Providers } from "./components/Providers";
+// import { Providers } from "./components/Providers";
 
 import "@rainbow-me/rainbowkit/styles.css";
 import "./globals.css";
@@ -20,9 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={workSans.className}>
-        <Providers>
-          <div className="page-wrap flex flex-col min-h-screen">{children}</div>
-        </Providers>
+        {/* <Providers> */}
+        <div className="page-wrap flex flex-col min-h-screen">{children}</div>
+        {/* </Providers> */}
       </body>
     </html>
   );
