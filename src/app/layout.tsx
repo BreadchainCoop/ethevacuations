@@ -19,6 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <script
+        defer
+        data-domain="ethevacuations.breadchain.xyz"
+        src="https://analytics.breadchain.xyz/js/script.js"
+      ></script>
+
       <body className={workSans.className}>
         {/* <Providers> */}
         <div className="page-wrap flex flex-col min-h-screen">{children}</div>
