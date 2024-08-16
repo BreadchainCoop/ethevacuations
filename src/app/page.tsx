@@ -73,7 +73,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <Donations />
+            {/* <Donations /> */}
           </section>
         </div>
       </main>
