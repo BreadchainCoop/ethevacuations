@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { formatDistanceStrict } from "date-fns";
-import Image from "next/image";
 
 import { useAccountData } from "./components/useAccountData";
 
-import { ETH_EVACUATONS_ADDRESS } from "../../constants";
+import { ETH_EVACUATONS_ADDRESS } from "./constants";
 import clsx from "clsx";
 import { PAGE_WRAP } from "./util";
 import { Footer } from "./components/Footer";
@@ -74,7 +73,7 @@ export default function Home() {
   return (
     <>
       <header className={clsx(PAGE_WRAP, "w-full px-2 py-4")}>
-        <Image
+        <img
           className="transform -translate-x-1.5"
           src="/logo.png"
           alt="logo"
@@ -102,7 +101,7 @@ export default function Home() {
                   <CopyAddress />
                 </div>
                 <div className="flex justify-center pt-4">
-                  <Image
+                  <img
                     src="/qr_code.jpg"
                     alt="hero"
                     width="190"
@@ -134,7 +133,7 @@ export default function Home() {
             <div className="pb-4 flex justify-between items-center lg:pt-12">
               <h2 className="text-2xl font-bold">Recent Donations</h2>
               <div>
-                <Image
+                <img
                   src="/network_icons.png"
                   alt="network icons"
                   width="84"
