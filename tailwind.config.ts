@@ -1,10 +1,7 @@
-import type { Config } from "tailwindcss";
-
-export default const config: Config = {
+module.exports = {
   content: [
-    "./src/pages/*.{tsx,js}",
-    "./src/components/*.{tsx,js}",
-    "./src/**.{tsx,js}",
+    "./src/**/*.{tsx,js}",
+    "./src/*.{tsx,js}",
     "./public/index.html"
   ],
   theme: {

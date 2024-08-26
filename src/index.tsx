@@ -11,8 +11,6 @@ import { PAGE_WRAP } from "./util";
 import { Footer } from "./components/Footer";
 import Layout from "./layout";
 
-import "./index.css"
-
 export default function Home() {
   const [aggData, setAggData] = useState<Array<any>>([]);
 
