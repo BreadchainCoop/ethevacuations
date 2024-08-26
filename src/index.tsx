@@ -1,14 +1,17 @@
-"use client";
-
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { useEffect, useState } from "react";
-import { formatDistanceStrict } from "date-fns";
 
+import { formatDistanceStrict } from "date-fns";
 import { useAccountData } from "./components/useAccountData";
 
 import { ETH_EVACUATONS_ADDRESS } from "./constants";
 import clsx from "clsx";
 import { PAGE_WRAP } from "./util";
 import { Footer } from "./components/Footer";
+import Layout from "./layout";
+
+import "./index.css"
 
 export default function Home() {
   const [aggData, setAggData] = useState<Array<any>>([]);
@@ -253,3 +256,10 @@ function formatBalance(value: number, decimals: number) {
 function truncateAddress(address: string): string {
   return `${address.slice(0, 5)}...${address.slice(address.length - 5)}`;
 }
+
+ReactDOM.render(
+  <Layout>
+    <Home />
+  </Layout>, 
+   document.getElementById("root") || document.body
+)
