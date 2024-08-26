@@ -103,7 +103,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-center pt-4">
                   <img
-                    src="/qr_code.jpg"
+                    src="/qr_code.png"
                     alt="hero"
                     width="190"
                     height="189"
