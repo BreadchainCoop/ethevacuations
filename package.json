@@ -7,7 +7,7 @@
     "dev": "npx react-scripts dev",
     "build": "npx react-scripts build",
     "start": "npm run build-css & npx react-scripts start",
-    "build-css": "npx tailwindcss -i ./src/index.css -o ./public/index.css",
+    "build-css": "npx tailwindcss -i ./src/index.css -o ./public/index.css --watch",
     "lint": "next lint"
   },
   "dependencies": {

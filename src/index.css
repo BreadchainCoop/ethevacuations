@@ -12,4 +12,8 @@
     background: linear-gradient(180deg, #F8F8F800 0%, #F8F8F8 80%);
   }
 
+  #centered-container {
+    display: contents !important;
+  }
+
 }

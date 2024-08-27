@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="pt-8 pb-2">
+    <footer className="mt-6 pt-12 pb-2">
       <div className="text-center py-4">
         <p className="text-sm flex items-center justify-center gap-2">
           Made with{" "}
