@@ -3,7 +3,7 @@ import { formatDistanceStrict } from "date-fns";
 
 import { useAccountData } from "./useAccountData";
 
-import { ETH_EVACUATONS_ADDRESS } from "../../../constants";
+import { ETH_EVACUATONS_ADDRESS } from "../constants";
 
 export function Donations() {
   const [aggData, setAggData] = useState<Array<any>>([]);

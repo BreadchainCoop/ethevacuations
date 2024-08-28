@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ETH_EVACUATONS_ADDRESS } from "../../../constants";
+import { ETH_EVACUATONS_ADDRESS } from "../constants";
 
 export function CopyAddressButton() {
   const [copied, setCopied] = useState(false);
