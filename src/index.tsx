@@ -83,24 +83,22 @@ export default function Home() {
         />
       </header>
       <main className={clsx(PAGE_WRAP, "h-full lg:pt-6")}>
-        <div className="h-full grid grid-cols-1 items-center h-screen lg:grid-cols-2  lg:gap-x-16">
-
-          <section
-            className="grid grid-cols-1 contents pb-8 lg:col-span-1 lg:col-start-1 lg:pb-0"
-          >
-            <p
-              style={{ height: '125px' }}
-              className="w-full sm:h-auto text-4xl font-bold tracking-[-.02em]">
-              Fund evacuations from Gaza with crypto
-            </p>
-            <p 
-              style={{ height: '125px' }}
-              className="w-full sm:h-auto text-xl font-medium text-neutral-400"
+        <p className="w-full sm:h-auto text-4xl font-bold tracking-[-.02em]">
+          Fund evacuations from Gaza with crypto <br></br>
+          <span className="w-full sm:h-auto text-xl font-medium text-neutral-400">
+            Crypto was made for this
+          </span>
+        </p>
+        <div className="h-full grid grid-cols-1 justify-center py-4 gap-4 lg:grid-cols-2 lg:gap-x-16">
+          <section className="grid grid-cols-1 justify-between items-center col-span-1 col-start-1 lg:pb-0">
+            <div
+              style={{ 
+                borderRadius: '30px',
+                padding: '40px 25px'
+              }} 
+              className="w-full bg-white grid grid-cols-2"
             >
-              Crypto was made for this
-            </p>
-            <div className="grid grid-cols-2 pt-6 pb-6">
-              <div className="grid justify-center text-center gap-1">
+              <div className="grid justify-center text-center gap-1"> 
                 <h3 className="text-neutral-500 font-medium text-xl">
                   Total
                   <br className="lg:hidden" /> Raised
@@ -118,7 +116,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="">
+          <section>
             <div className="lg:bg-white lg:rounded-[2rem] flex items-center justify-center lg:py-16">
               <div>
                 <div className="grid justify-center">
@@ -139,8 +137,8 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="mt-4">
-            <div className="pb-4 flex justify-between items-center lg:pt-12">
+          <section>
+            <div className="mt-5">
               <h2 className="text-2xl font-bold">Recent Donations</h2>
               <div>
                 <img
@@ -157,8 +155,6 @@ export default function Home() {
               <div className="absolute -bottom-0 left-0 right-0 h-16 transactions-gradient-bg" />
             </div>
           </section>
-
-          <section></section>
 
         </div>
       </main>
