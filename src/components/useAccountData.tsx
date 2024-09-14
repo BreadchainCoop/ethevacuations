@@ -16,7 +16,8 @@ const chainMap = {
 
 const MORALIS_API_KEY = process.env.REACT_APP_MORALIS_API_KEY;
 
-console.log('API KEY', MORALIS_API_KEY)
+if (!MORALIS_API_KEY)
+  throw new Error("MORALIS_API_KEY not provided");
 
 export function useAccountData(
   chainString: keyof typeof chainMap,
@@ -31,7 +32,6 @@ export function useAccountData(
   });
 
   const fetchTransactions = () => {
-    console.log("fetching transactions...");
     return fetch(
       `https://deep-index.moralis.io/api/v2.2/wallets/${ETH_EVACUATONS_ADDRESS}/history?chain=${chainMap[chainString]}&from_block=${FROM_BLOCK}&include_internal_transactions=false&order=DESC`, {
       headers: {
