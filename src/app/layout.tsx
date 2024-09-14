@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
-import { Work_Sans } from "next/font/google";
-// import { Providers } from "./components/Providers";
+import { Providers } from "./components/Providers";
 
 import "@rainbow-me/rainbowkit/styles.css";
-import "./globals.css";
-
-const workSans = Work_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Eth Evacuations Donation Tracker",
