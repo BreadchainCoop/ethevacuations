@@ -9,7 +9,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <div className="page-wrap min-h-screen flex justify-center items-center flex-col">{children}</div>
+          <div className="page-wrap min-h-screen flex items-center flex-col">{children}</div>
         </Providers>
       </body>
     </html>
