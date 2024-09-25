@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 const FROM_BLOCK = "19435069";
 
-import { ETH_EVACUATONS_ADDRESS } from "../constants";
+import { ETH_EVACUATONS_ADDRESS } from "../utils/constants";
 
 const chainMap = {
   eth: "0x1",
@@ -39,27 +39,25 @@ export function useAccountData(
         "X-API-Key": MORALIS_API_KEY,
       }
     })
-      .then((res) => res.json())
-      .then((data) => {
-        // setCursor(data.cursor);
-        return data;
-      })
-      .catch((err) => {
-        setDataState({ status: "error", data: [] });
-      });
+    .then((res) => res.json())
+    .then((data) => {
+      // setCursor(data.cursor);
+      return data;
+    })
+    .catch((err) => {
+      setDataState({ status: "error", data: [] });
+    });
   };
 
   const { data } = useQuery({
     queryKey: [`accountData_${chainString}`],
     queryFn: () => fetchTransactions(),
     placeholderData: keepPreviousData,
-    refetchInterval: 2000,
+    refetchInterval: 600000,
   });
 
   useEffect(() => {
     if (!data) return;
-
-    console.log(data)
 
     const parsedData = data.result.length
       ? data.result

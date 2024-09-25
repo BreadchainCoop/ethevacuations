@@ -1,20 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { useEffect, useState } from "react";
-
 import { formatDistanceStrict } from "date-fns";
-import { useAccountData } from "./components/useAccountData";
-
-import { ETH_EVACUATONS_ADDRESS } from "./constants";
 import clsx from "clsx";
 
+import Layout from "./components/Layout";
 import { Footer } from "./components/Footer";
-import Layout from "./layout";
 import { Header } from "./components/Header";
-import { CopyAddressButton } from "./components/CopyAddressButton";
 import { Donations } from "./components/Donations";
+import { CopyAddressButton } from "./components/CopyAddressButton";
 
-import { PAGE_WRAP } from "./util";
+import { useAccountData } from "./components/useAccountData";
+
+import { ETH_EVACUATONS_ADDRESS, PAGE_WRAP } from "./utils/constants";
 
 export default function Home() {
   return (
@@ -63,7 +61,7 @@ export default function Home() {
           </section>
 
           <section>
-            <div className="lg:bg-white lg:rounded-[2rem] flex items-center justify-center lg:py-16">
+            <div className="p-4 lg:bg-white lg:rounded-[2rem] flex flex-col items-center justify-center lg:py-16">
               <div>
                 <div className="grid justify-center">
                   <span className="px-4 py-2 font-medium text-xl rounded-full bg-white text-black">
@@ -80,22 +78,26 @@ export default function Home() {
                   />
                 </div>
               </div>
-            </div>
-          </section>
-
-          <section>
-            <div className="mt-5">
-              <h2 className="text-2xl font-bold">Recent Donations</h2>
-              <div>
+              <div className="flex flex-col items-center">
                 <img
                   src="/network_icons.png"
                   alt="network icons"
+                  className="block m-auto"
                   width="84"
                   height="25"
                 />
+                <p className="text-xl pt-2">Recommended networks</p>
+              </div>
+              <div className="w-2/3 text-sm text-center pt-4">
+                This address supports tokens on Ethereum, Zora, Arbitrum, Gnosis, Optimism, and Base.
               </div>
             </div>
-            <Donations />
+          </section>
+          <section>
+            <div className="mt-5">
+              <h2 className="text-2xl font-bold">Recent Donations</h2>
+            </div>
+            {/* <Donations/> */}
           </section>
 
         </div>

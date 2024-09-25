@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import { WalletConnection } from "./WalletConnection";
 
-import { PAGE_WRAP } from "../util";
+import { PAGE_WRAP } from "../utils/constants";
 
 export function Header() {
   return (

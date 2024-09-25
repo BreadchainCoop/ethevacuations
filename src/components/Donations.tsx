@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { formatDistanceStrict } from "date-fns";
 
-import { useAccountData } from "./useAccountData";
+import { useAccountData } from "../hooks/useAccountData";
 
 import { ETH_EVACUATONS_ADDRESS } from "../constants";
 
