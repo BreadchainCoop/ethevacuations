@@ -23,16 +23,16 @@ export default function Home() {
       <header className={clsx(PAGE_WRAP, "w-full px-2 py-4")}>
         <img
           className="transform -translate-x-1.5"
-          src="/logo.png"
+          src="assets/logo.png"
           alt="logo"
           width="40"
           height="40"
         />
       </header>
       <main className={clsx(PAGE_WRAP, "h-full lg:pt-6")}>
-        <div className="h-full grid grid-cols-1 items-start py-14 gap-4 lg:grid-cols-2 lg:gap-x-16">
+        <div className="h-full grid grid-cols-1 items-start py-14 gap-2 lg:gap-4 lg:grid-cols-2 lg:gap-x-16">
           <section className="grid grid-cols-1 justify-center items-start gap-4 lg:gap-6">
-            <div className="w-2/3 sm:h-auto">
+            <div className="lg:w-2/3 sm:h-auto">
               <p className="text-4xl font-bold tracking-[-.02em]">
                 Fund evacuations from Gaza with crypto <br></br>
               </p>
@@ -67,8 +67,8 @@ export default function Home() {
           <section>
             <div className="flex flex-col items-center justify-center p-4 lg:bg-white lg:rounded-[2rem] lg:py-16 gap-4">
               <div>
-                <div className="grid justify-center">
-                  <span className="px-4 py-2 font-medium text-xl rounded-full bg-white text-black">
+                <div className="grid justify-center px-4 py-2">
+                  <span className="font-medium text-xl rounded-full bg-white text-black">
                     ethevacuations.eth
                   </span>
                   <CopyAddressButton />
@@ -76,7 +76,7 @@ export default function Home() {
                 <div className="flex justify-center pt-4">
                   <img
                     alt="qr-unicode"
-                    src="/qr_code.png"
+                    src="assets/qr_code.png"
                     className="block m-auto h-[190px] w-[190px]"
                   />
                 </div>
@@ -84,7 +84,7 @@ export default function Home() {
               <div className="flex flex-col items-center gap-1">
                 <img
                   alt="network icons"
-                  src="/network_icons.png"
+                  src="assets/network_icons.png"
                   className="block m-auto w-[127px] h-[24px]"
                 />
                 <p className="text-xl pt-2">Recommended networks</p>

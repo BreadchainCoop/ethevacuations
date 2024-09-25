@@ -15,7 +15,7 @@ export function Header() {
     >
       <img
         className="transform -translate-x-1.5"
-        src="/logo.png"
+        src="assets/logo.png"
         alt="logo"
         width="40"
         height="40"
