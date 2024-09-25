@@ -4,18 +4,24 @@ export default {
   content: {
     relative: true,
     files: [
-      "./src/**/*.{tsx,ts}",
-      "./src/*.{tsx,ts}"
+      './src/components/*.{tsx,ts}',
+      './src/*.{tsx,ts}'
     ]
   },
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-        "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      screens: {
+        xs: '445px',
+        sm: '576px',
+        md: '960px',
+        lg: '1440px'
       },
-    },
+      colors: {
+        primary: '#ff7777',
+        secondary: '#ffd0d0',
+        ternary: '#dd2e44'
+      }
+    }
   },
   plugins: [],
 } satisfies Config;

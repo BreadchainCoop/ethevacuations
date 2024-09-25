@@ -38,11 +38,11 @@ export function CopyAddressButton() {
               fill="#0FBC00"
             />
           </svg>
-          copied!
+          Copied!
         </span>
       ) : (
         <>
-          {truncateAddress(ETH_EVACUATONS_ADDRESS)}
+          <span className="text-lg">{truncateAddress(ETH_EVACUATONS_ADDRESS)}</span>
           <svg
             width="16"
             height="16"
