@@ -7,28 +7,16 @@ import clsx from "clsx";
 import Button from "./components/Button";
 import Layout from "./components/Layout";
 import { Footer } from "./components/Footer";
-import { Header } from "./components/Header";
 import { Donations } from "./components/Donations";
+import { Navigation } from "./components/Navigation";
 import { CopyAddressButton } from "./components/CopyAddressButton";
-
-import { useAccountData } from "./components/useAccountData";
 
 import { ETH_EVACUATONS_ADDRESS, PAGE_WRAP } from "./utils/constants";
 
 export default function Home() {
-  const isMobile = window.innerWidth <= 445
-
   return (
     <>
-      <header className={clsx(PAGE_WRAP, "w-full px-2 py-4")}>
-        <img
-          className="transform -translate-x-1.5"
-          src="assets/logo.png"
-          alt="logo"
-          width="40"
-          height="40"
-        />
-      </header>
+      <Navigation />
       <main className={clsx(PAGE_WRAP, "h-full lg:pt-6")}>
         <div className="h-full grid grid-cols-1 items-start py-14 gap-2 lg:gap-4 lg:grid-cols-2 lg:gap-x-16">
           <section className="grid grid-cols-1 justify-center items-start gap-4 lg:gap-6">
@@ -48,20 +36,25 @@ export default function Home() {
                 <p className="text-4xl text-black font-bold flex items-end">+ $300k</p>
                 <p className="text-lg text-neutral-500">0.00 ETH</p>
               </div>
-              <div className="grid justify-center text-center gap-1">
+              <div className="grid justify-center items-center text-center gap-1">
                 <h3 className="text-neutral-400 font-medium text-xl">
                   Evacuations Registered
                 </h3>
                 <p className="text-4xl text-black font-bold">+ 60</p>
-                <p className="text-lg text-neutral-500">Learn more</p>
+                <p className="text-lg text-neutral-500 flex-inline">
+                  <a href="">
+                    <p className="w-3/5 mx-auto">
+                      Learn more 
+                      <img
+                        alt="link"
+                        src="assets/arrow_right.png"
+                        className="float-right mt-[3px] h-[20px] w-[20px]"
+                      />
+                    </p>
+                  </a>
+                </p>
               </div>
             </div>
-            {!isMobile && 
-              <div>
-                <p className="text-2xl font-bold">Recent Donations</p>
-                {/* <Donations/> */}
-              </div>
-            }
           </section>
 
           <section>
@@ -71,7 +64,7 @@ export default function Home() {
                   <span className="font-medium text-xl rounded-full bg-white text-black">
                     ethevacuations.eth
                   </span>
-                  <CopyAddressButton />
+                  <Button.Copy />
                 </div>
                 <div className="flex justify-center pt-4">
                   <img
@@ -93,17 +86,21 @@ export default function Home() {
                 This address supports tokens on Ethereum, Zora, Arbitrum, Gnosis, Optimism, and Base.
               </div>
               <div className="w-2/3">
-                <Button.Primary>Donate</Button.Primary>
+                <Button.Primary className="text-xl">
+                  <img 
+                    alt="btn-logo"
+                    src="/assets/logo.png"
+                    className="block float-left mr-2 h–[25px] w-[25px]"
+                  />
+                  Donate
+                </Button.Primary>
               </div>
             </div>
           </section>
 
-          {isMobile && 
-            <section>
-              <p className="text-2xl font-bold">Recent Donations</p>
-              {/* <Donations/> */}
-            </section>
-          }
+          <section className="lg:mt-[-300px]">
+            {/* <Donations /> */}
+          </section>
 
         </div>
       </main>
