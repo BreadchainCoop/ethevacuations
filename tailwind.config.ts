@@ -1,9 +1,13 @@
-module.exports = {
-  content: [
-    "./src/**/*.{tsx,js}",
-    "./src/*.{tsx,js}",
-    "./public/index.html"
-  ],
+import type { Config } from "tailwindcss"
+
+export default {
+  content: {
+    relative: true,
+    files: [
+      "./src/**/*.{tsx,ts}",
+      "./src/*.{tsx,ts}"
+    ]
+  },
   theme: {
     extend: {
       backgroundImage: {
@@ -14,4 +18,4 @@ module.exports = {
     },
   },
   plugins: [],
-};
+} satisfies Config;
