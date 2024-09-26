@@ -7,14 +7,17 @@ function truncateAddress(address: string): string {
 }
 
 function PrimaryButton({ 
-  children, 
+  onClick,
+  children,
   className
 } : { 
+  onClick(): void;
   children: React.ReactNode;
   className: string;
 }) {
   return (
-    <button 
+    <button
+      onClick={onClick}
       className={`w-full flex text-center shadow-lg shadow-ternary/20 justify-center items-center bg-[#ffd0d0] px-6 py-3 rounded-[30px] hover:bg-primary hover:text-white 
       ${className}
     `}>

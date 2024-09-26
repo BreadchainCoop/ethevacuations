@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { formatDistanceStrict } from "date-fns";
 import clsx from "clsx";
 
+import Checkout from "./components/Checkout"
 import Button from "./components/Button";
 import Layout from "./components/Layout";
 import { Footer } from "./components/Footer";
@@ -14,11 +15,29 @@ import { CopyAddressButton } from "./components/CopyAddressButton";
 import { ETH_EVACUATONS_ADDRESS, PAGE_WRAP } from "./utils/constants";
 
 export default function Home() {
+  const [checkoutCanvas, setCanvas] = useState(<></>) 
+  const [checkoutStep, setStep] = useState(0)
+
+  const forwardStep = () => setStep(checkoutStep+1)
+
+  const backwardStep = () => setStep(checkoutStep-1) 
+
+  useEffect(() => {
+    switch (checkoutStep) {
+      case 1:
+        setCanvas(<Checkout.Order />);
+        break;
+      default:
+        setCanvas(<Checkout.Root onClick={forwardStep} />);
+        break;
+    }
+  }, [, checkoutStep])
+
   return (
     <>
       <Navigation />
-      <main className={clsx(PAGE_WRAP, "h-full lg:pt-6")}>
-        <div className="h-full grid grid-cols-1 items-start py-14 gap-2 lg:gap-4 lg:grid-cols-2 lg:gap-x-16">
+      <main className={clsx(PAGE_WRAP, "md:w-2/3 h-full lg:pt-6")}>
+        <div className="h-full grid grid-cols-1 items-start py-14 gap-2 lg:gap-4 md:gap-x-6 md:grid-cols-2 lg:gap-x-36">
           <section className="grid grid-cols-1 justify-center items-start gap-4 lg:gap-6">
             <div className="lg:w-2/3 sm:h-auto">
               <p className="text-4xl font-bold tracking-[-.02em]">
@@ -56,52 +75,8 @@ export default function Home() {
               </div>
             </div>
           </section>
-
-          <section>
-            <div className="flex flex-col items-center justify-center p-4 lg:bg-white lg:rounded-[2rem] lg:py-16 gap-4">
-              <div>
-                <div className="grid justify-center px-4 py-2">
-                  <span className="font-medium text-xl rounded-full bg-white text-black">
-                    ethevacuations.eth
-                  </span>
-                  <Button.Copy />
-                </div>
-                <div className="flex justify-center pt-4">
-                  <img
-                    alt="qr-unicode"
-                    src="assets/qr_code.png"
-                    className="block m-auto h-[190px] w-[190px]"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                <img
-                  alt="network icons"
-                  src="assets/network_icons.png"
-                  className="block m-auto w-[127px] h-[24px]"
-                />
-                <p className="text-xl pt-2">Recommended networks</p>
-              </div>
-              <div className="w-2/3 text-sm text-neutral-500 text-center">
-                This address supports tokens on Ethereum, Zora, Arbitrum, Gnosis, Optimism, and Base.
-              </div>
-              <div className="w-2/3">
-                <Button.Primary className="text-xl">
-                  <img 
-                    alt="btn-logo"
-                    src="/assets/logo.png"
-                    className="block float-left mr-2 h–[25px] w-[25px]"
-                  />
-                  Donate
-                </Button.Primary>
-              </div>
-            </div>
-          </section>
-
-          <section className="lg:mt-[-300px]">
-            {/* <Donations /> */}
-          </section>
-
+          <section className="h-[600px]">{checkoutCanvas}</section>
+          <section className="lg:mt-[-300px]"><Donations /></section>
         </div>
       </main>
       <Footer />

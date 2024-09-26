@@ -9,13 +9,13 @@ import { PAGE_WRAP } from "../utils/constants";
 
 export function Navigation() {
   return (
-    <header className="w-full lg:w-2/3 px-2 py-4 flex justify-between items-start">
+    <header className={clsx(PAGE_WRAP, "w-full md:w-2/3 px-2 py-4 flex justify-between items-start")}>
       <img
         alt="logo"
         src="assets/logo.png"
         className="h-[40px] w-[40px] transform -translate-x-1.5"
       />
-      <div className="inline-flex gap-4">
+      <div className="inline-flex gap-5">
         <div className="bg-white w-[40px] rounded-[20px] p-2">
           <img 
             alt="github"
@@ -24,7 +24,7 @@ export function Navigation() {
           />
         </div>
         <div className="w-[87.5px]">
-          <Button.Primary className="text-sm py-[10px] px-2">Connect</Button.Primary>
+          <Button.Primary className="text-sm py-[12px] px-6">Connect</Button.Primary>
         </div> 
       </div>
     </header>
