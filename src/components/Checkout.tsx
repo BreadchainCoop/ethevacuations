@@ -1,6 +1,12 @@
 import Button from "./Button"
+import Select from "./Select"
 
-function CheckoutRoot({ onClick } : { onClick(): void; }) {
+interface Props {
+  onClick(): void;
+  onDismiss(): void;
+}
+
+function CheckoutRoot({ onClick } : Props) {
   return (
     <div className="flex flex-col items-center justify-center p-4 bg-white rounded-[2rem] lg:py-16 gap-4">
       <div>
@@ -43,14 +49,31 @@ function CheckoutRoot({ onClick } : { onClick(): void; }) {
   )
 }
 
-function CheckoutOrder(){
+function CheckoutOrder({ onClick, onDismiss } : Props){
   return (
     <div className="flex flex-col items-center justify-center p-4 bg-white rounded-[2rem] lg:py-16 gap-4">
       <p className="text-xl font-bold">Donate</p>
+
       <p className="w-2/3 inline-flex items-center justify-between text-neutral-400">
         <label>Network</label>
         <label>Token</label>
       </p>
+
+      <div className="w-2/3 inline-flex items-center justify-between">
+        <Select title="Network" options={[
+          'Ethereum',
+          'Optimisim',
+          'Zora',
+          'base'
+          ]} 
+        />
+        <Select title="Token" options={[
+          'ETH',
+          'USDC',
+          'WBTC'
+          ]} 
+        />
+      </div>
 
       <div className="w-2/3">
         <Button.Primary className="text-xl">
