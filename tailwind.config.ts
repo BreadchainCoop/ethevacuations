@@ -19,7 +19,8 @@ export default {
       colors: {
         primary: '#ff7777',
         secondary: '#ffd0d0',
-        ternary: '#dd2e44'
+        ternary: '#dd2e44',
+        input: '#f5f5f5'
       }
     }
   },

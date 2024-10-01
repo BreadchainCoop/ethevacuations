@@ -1,7 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { useEffect, useState } from "react";
-import { formatDistanceStrict } from "date-fns";
 import clsx from "clsx";
 
 import Checkout from "./components/Checkout"
@@ -25,10 +23,15 @@ export default function Home() {
   useEffect(() => {
     switch (checkoutStep) {
       case 1:
-        setCanvas(<Checkout.Order />);
+        setCanvas(
+          <Checkout.Order />
+        );
         break;
       default:
-        setCanvas(<Checkout.Root onClick={forwardStep} />);
+        setCanvas(
+          <Checkout.Root 
+            onClick={forwardStep} 
+          />);
         break;
     }
   }, [, checkoutStep])
@@ -40,7 +43,7 @@ export default function Home() {
         <div className="h-full grid grid-cols-1 items-start py-14 gap-2 lg:gap-4 md:gap-x-6 md:grid-cols-2 lg:gap-x-36">
           <section className="grid grid-cols-1 justify-center items-start gap-4 lg:gap-6">
             <div className="lg:w-2/3 sm:h-auto">
-              <p className="text-4xl font-bold tracking-[-.02em]">
+              <p className="text-2xl lg:text-4xl font-bold tracking-[-.02em]">
                 Fund evacuations from Gaza with crypto <br></br>
               </p>
               <p className="text-xl font-medium text-neutral-400 mt-6">
@@ -52,14 +55,14 @@ export default function Home() {
                 <h3 className="text-neutral-400 font-medium text-xl">
                   Total <br className="lg:hidden" /> Raised
                 </h3>
-                <p className="text-4xl text-black font-bold flex items-end">+ $300k</p>
+                <p className="text-2xl lg:text-4xl text-black font-bold flex items-end">+ $300k</p>
                 <p className="text-lg text-neutral-500">0.00 ETH</p>
               </div>
               <div className="grid justify-center items-center text-center gap-1">
                 <h3 className="text-neutral-400 font-medium text-xl">
                   Evacuations Registered
                 </h3>
-                <p className="text-4xl text-black font-bold">+ 60</p>
+                <p className="text-2xl lg:text-4xl text-black font-bold">+ 60</p>
                 <p className="text-lg text-neutral-500 flex-inline">
                   <a href="">
                     <p className="w-3/5 mx-auto">
@@ -76,7 +79,7 @@ export default function Home() {
             </div>
           </section>
           <section className="h-[600px]">{checkoutCanvas}</section>
-          <section className="lg:mt-[-300px]"><Donations /></section>
+          <section className="mt-[400px] lg:mt-[-300px]"></section>
         </div>
       </main>
       <Footer />
