@@ -1,7 +1,11 @@
+import clsx from "clsx";
+
+import Button from "../components/Button";
+
 export function Footer() {
   return (
-    <footer className="w-full lg:w-2/3 flex justify-between items-start mt-6 pt-2 pb-2">
-      <p className="inline-block mt-5">
+    <footer className="w-full flex justify-between items-start pt-2 pb-2">
+      <p className="inline-block mt-[-3px]">
         <div className="float-left">
           <img
             alt="ethevacuations"
@@ -9,9 +13,9 @@ export function Footer() {
             className="mt-[3px] mr-[10px] h-[30px] w-[30px]"
           />
         </div>
-        <span className="font-bold text-xl">ethevacuations</span>
+        <span className="font-bold lg:text-xl">ethevacuations</span>
       </p>
-      <ul className="inline-flex gap-8 mt-5">
+      <ul className="hidden lg:gap-8 md:inline-flex md:text-sm ">
         <li>
           <a href="">
             How does it work?
@@ -62,14 +66,14 @@ export function Footer() {
         </li>
 
       </ul>
-      <p className="flex flex-col items-center justify-center gap-2">
+      <p className="mt-[-25px] flex flex-col items-center justify-center gap-2">
         <span className="text-neutral-400">Hacked by</span>
         <span className="inline-block">
           <a
             href="https://twitter.com/breadchain_"
             target="_blank"
             rel="noreferrer"
-            className="text-lg font-bold"
+            className="lg:text-lg font-bold"
           >
             <label className="float-left">
               <img

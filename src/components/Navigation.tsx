@@ -9,7 +9,7 @@ import { PAGE_WRAP } from "../utils/constants";
 
 export function Navigation() {
   return (
-    <header className={clsx(PAGE_WRAP, "w-full md:w-2/3 px-2 py-4 flex justify-between items-start")}>
+    <header className="w-full px-2 py-4 flex justify-between items-start">
       <img
         alt="logo"
         src="assets/logo.png"

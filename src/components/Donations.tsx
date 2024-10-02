@@ -67,7 +67,7 @@ export function Donations() {
   return (
     <div>
       <p className="text-2xl font-bold mb-6">Recent Donations</p>
-      <div className="h-[240px] overflow-hidden relative min-w-0">
+      <div className="h-[150px] lg:h-[240px] overflow-hidden relative min-w-0">
         <div className="h-full grid gap-2 overflow-y-scroll">
           {aggData && aggData.map((tx) => 
             <Donation key={`tx_${tx.hash}`} tx={tx} />

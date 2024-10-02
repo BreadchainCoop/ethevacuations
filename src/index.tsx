@@ -38,9 +38,9 @@ export default function Home() {
 
   return (
     <>
-      <Navigation />
-      <main className={clsx(PAGE_WRAP, "md:w-2/3 h-full lg:pt-6")}>
-        <div className="h-full grid grid-cols-1 items-start py-14 gap-2 lg:gap-4 md:gap-x-6 md:grid-cols-2 lg:gap-x-36">
+      <main className={clsx(PAGE_WRAP, "md:w-2/3 min-h-screen lg:pt-6 grid grid-cols-1 justify-between")}>
+        <Navigation />
+        <div className="h-full grid grid-cols-1 justify-between items-start py-6 lg:py-14 gap-6 md:gap-2 lg:gap-4 md:gap-x-12 md:grid-cols-2 lg:gap-x-36">
           <section className="grid grid-cols-1 justify-center items-start gap-4 lg:gap-6">
             <div className="lg:w-2/3 sm:h-auto">
               <p className="text-2xl lg:text-4xl font-bold tracking-[-.02em]">
@@ -50,20 +50,20 @@ export default function Home() {
                 Crypto was made for this
               </p>
             </div>
-            <div className="w-full px-4 py-6 grid grid-cols-2">
+            <div className="w-full px-4 lg:py-6 grid grid-cols-2">
               <div className="grid justify-center text-center gap-2"> 
-                <h3 className="text-neutral-400 font-medium text-xl">
-                  Total <br className="lg:hidden" /> Raised
+                <h3 className="text-neutral-400 font-medium lg:text-xl">
+                  Total <br className="md:hidden lg:hidden" /> Raised
                 </h3>
                 <p className="text-2xl lg:text-4xl text-black font-bold flex items-end">+ $300k</p>
-                <p className="text-lg text-neutral-500">0.00 ETH</p>
+                <p className="lg:text-lg text-neutral-500">0.00 ETH</p>
               </div>
               <div className="grid justify-center items-center text-center gap-1">
-                <h3 className="text-neutral-400 font-medium text-xl">
+                <h3 className="text-neutral-400 font-medium lg:text-xl">
                   Evacuations Registered
                 </h3>
                 <p className="text-2xl lg:text-4xl text-black font-bold">+ 60</p>
-                <p className="text-lg text-neutral-500 flex-inline">
+                <p className="lg:text-lg text-neutral-500 flex-inline">
                   <a href="">
                     <p className="w-3/5 mx-auto">
                       Learn more 
@@ -78,11 +78,11 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section className="h-[600px]">{checkoutCanvas}</section>
-          <section className="mt-[400px] lg:mt-[-300px]"></section>
+          <section className="h-[465px] rounded-[2rem] bg-white px-6 py-8 lg:py-16">{checkoutCanvas}</section>
+          <section className="md:mt-[-240px] lg:mt-[-300px]"><Donations /></section>
         </div>
+        <Footer />
       </main>
-      <Footer />
     </>
   );
 }

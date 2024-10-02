@@ -9,7 +9,7 @@ interface Props {
 
 function CheckoutRoot({ onClick } : Props) {
   return (
-    <div className="flex flex-col items-center justify-center px-4 py-6 bg-white rounded-[2rem] lg:py-16 gap-4">
+    <div className="h-full flex flex-col items-center justify-center gap-4">
       <div>
         <div className="grid justify-center px-4 py-2">
           <span className="font-medium text-lg lg:text-xl rounded-full bg-white text-black">
@@ -33,11 +33,11 @@ function CheckoutRoot({ onClick } : Props) {
          />
         <p className="lg:text-xl pt-2">Recommended networks</p>
       </div>
-      <div className="w-2/3 text-sm text-neutral-500 text-center">
+      <div className="lg:w-4/5 text-sm text-neutral-500 text-center">
         This address supports tokens on Ethereum, Zora, Arbitrum, Gnosis, Optimism, and Base.
       </div>
-      <div className="w-2/3">
-        <Button.Primary className="text-xl" onClick={onClick}>
+      <div className="w-4/5">
+        <Button.Primary className="lg:text-xl" onClick={onClick}>
           <img 
             alt="btn-logo"
             src="/assets/logo.png"
@@ -52,35 +52,38 @@ function CheckoutRoot({ onClick } : Props) {
 
 function CheckoutOrder({ onClick, onDismiss } : Props){
   return (
-    <div className="flex flex-col items-center justify-center px-4 py-8 bg-white rounded-[2rem] lg:py-16 gap-4"> 
+    <div className="h-full flex flex-col items-center justify-between bg-white rounded-[2rem] lg:py-16 gap-4"> 
       <p className="text-xl font-bold">Donate</p>
 
-      <p className="w-2/3 inline-flex items-start text-left font-medium justify-between text-neutral-400">
-        <p className="w-full">Network</p>
-        <p className="w-full">Token</p>
-      </p>
+      <div className="w-4/5">
+        <p className="w-full inline-flex items-start text-left font-medium justify-between text-neutral-400">
+          <p className="w-full">Network</p>
+          <p className="w-full">Token</p>
+        </p>
 
-      <div className="w-2/3 inline-flex items-center justify-between gap-4">
-        <Select 
-          title="Network"
-          defaultValue="Ethereum"
-          options={[ 'Ethereum', 'Optimisim', 'Zora', 'Base' ]} 
-        />
-        <Select 
-          title="Token" 
-          defaultValue="ETH"
-          options={[ 'ETH', 'USDC', 'WBTC' ]} 
-        />
+        <div className="mt-[5px] inline-flex items-center justify-between gap-4">
+          <Select 
+            title="Network"
+            defaultValue="Ethereum"
+            options={[ 'Ethereum', 'Optimisim', 'Zora', 'Base' ]} 
+          />
+          <Select 
+            title="Token" 
+            defaultValue="ETH"
+            options={[ 'ETH', 'USDC', 'WBTC' ]} 
+          />
+        </div>
       </div>
 
-      <p className="text-neutral-400">Click for a custom amount</p>
-
-      <div className="w-2/3">
+      <div className="w-4/5 grid grid-cols gap-2">
+        <label className="text-center text-neutral-400">
+          Click for a custom amount
+        </label>
         <Input.Circular title="0.00" inputType="number" />
       </div>
 
       <div className="w-2/3">
-        <Button.Primary className="text-xl">
+        <Button.Primary className="lg:text-xl">
           <img 
             alt="btn-logo"
             src="/assets/logo.png"
