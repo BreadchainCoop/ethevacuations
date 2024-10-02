@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import clsx from "clsx";
 
-import Checkout from "./components/Checkout"
+import Checkout from "./components/Checkout";
 import Button from "./components/Button";
 import Layout from "./components/Layout";
 import { Footer } from "./components/Footer";
@@ -79,7 +79,7 @@ export default function Home() {
             </div>
           </section>
           <section className="h-[465px] rounded-[2rem] bg-white px-6 py-8 lg:py-16">{checkoutCanvas}</section>
-          <section className="md:mt-[-240px] lg:mt-[-300px]"><Donations /></section>
+          <section className="md:mt-[-240px] lg:mt-[-300px]"></section>
         </div>
         <Footer />
       </main>
