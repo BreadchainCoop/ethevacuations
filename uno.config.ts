@@ -1,4 +1,4 @@
-import { defineConfig, presetUno } from 'unocss'
+import { defineConfig, presetUno, transformerDirectives, transformerVariantGroup } from 'unocss'
 
 export default defineConfig({
   content: {
@@ -7,7 +7,9 @@ export default defineConfig({
       './src/index.{ts,tsx}'
     ],
   },
-  presets: [
-    presetUno(),
+  transformers: [ 
+    transformerDirectives(),
+    transformerVariantGroup()
   ],
+  presets: [ presetUno() ]
 })

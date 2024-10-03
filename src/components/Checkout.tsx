@@ -52,7 +52,7 @@ function CheckoutRoot({ onClick } : Props) {
 
 function CheckoutOrder({ onClick, onDismiss } : Props){
   return (
-    <div className="h-full flex flex-col items-center justify-between bg-white rounded-[2rem] lg:py-16 gap-4"> 
+    <div className="h-full flex flex-col items-center justify-between bg-white rounded-[2rem] gap-4"> 
       <p className="text-xl font-bold">Donate</p>
 
       <div className="w-4/5">

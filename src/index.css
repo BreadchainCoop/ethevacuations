@@ -8,3 +8,6 @@ body {
   background: linear-gradient(180deg, #F8F8F800 0%, #F8F8F8 80%);
 }
 
+.card {
+  @apply rounded-[2rem] bg-white px-4 py-4 lg:py-8;
+}

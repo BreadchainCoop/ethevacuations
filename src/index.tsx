@@ -78,7 +78,7 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section className="h-[465px] rounded-[2rem] bg-white px-6 py-8 lg:py-16">{checkoutCanvas}</section>
+          <section className="card">{checkoutCanvas}</section>
           <section className="md:mt-[-240px] lg:mt-[-300px]"></section>
         </div>
         <Footer />
