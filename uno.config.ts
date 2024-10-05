@@ -11,5 +11,17 @@ export default defineConfig({
     transformerDirectives(),
     transformerVariantGroup()
   ],
-  presets: [ presetUno() ]
+  presets: [ presetUno() ],
+  theme: {
+    colors: {
+      primary: '#0000ff', 
+      secondary: '',
+      ternary: ''
+    },
+    breakpoints: {
+      sm: '460px',
+      md: '840px',
+      lg: '1360px'
+    }
+  }
 })

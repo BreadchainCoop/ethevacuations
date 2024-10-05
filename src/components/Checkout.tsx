@@ -9,31 +9,31 @@ interface Props {
 
 function CheckoutRoot({ onClick } : Props) {
   return (
-    <div className="h-full flex flex-col items-center justify-center gap-4">
+    <div className="h-full flexbox gap-4 text-center">
       <div>
         <div className="grid justify-center px-4 py-2">
-          <span className="font-medium text-lg lg:text-xl rounded-full bg-white text-black">
+          <span className="font-medium text-lg rounded-full bg-white text-black lg:text-xl">
             ethevacuations.eth
           </span>
           <Button.Copy />
         </div>
-        <div className="flex justify-center pt-4">
+        <div className="pt-4">
           <img
             alt="qr-unicode"
             src="assets/qr_code.png"
-            className="block m-auto h-[125px] w-[125px] lg:h-[190px] lg:w-[190px]"
+            className="frame h-[125px] w-[125px] lg:h-[190px] lg:w-[190px]"
           />
         </div>
       </div>
-      <div className="flex flex-col items-center gap-1">
+      <div className="flexbox gap-1">
         <img
           alt="network icons"
           src="assets/network_icons.png"
           className="block m-auto w-[127px] h-[24px]"
          />
-        <p className="lg:text-xl pt-2">Recommended networks</p>
+        <label className="pt-2 lg:text-xl">Recommended networks</label>
       </div>
-      <div className="lg:w-4/5 text-sm text-neutral-500 text-center">
+      <div className="text-sm text-neutral-500 lg:w-4/5">
         This address supports tokens on Ethereum, Zora, Arbitrum, Gnosis, Optimism, and Base.
       </div>
       <div className="w-4/5">
@@ -52,16 +52,16 @@ function CheckoutRoot({ onClick } : Props) {
 
 function CheckoutOrder({ onClick, onDismiss } : Props){
   return (
-    <div className="h-full flex flex-col items-center justify-between bg-white rounded-[2rem] gap-4"> 
-      <p className="text-xl font-bold">Donate</p>
+    <div className="h-full flexbox gap-4"> 
+      <h3 className="text-xl font-bold">Donate</h3>
 
       <div className="w-4/5">
-        <p className="w-full inline-flex items-start text-left font-medium justify-between text-neutral-400">
-          <p className="w-full">Network</p>
-          <p className="w-full">Token</p>
+        <p className="w-full inline-flexbox text-left font-medium text-neutral-400">
+          <label className="w-full">Network</label>
+          <label className="w-full">Token</label>
         </p>
 
-        <div className="mt-[5px] inline-flex items-center justify-between gap-4">
+        <div className="mt-[5px] inline-flexbox gap-4">
           <Select 
             title="Network"
             defaultValue="Ethereum"
@@ -75,7 +75,7 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
         </div>
       </div>
 
-      <div className="w-4/5 grid grid-cols gap-2">
+      <div className="w-4/5 flexbox gap-6">
         <label className="text-center text-neutral-400">
           Click for a custom amount
         </label>

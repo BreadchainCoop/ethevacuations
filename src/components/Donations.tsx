@@ -81,13 +81,13 @@ export function Donations() {
 
 function Donation({ tx }: { tx: any }) {
   return (
-    <div className="bg-white rounded-lg p-4 flex justify-between gap-4 min-w-0">
-      <h2 className="col-span-3 min-w-0 text-[#8b8b8b]">
+    <div className="text-lg bg-white rounded-lg p-4 flex justify-between gap-4 min-w-0">
+      <span className="col-span-3 min-w-0 text-[#8b8b8b]">
         {formatDistanceStrict(new Date(tx.block_timestamp), new Date(), {
           addSuffix: true,
         })}
-      </h2>
-      <div className="flex gap-2 font-medium">
+      </span>
+      <div className="col-span-3 flex items-center font-medium">
         {tx.erc20_transfers.length ? (
           <>
             <span>

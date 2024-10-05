@@ -16,11 +16,11 @@ export function Navigation() {
         className="h-[40px] w-[40px] transform -translate-x-1.5"
       />
       <div className="inline-flex gap-5">
-        <div className="bg-white w-[40px] rounded-[20px] p-2">
+        <div className="bg-white w-[40px] rounded-[20px] py-[10px] px-[3px]">
           <img 
             alt="github"
             src="assets/github.png"
-            className="h-[25px] w-[25px]"
+            className=" frame h-[25px] w-[25px]"
           />
         </div>
         <div className="w-[87.5px]">

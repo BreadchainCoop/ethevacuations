@@ -18,7 +18,7 @@ function PrimaryButton({
   return (
     <button
       onClick={onClick}
-      className={`w-full flex text-center shadow-lg shadow-ternary/20 justify-center items-center bg-[#ffd0d0] px-6 py-3 rounded-[30px] hover:bg-primary hover:text-white 
+      className={`w-full flex text-center shadow-lg shadow-ternary/20 justify-center items-center bg-[#ffd0d0] px-3 py-3 rounded-[30px] hover:bg-primary hover:text-white 
       ${className}
     `}>
       {children}

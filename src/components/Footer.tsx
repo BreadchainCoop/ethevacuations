@@ -4,7 +4,7 @@ import Button from "../components/Button";
 
 export function Footer() {
   return (
-    <footer className="w-full flex justify-between items-start pt-2 pb-2">
+    <footer className="w-full flex flex-start pt-2 pb-2">
       <p className="inline-block mt-[-3px]">
         <div className="float-left">
           <img
@@ -66,7 +66,7 @@ export function Footer() {
         </li>
 
       </ul>
-      <p className="mt-[-25px] flex flex-col items-center justify-center gap-2">
+      <label className="flexbox gap-2">
         <span className="text-neutral-400">Hacked by</span>
         <span className="inline-block">
           <a
@@ -85,7 +85,7 @@ export function Footer() {
             Breadchain
           </a>
         </span>
-      </p>
+      </label>
     </footer>
   );
 }

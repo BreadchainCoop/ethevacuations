@@ -15,6 +15,7 @@
     "@tanstack/react-query": "^5.37.1",
     "@unocss/postcss": "^0.63.2",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "postcss": "^8.4.47",
     "postcss-cli": "^11.0.0",
     "react": "^18",
