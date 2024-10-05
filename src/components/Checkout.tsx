@@ -1,3 +1,8 @@
+import { useState, useEffect } from 'react'
+import { useDebounce } from '../hooks/useDebounce' 
+
+import { NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants'
+
 import Button from "./Button"
 import Select from "./Select"
 import Input from "./Input"
@@ -6,20 +11,6 @@ interface Props {
   onClick(): void;
   onDismiss(): void;
 }
-
-const NETWORK_SELECT_OPTIONS = [
-  { id: 'eth', title: 'Ethereum', logo: '' },
-  { id: 'base', title: 'Base', logo: '' },
-  { id: 'op', title: 'Optimisim', logo: ''},
-  { id: 'zora', title: 'Zora', logo: '' }
-]
-
-const ASSET_SELECT_OPTIONS = [
-  { id: 'eth', title: 'ETH', logo: '' },
-  { id: 'usdc', title: 'USDC', logo: '' },
-  { id: 'wbtc', title: 'WBTC', logo: ''},
-  { id: 'dai', title: 'DAI', logo: '' }
-]
 
 function CheckoutRoot({ onClick } : Props) {
   return (
@@ -64,10 +55,45 @@ function CheckoutRoot({ onClick } : Props) {
   )
 }
 
-function CheckoutOrder({ onClick, onDismiss } : Props){
+function CheckoutReceipt({ onDismiss }: Props) {
+  return (
+    <div className="h-full p-4">
+      <button 
+        onClick={onDismiss}
+        className="absolute bg-transparent font-sans font-light text-neutral-300 border-none text-4xl scale-x-90 scale-y-155"
+      >
+        &#60;
+      </button>
+      <div className="w-full text-center mt-[10px]">
+        <label className="text-2xl font-medium">
+          Spread the action
+        </label>
+      </div>
+      <div className="w-full flexbox gap-3 mt-8"> 
+      </div>
+    </div>
+  )
+}
 
-  const CheckoutButton = ({ option }: { option: number; }) => (
-    <button className="border-[1px] border-black/10 bg-white rounded-[25px] lg-shadow py-2 px-4">
+function CheckoutOrder({ onClick, onDismiss } : Props){
+  const [input, setInput] = useState(null)
+  const [optionSelection, setSelection] = useState(null)
+
+  const debouncedValue = useDebounce(input, 1000)
+
+  const CheckoutButton = ({ 
+    option, 
+    onClick,
+    isSelected
+  } : { 
+    option: number; 
+    onClick(): void;
+    isSelected: boolean;
+  }) => (
+    <button className={`border-[1px] border-black/10 bg-white rounded-[25px] shadow-2xl py-2 px-4 hover:bg-secondary/80 hover:translate-y-[-5px] 
+        ${isSelected ? 'border-primary/30' : ''}
+      `}
+    >
       <span className="float-left mr-2">
         <img  
           src="/assets/logo.png"
@@ -82,7 +108,7 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
     <div className="h-full p-4">
       <button 
         onClick={onDismiss}
-        className="absolute bg-transparent font-sans font-thin text-neutral-500 border-none text-4xl scale-x-100 scale-y-155"
+        className="absolute bg-transparent font-sans font-light text-neutral-300 border-none text-4xl scale-x-90 scale-y-155"
       >
         &#60;
       </button>
@@ -92,8 +118,8 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
         </label>
       </div>
       <div className="w-full flexbox gap-3 mt-8"> 
-        <div className="w-3/5">
-          <div className="w-full inline-flexbox gap-4 mt-[5px]">
+        <div className="w-full lg:w-3/5 py-2 px-4">
+          <div className="w-full inline-flexbox gap-4">
             <Select 
               label="Network"
               defaultValue={0}
@@ -111,12 +137,23 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
           <label className="text-lg font-light text-neutral-400">
            Click for a custom amount
           </label>
-          <Input.Circular title="0.00" inputType="number" />
+          <Input.Circular 
+            title="0.00" 
+            value={input}
+            inputType="number"
+            onChange={setInput}
+          />
           <span className="text-lg text-neutral-400">Balance: 0.00</span>
         </div>
 
         <div className="inline-flex items-center justify-center gap-3">
-          {['1', '2', '5'].map((e: string) => <CheckoutButton option={e} /> )}
+          {['1', '2', '5'].map((e: string) => ( 
+            <CheckoutButton 
+              option={e}
+              isSelected={e === optionSelection}
+              onClick={() => setSelection(e)}
+            />
+          ))}
         </div> 
 
         <p>
@@ -126,7 +163,7 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
               className="frame h–[35px] w-[35px]"
             />
           </span>
-          <span className="text-right"> = One life ($0.00)</span>
+          <span className="text-right font-lg"> =&nbsp;&nbsp;One life ($0.00)</span>
         </p>
 
         <div className="w-2/3 pb-6">
@@ -147,5 +184,6 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
 
 export default {
   Root: CheckoutRoot,
+  Receipt: CheckoutReceipt,
   Order: CheckoutOrder
 }

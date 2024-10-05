@@ -27,16 +27,22 @@ export default function Home() {
           <Checkout.Order onDismiss={backwardStep} />
         );
         break;
+      case 2: 
+        setCanvas(
+          <Checkout.Receipt onDismiss={backwardStep} />
+        );
+        break;
       default:
         setCanvas(
-          <Checkout.Root onClick={forwardStep} />);
+          <Checkout.Root onClick={forwardStep} />
+        );
         break;
     }
   }, [, checkoutStep])
 
   return (
     <>
-      <main className={clsx(PAGE_WRAP, "md:w-2/3 min-h-screen grid grid-cols-1 items-start justify-center")}>
+      <main className={clsx(PAGE_WRAP, "min-h-screen grid grid-cols-1 items-start justify-center md:w-2/3")}>
         <Navigation />
         <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 md:gap-2 md:gap-x-12 lg:gap-x-36">
           <section className="grid grid-cols-1 flex-center gap-4 lg:gap-6">
@@ -61,23 +67,23 @@ export default function Home() {
                   Evacuations Registered
                 </label>
                 <label className="text-2xl lg:text-4xl text-black font-bold">+ 60</label>
-                <label className="text-lg text-neutral-500 flex-inline lg:text-xl">
+                <label className="w-full px-2 text-lg text-center text-neutral-500 flex-inline lg:text-xl">
                   <a href="">
-                    <span className="w-3/5 mx-auto">
+                    <span className="float-left px-4">
                       Learn more 
+                    </span>
                       <img
                         alt="link"
                         src="assets/arrow_right.png"
-                        className="frame float-right mt-[3px] h-[20px] w-[20px]"
+                        className="frame pt-[6px] h-[20px] w-[20px]"
                       />
-                    </span>
                   </a>
                 </label>
               </div>
             </div>
           </section>
-          <section className="card h-[550px] lg:h-[600px]">{checkoutCanvas}</section>
-          <section className="md:mt-[-240px] lg:mt-[-400px]"><Donations /></section>
+          <section className="card h-auto md:h-[550px] lg:h-[600px]">{checkoutCanvas}</section>
+          <section className="md:mt-[-240px] lg:mt-[-400px]"></section>
         </div>
         <Footer />
       </main>
@@ -86,9 +92,7 @@ export default function Home() {
 }
 
 ReactDOM.render(
-  <Layout>
-    <Home />
-  </Layout>, 
-   document.getElementById("root") || document.body
+  <Layout><Home /></Layout>, 
+  document.getElementById("root") || document.body
 )
 
