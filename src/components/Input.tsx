@@ -14,7 +14,7 @@ function CircularInput({ title, onChange, inputType }: Props) {
       value={input}
       type={inputType}
       placeholder={title}
-      className="flex font-light text-center text-4xl bg-input w-full px-4 py-6 rounded-[10px]" 
+      className="flex w-full border-black/10 bg-input font-light font-sans text-center text-4xl px-4 py-6 rounded-[10px]"  
     />
   )
 }

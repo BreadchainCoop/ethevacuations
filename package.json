@@ -8,22 +8,20 @@
     "build": "npx react-scripts build",
     "start": "npm run build-css & react-scripts start",
     "build-css": "npx postcss ./src/index.css -o ./public/index.css -w",
-    "lint": "next lint"
+    "build:css": "npx unocss -c uno.config.ts -o public/index.css -w --write-transformed src/**"
   },
   "dependencies": {
-    "@rainbow-me/rainbowkit": "^2.1.2",
     "@tanstack/react-query": "^5.37.1",
-    "@unocss/postcss": "^0.63.2",
+    "@unocss/postcss": "0.61.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "downshift": "^9.0.8",
     "postcss": "^8.4.47",
     "postcss-cli": "^11.0.0",
     "react": "^18",
     "react-dom": "^18",
     "react-scripts": "^5.0.1",
-    "unocss": "^0.63.2",
-    "viem": "^2.12.1",
-    "wagmi": "^2.9.10"
+    "unocss": "0.61.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

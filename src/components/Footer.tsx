@@ -5,7 +5,7 @@ import Button from "../components/Button";
 export function Footer() {
   return (
     <footer className="w-full flex flex-start pt-2 pb-2">
-      <p className="inline-block mt-[-3px]">
+      <p className="inline-block mt-[12px]">
         <div className="float-left">
           <img
             alt="ethevacuations"

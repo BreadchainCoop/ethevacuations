@@ -1,11 +1,27 @@
 @unocss;
 
 body {
+  @apply font-sans;
   background-color: #f8f8f8;
 }
 
 .transactions-gradient-bg {
   background: linear-gradient(180deg, #F8F8F800 0%, #F8F8F8 80%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,li {
+  padding: 0px;
+  list-style: none;
+  list-style-type: none;
+}
+
+h1 {
+ @apply m-0 p-0 text-2xl lg:text-4xl font-bold;
 }
 
 .card {

@@ -24,29 +24,27 @@ export default function Home() {
     switch (checkoutStep) {
       case 1:
         setCanvas(
-          <Checkout.Order />
+          <Checkout.Order onDismiss={backwardStep} />
         );
         break;
       default:
         setCanvas(
-          <Checkout.Root 
-            onClick={forwardStep} 
-          />);
+          <Checkout.Root onClick={forwardStep} />);
         break;
     }
   }, [, checkoutStep])
 
   return (
     <>
-      <main className={clsx(PAGE_WRAP, "md:w-2/3 min-h-screen grid grid-cols-1 justify-between")}>
+      <main className={clsx(PAGE_WRAP, "md:w-2/3 min-h-screen grid grid-cols-1 items-start justify-center")}>
         <Navigation />
-        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:gap-x-12 md:grid-cols-2 lg:gap-x-36">
+        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 md:gap-2 md:gap-x-12 lg:gap-x-36">
           <section className="grid grid-cols-1 flex-center gap-4 lg:gap-6">
             <div className="lg:w-2/3 sm:h-auto">
-              <h2 className="text-2xl lg:text-4xl font-bold tracking-[-.02em]">
+              <h1 className="tracking-[-.02em]">
                 Fund evacuations from Gaza with crypto <br></br>
-              </h2>
-              <label className="text-xl font-medium text-neutral-400 mt-6">
+              </h1>
+              <label className="text-xl font-medium text-neutral-400 pt-4">
                 Crypto was made for this
               </label>
             </div>
@@ -78,8 +76,8 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section className="card h-[350px] lg:h-[600px]">{checkoutCanvas}</section>
-          <section className="md:mt-[-240px] lg:mt-[-300px]"></section>
+          <section className="card h-[550px] lg:h-[600px]">{checkoutCanvas}</section>
+          <section className="md:mt-[-240px] lg:mt-[-400px]"><Donations /></section>
         </div>
         <Footer />
       </main>
