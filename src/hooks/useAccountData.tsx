@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 
 const FROM_BLOCK = "19435069";
 
+import { ETH_EVACUATONS_ADDRESS } from "../utils/constants";
+
 const chainMap = {
   eth: "0x1",
   gnosis: "0x64",
@@ -11,6 +13,11 @@ const chainMap = {
   base: "0x2105",
   arbitrum: "0xa4b1",
 };
+
+const MORALIS_API_KEY = process.env.REACT_APP_MORALIS_API_KEY;
+
+if (!MORALIS_API_KEY)
+  throw new Error("MORALIS_API_KEY not provided");
 
 export function useAccountData(
   chainString: keyof typeof chainMap,
@@ -25,33 +32,28 @@ export function useAccountData(
   });
 
   const fetchTransactions = () => {
-    console.log("fetching transactions...");
-    return fetch("/.netlify/functions/account-data", {
-      method: "POST",
+    return fetch(
+      `https://deep-index.moralis.io/api/v2.2/wallets/${ETH_EVACUATONS_ADDRESS}/history?chain=${chainMap[chainString]}&from_block=${FROM_BLOCK}&include_internal_transactions=false&order=DESC`, {
       headers: {
         "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        chain: chainMap[chainString],
-        account,
-        fromBlock: FROM_BLOCK,
-      }),
+        "X-API-Key": MORALIS_API_KEY,
+      }
     })
-      .then((res) => res.json())
-      .then((data) => {
-        // setCursor(data.cursor);
-        return data;
-      })
-      .catch((err) => {
-        setDataState({ status: "error", data: [] });
-      });
+    .then((res) => res.json())
+    .then((data) => {
+      // setCursor(data.cursor);
+      return data;
+    })
+    .catch((err) => {
+      setDataState({ status: "error", data: [] });
+    });
   };
 
   const { data } = useQuery({
     queryKey: [`accountData_${chainString}`],
     queryFn: () => fetchTransactions(),
     placeholderData: keepPreviousData,
-    refetchInterval: 2000,
+    refetchInterval: 600000,
   });
 
   useEffect(() => {

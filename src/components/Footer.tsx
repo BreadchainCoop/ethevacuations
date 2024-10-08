@@ -1,47 +1,91 @@
+import clsx from "clsx";
+
+import Button from "../components/Button";
+
 export function Footer() {
   return (
-    <footer className="mt-6 pt-12 pb-2">
-      <div className="text-center py-4">
-        <p className="text-sm flex items-center justify-center gap-2">
-          Made with{" "}
-          <span className="w-4 h-4 inline-block">
-            <svg
-              viewBox="0 0 60 58"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M10.4348 0.5C4.67181 0.5 0 5.17181 0 10.9348C0 16.3448 4.11705 20.7932 9.38895 21.3178V44.8476C9.38895 52.0514 15.2287 57.8911 22.4324 57.8911H37.0408C44.2445 57.8911 50.0842 52.0514 50.0842 44.8477V21.3569C55.6061 21.0864 60 16.5237 60 10.9348C60 5.17181 55.3282 0.5 49.5652 0.5L10.4348 0.5Z"
-                fill="url(#paint0_linear_2974_31682)"
+    <footer className="w-full flex flex-start pt-2 pb-2">
+      <p className="inline-block mt-[12px]">
+        <div className="float-left">
+          <img
+            alt="ethevacuations"
+            src="assets/logo.png"
+            className="mt-[3px] mr-[10px] h-[30px] w-[30px]"
+          />
+        </div>
+        <span className="font-bold lg:text-xl">ethevacuations</span>
+      </p>
+      <ul className="hidden lg:gap-8 md:inline-flex md:text-sm ">
+        <li>
+          <a href="">
+            How does it work?
+            <label className="float-right">
+              <img
+                alt="link"
+                src="assets/arrow_right.png"
+                className="mt-[3px] ml-[3px] h-[20px] w-[20px]"
               />
-              <defs>
-                <linearGradient
-                  id="paint0_linear_2974_31682"
-                  x1="8.25"
-                  y1="45.6955"
-                  x2="49.412"
-                  y2="9.45708"
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop stopColor="#D04EC5" />
-                  <stop offset="1" stopColor="#ED7BC7" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </span>{" "}
-          by{" "}
+            </label>
+          </a>
+        </li>
+        <li>
+          <a href="">
+            Who manages this?
+            <label className="float-right">
+              <img
+                alt="link"
+                src="assets/arrow_right.png"
+                className="mt-[3px] ml-[3px] h-[20px] w-[20px]"
+              />
+            </label>
+          </a>
+        </li>
+        <li>
+          <a href="">
+            Mint Gaza solidarity NFT
+            <label className="float-right">
+              <img
+                alt="link"
+                src="assets/arrow_right.png"
+                className="mt-[3px] ml-[3px] h-[20px] w-[20px]"
+              />
+            </label>
+          </a>
+        </li>
+        <li>
+          <a href="">
+            Press
+            <label className="float-right">
+              <img
+                alt="link"
+                src="assets/arrow_right.png"
+                className="mt-[3px] ml-[3px] h-[20px] w-[20px]"
+              />
+            </label>
+          </a>
+        </li>
+
+      </ul>
+      <label className="flexbox gap-2">
+        <span className="text-neutral-400">Hacked by</span>
+        <span className="inline-block">
           <a
             href="https://twitter.com/breadchain_"
             target="_blank"
             rel="noreferrer"
-            className="underline"
+            className="lg:text-lg font-bold"
           >
-            @breadchain_
+            <label className="float-left">
+              <img
+                alt="breadchain"
+                src="assets/breadchain.png"
+                className="mt-[3px] mr-[5px] h-[20px] w-[20px]"
+              />
+            </label>
+            Breadchain
           </a>
-        </p>
-      </div>
+        </span>
+      </label>
     </footer>
   );
 }

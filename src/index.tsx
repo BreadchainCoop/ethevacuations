@@ -1,114 +1,98 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { useEffect, useState } from "react";
-
-import { formatDistanceStrict } from "date-fns";
-import { useAccountData } from "./components/useAccountData";
-
-import { ETH_EVACUATONS_ADDRESS } from "./constants";
 import clsx from "clsx";
 
+import Checkout from "./components/Checkout";
+import Button from "./components/Button";
+import Layout from "./components/Layout";
 import { Footer } from "./components/Footer";
-import Layout from "./layout";
-import { Header } from "./components/Header";
-import { CopyAddressButton } from "./components/CopyAddressButton";
 import { Donations } from "./components/Donations";
+import { Navigation } from "./components/Navigation";
+import { CopyAddressButton } from "./components/CopyAddressButton";
 
-import { PAGE_WRAP } from "./util";
+import { ETH_EVACUATONS_ADDRESS, PAGE_WRAP } from "./utils/constants";
 
 export default function Home() {
+  const [checkoutCanvas, setCanvas] = useState(<></>) 
+  const [checkoutStep, setStep] = useState(0)
+
+  const forwardStep = () => setStep(checkoutStep+1)
+
+  const backwardStep = () => setStep(checkoutStep-1) 
+
+  useEffect(() => {
+    switch (checkoutStep) {
+      case 1:
+        setCanvas(
+          <Checkout.Order onDismiss={backwardStep} />
+        );
+        break;
+      case 2: 
+        setCanvas(
+          <Checkout.Receipt onDismiss={backwardStep} />
+        );
+        break;
+      default:
+        setCanvas(
+          <Checkout.Root onClick={forwardStep} />
+        );
+        break;
+    }
+  }, [, checkoutStep])
+
   return (
     <>
-      <header className={clsx(PAGE_WRAP, "w-full px-2 py-4")}>
-        <img
-          className="transform -translate-x-1.5"
-          src="/logo.png"
-          alt="logo"
-          width="40"
-          height="40"
-        />
-      </header>
-      <main className={clsx(PAGE_WRAP, "h-full lg:pt-6")}>
-        <p className="w-full sm:h-auto text-4xl font-bold tracking-[-.02em]">
-          Fund evacuations from Gaza with crypto <br></br>
-          <span className="w-full sm:h-auto text-xl font-medium text-neutral-400">
-            Crypto was made for this
-          </span>
-        </p>
-        <div className="h-full grid grid-cols-1 justify-center py-4 gap-4 lg:grid-cols-2 lg:gap-x-16">
-          <section className="grid grid-cols-1 justify-between items-center col-span-1 col-start-1 lg:pb-0">
-            <div
-              style={{ 
-                borderRadius: '30px',
-                padding: '40px 25px'
-              }} 
-              className="w-full bg-white grid grid-cols-2"
-            >
-              <div className="grid justify-center text-center gap-1"> 
-                <h3 className="text-neutral-500 font-medium text-xl">
-                  Total
-                  <br className="lg:hidden" /> Raised
-                </h3>
-                <span className="text-4xl text-black font-bold flex items-end">
-                  + $300k
-                </span>
+      <main className={clsx(PAGE_WRAP, "min-h-screen grid grid-cols-1 items-start justify-center md:w-2/3")}>
+        <Navigation />
+        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 md:gap-2 md:gap-x-12 lg:gap-x-36">
+          <section className="grid grid-cols-1 flex-center gap-4 lg:gap-6">
+            <div className="lg:w-2/3 sm:h-auto">
+              <h1 className="tracking-[-.02em]">
+                Fund evacuations from Gaza with crypto <br></br>
+              </h1>
+              <label className="text-xl font-medium text-neutral-400 pt-4">
+                Crypto was made for this
+              </label>
+            </div>
+            <div className="w-full px-4 grid grid-cols-2 text-center">
+              <div className="grid grid-cols-1 flex-start gap-6"> 
+                <label className="text-lg text-neutral-400 font-medium lg:text-xl">
+                  Total Raised
+                </label>
+                <label className="text-2xl lg:text-4xl text-black font-bold">+ $300k</label>
+                <label className="text-lg text-neutral-500">0.00 ETH</label>
               </div>
-              <div className="grid justify-center text-center gap-1">
-                <h3 className="text-neutral-500 font-medium text-xl">
+              <div className="grid flex-center gap-6">
+                <label className="text-lg text-neutral-400 font-medium lg:text-xl">
                   Evacuations Registered
-                </h3>
-                <span className="text-4xl text-black font-bold">+ 60</span>
+                </label>
+                <label className="text-2xl lg:text-4xl text-black font-bold">+ 60</label>
+                <label className="w-full px-2 text-lg text-center text-neutral-500 flex-inline lg:text-xl">
+                  <a href="">
+                    <span className="float-left px-4">
+                      Learn more 
+                    </span>
+                      <img
+                        alt="link"
+                        src="assets/arrow_right.png"
+                        className="frame pt-[6px] h-[20px] w-[20px]"
+                      />
+                  </a>
+                </label>
               </div>
             </div>
           </section>
-
-          <section>
-            <div className="lg:bg-white lg:rounded-[2rem] flex items-center justify-center lg:py-16">
-              <div>
-                <div className="grid justify-center">
-                  <span className="px-4 py-2 font-medium text-xl rounded-full bg-white text-black">
-                    ethevacuations.eth
-                  </span>
-                  <CopyAddressButton />
-                </div>
-                <div className="flex justify-center pt-4">
-                  <img
-                    src="/qr_code.png"
-                    alt="hero"
-                    width="190"
-                    height="189"
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <div className="mt-5">
-              <h2 className="text-2xl font-bold">Recent Donations</h2>
-              <div>
-                <img
-                  src="/network_icons.png"
-                  alt="network icons"
-                  width="84"
-                  height="25"
-                />
-              </div>
-            </div>
-            {/* <Donations /> */}
-          </section>
-
+          <section className="card h-auto md:h-[550px] lg:h-[600px]">{checkoutCanvas}</section>
+          <section className="md:mt-[-240px] lg:mt-[-400px]"></section>
         </div>
+        <Footer />
       </main>
-      <Footer />
     </>
   );
 }
 
 ReactDOM.render(
-  <Layout>
-    <Home />
-  </Layout>, 
-   document.getElementById("root") || document.body
+  <Layout><Home /></Layout>, 
+  document.getElementById("root") || document.body
 )
 

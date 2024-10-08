@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { formatDistanceStrict } from "date-fns";
 
-import { useAccountData } from "./useAccountData";
+import { useAccountData } from "../hooks/useAccountData";
 
-import { ETH_EVACUATONS_ADDRESS } from "../constants";
+import { ETH_EVACUATONS_ADDRESS } from "../utils/constants";
 
 export function Donations() {
   const [aggData, setAggData] = useState<Array<any>>([]);
@@ -65,23 +65,29 @@ export function Donations() {
     arbitrumDataStatus,
   ]);
   return (
-    <div className="grid gap-2 h-96 overflow-hidden relative min-w-0">
-      {aggData &&
-        aggData.map((tx) => <Donation key={`tx_${tx.hash}`} tx={tx} />)}
-      <div className="absolute -bottom-0 left-0 right-0 h-16 transactions-gradient-bg" />
+    <div>
+      <p className="text-2xl font-bold mb-6">Recent Donations</p>
+      <div className="h-[150px] lg:h-[250px] overflow-hidden relative min-w-0">
+        <div className="h-full grid gap-2 overflow-y-scroll">
+          {aggData && aggData.map((tx) => 
+            <Donation key={`tx_${tx.hash}`} tx={tx} />
+          )}
+        </div>
+        <div className="absolute -bottom-0 left-0 right-0 h-16 transactions-gradient-bg" />
+      </div>
     </div>
   );
 }
 
 function Donation({ tx }: { tx: any }) {
   return (
-    <div className="bg-white rounded-lg p-4 flex justify-between gap-4 min-w-0">
-      <h2 className="col-span-3 min-w-0 text-[#8b8b8b]">
+    <div className="text-lg bg-white rounded-lg p-4 flex justify-between gap-4 min-w-0">
+      <span className="col-span-3 min-w-0 text-[#8b8b8b]">
         {formatDistanceStrict(new Date(tx.block_timestamp), new Date(), {
           addSuffix: true,
         })}
-      </h2>
-      <div className="flex gap-2 font-medium">
+      </span>
+      <div className="col-span-3 flex items-center font-medium">
         {tx.erc20_transfers.length ? (
           <>
             <span>

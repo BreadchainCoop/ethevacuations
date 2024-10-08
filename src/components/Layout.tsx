@@ -1,4 +1,4 @@
-import { Providers } from "./components/Providers";
+import { Providers } from "./Providers";
 
 export default function RootLayout({
   children,
@@ -9,7 +9,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <div className="page-wrap min-h-screen flex justify-center items-center flex-col">{children}</div>
+          <div className="page-wrap flex items-center flex-col">{children}</div>
         </Providers>
       </body>
     </html>
