@@ -10,7 +10,7 @@ import {
 } from "wagmi/chains";
 
 const WALLET_CONNECT_PROJECT_ID =
-  process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
+  process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '0xfEd';
 
 if (!WALLET_CONNECT_PROJECT_ID)
   throw new Error("NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID not provided");

@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  body {
+    background-color: #faf0e6;
+  }
+
+  .transactions-gradient-bg {
+    background: linear-gradient(180deg, #F8F8F800 0%, #F8F8F8 80%);
+  }
+
+}

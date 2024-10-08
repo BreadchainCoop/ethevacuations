@@ -1,6 +1,5 @@
 "use client";
 import clsx from "clsx";
-import Image from "next/image";
 
 import { WalletConnection } from "./WalletConnection";
 
@@ -14,7 +13,7 @@ export function Header() {
         "w-full px-2 py-4 flex justify-between items-center"
       )}
     >
-      <Image
+      <img
         className="transform -translate-x-1.5"
         src="/logo.png"
         alt="logo"

@@ -9,5 +9,5 @@ If you want to run this locally you'll need the netlify cli installed and a netl
 Create an env file called `.env.local` based on the example and start the dev server like so
 
 ```
-$ source .env.local && netlify dev
+$ source .env.local && npm run start
 ```
