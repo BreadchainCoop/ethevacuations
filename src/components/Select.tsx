@@ -53,7 +53,7 @@ export default function Select({
           <label className="text-neutral-400" {...getLabelProps()}>{label}</label>
           <div
             className={`px-2 py-3 bg-input flex border-black/10 border-[2px] border-solid rounded-[20px] justify-between cursor-pointer 
-              ${isOpen ? 'border-b-none rounded-b-[0px]' : ''}
+              ${isOpen ? 'border-b-none rounded-b-[0px] outline-none' : ''}
             `}
             {...getToggleButtonProps()}
           >
@@ -69,7 +69,7 @@ export default function Select({
           </div>
         </div>
         <ul
-          className={`absolute w-[98%] max-h-56 bg-input border-black/10 border-[2px] border-t-none border-solid border-black rounded-b-[20px] shadow-md overflow-scroll m-0 p-0 z-10 ${
+          className={`absolute w-[97.875%] max-h-56 bg-input border-black/10 border-[2px] border-t-none border-solid border-black rounded-b-[20px] shadow-md overflow-scroll m-0 p-0 z-10 ${
             !isOpen && 'hidden'
           }`}
           {...getMenuProps()}

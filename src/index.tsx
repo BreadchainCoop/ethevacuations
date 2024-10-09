@@ -12,13 +12,15 @@ import { CopyAddressButton } from "./components/CopyAddressButton";
 
 import { ETH_EVACUATONS_ADDRESS, PAGE_WRAP } from "./utils/constants";
 
+import '@rainbow-me/rainbowkit/styles.css'
+
 export default function Home() {
-  const [checkoutCanvas, setCanvas] = useState(<></>) 
+  const [checkoutCanvas, setCanvas] = useState(<></>)
   const [checkoutStep, setStep] = useState(0)
 
-  const forwardStep = () => setStep(checkoutStep+1)
+  const forwardStep = () => setStep(checkoutStep + 1)
 
-  const backwardStep = () => setStep(checkoutStep-1) 
+  const backwardStep = () => setStep(checkoutStep - 1)
 
   useEffect(() => {
     switch (checkoutStep) {
@@ -27,7 +29,7 @@ export default function Home() {
           <Checkout.Order onDismiss={backwardStep} />
         );
         break;
-      case 2: 
+      case 2:
         setCanvas(
           <Checkout.Receipt onDismiss={backwardStep} />
         );
@@ -55,7 +57,7 @@ export default function Home() {
               </label>
             </div>
             <div className="w-full px-4 grid grid-cols-2 text-center">
-              <div className="grid grid-cols-1 flex-start gap-6"> 
+              <div className="grid grid-cols-1 flex-start gap-6">
                 <label className="text-lg text-neutral-400 font-medium lg:text-xl">
                   Total Raised
                 </label>
@@ -70,13 +72,13 @@ export default function Home() {
                 <label className="w-full px-2 text-lg text-center text-neutral-500 flex-inline lg:text-xl">
                   <a href="">
                     <span className="float-left px-4">
-                      Learn more 
+                      Learn more
                     </span>
-                      <img
-                        alt="link"
-                        src="assets/arrow_right.png"
-                        className="frame pt-[6px] h-[20px] w-[20px]"
-                      />
+                    <img
+                      alt="link"
+                      src="assets/arrow_right.png"
+                      className="frame pt-[6px] h-[20px] w-[20px]"
+                    />
                   </a>
                 </label>
               </div>
@@ -92,7 +94,7 @@ export default function Home() {
 }
 
 ReactDOM.render(
-  <Layout><Home /></Layout>, 
+  <Layout><Home /></Layout>,
   document.getElementById("root") || document.body
 )
 

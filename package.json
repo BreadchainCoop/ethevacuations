@@ -11,6 +11,7 @@
     "build:css": "npx unocss -c uno.config.ts -o public/index.css -w --write-transformed src/**"
   },
   "dependencies": {
+    "@rainbow-me/rainbowkit": "^2.1.7",
     "@tanstack/react-query": "^5.37.1",
     "@unocss/postcss": "0.61.0",
     "clsx": "^2.1.1",
@@ -21,15 +22,16 @@
     "react": "^18",
     "react-dom": "^18",
     "react-scripts": "^5.0.1",
-    "unocss": "0.61.0"
+    "unocss": "0.61.0",
+    "wagmi": "^2.12.17"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^20.16.1",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
-    "eslint": "^8",
-    "typescript": "^4"
+    "typescript": "^5.0.4",
+    "eslint": "^8"
   },
   "browserslist": {
     "production": [
@@ -42,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "overrides": {
+    "typescript": "^5.0.4"
   }
 }
