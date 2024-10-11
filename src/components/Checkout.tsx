@@ -4,9 +4,9 @@ import { useDebounce } from '../hooks/useDebounce'
 
 import { NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants'
 
-import Button from "./Button"
-import Select from "./Select"
-import Input from "./Input"
+import Button from "../elements/Button";
+import Select from "../elements/Select";
+import Input from "../elements/Input";
 
 interface Props {
   onClick?(): void;

@@ -4,7 +4,7 @@ export default defineConfig({
   presets: [
     presetUno(),
     presetWebFonts({
-      provider: 'google',     
+      provider: 'google',
       fonts: {
         sans: {
           name: 'Roboto',
@@ -17,6 +17,7 @@ export default defineConfig({
   content: {
     filesystem: [
       './src/components/*.{ts,tsx}',
+      './src/elements/*.{ts,tsx}',
       './src/index.{ts,tsx}'
     ],
   },
@@ -41,8 +42,8 @@ export default defineConfig({
       bold: '700',
     }
   },
-  transformers: [ 
-    transformerDirectives(), 
-    transformerVariantGroup() 
+  transformers: [
+    transformerDirectives(),
+    transformerVariantGroup()
   ],
 })

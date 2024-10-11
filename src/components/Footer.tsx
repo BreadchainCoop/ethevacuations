@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import Button from "../components/Button";
+import Button from "../elements/Button";
 
 export function Footer() {
   return (

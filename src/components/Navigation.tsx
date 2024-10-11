@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 import { wagmiConfig } from '../utils/wagmiConfig';
 
-import Button from "../components/Button";
+import Button from "../elements/Button";
 
 import { PAGE_WRAP, NETWORK_MAP } from "../utils/constants";
 import { truncateAddress } from "../utils";

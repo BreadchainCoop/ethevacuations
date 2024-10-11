@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import clsx from "clsx";
 
 import Checkout from "./components/Checkout";
-import Button from "./components/Button";
+import Button from "./elements/Button";
 import Layout from "./components/Layout";
 import { Footer } from "./components/Footer";
 import { Donations } from "./components/Donations";
