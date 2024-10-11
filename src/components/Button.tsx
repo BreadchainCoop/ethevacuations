@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { TRUSTEE_ADDRESS } from "../utils/constants";
-
-function truncateAddress(address: string): string {
-  return `${address.slice(0, 5)}...${address.slice(address.length - 5)}`;
-}
+import { truncateAddress } from "../utils";
 
 function PrimaryButton({
   onClick,

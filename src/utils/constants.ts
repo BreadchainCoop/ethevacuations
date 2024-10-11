@@ -29,4 +29,13 @@ export const CHAIN_MAP = {
   arbitrum: "0xa4b1",
 };
 
+export const NETWORK_MAP = {
+  1: 'ethereum',
+  100: 'gnosis',
+  10: 'optimism',
+  137: 'polygon',
+  8453: 'base',
+  42161: 'arbitrum'
+}
+
 
