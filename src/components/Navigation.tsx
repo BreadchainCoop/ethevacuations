@@ -1,13 +1,18 @@
 "use client";
 import clsx from "clsx";
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useConnectModal, useAccountModal } from '@rainbow-me/rainbowkit';
+import { fetchBalance, getAccount } from '@wagmi/core';
+import { wagmiConfig } from '../utils/wagmiConfig';
 
 import Button from "../components/Button";
 
 import { PAGE_WRAP } from "../utils/constants";
 
 export function Navigation() {
+  const account = getAccount(wagmiConfig);
   const { openConnectModal } = useConnectModal();
+
+  console.log(account)
 
   return (
     <header className="w-full px-2 py-4 flex justify-between items-start">

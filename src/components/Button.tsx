@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 
-import { ETH_EVACUATONS_ADDRESS } from "../utils/constants";
+import { TRUSTEE_ADDRESS } from "../utils/constants";
 
 function truncateAddress(address: string): string {
   return `${address.slice(0, 5)}...${address.slice(address.length - 5)}`;
 }
 
-function PrimaryButton({ 
+function PrimaryButton({
   onClick,
   children,
   className
-} : { 
-  onClick(): void;
+}: {
+  onClick?(): void;
   children: React.ReactNode;
   className: string;
 }) {
@@ -26,7 +26,7 @@ function PrimaryButton({
   )
 }
 
- function CopyButton() {
+function CopyButton() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ function PrimaryButton({
   return (
     <button
       onClick={() => {
-        navigator.clipboard.writeText(ETH_EVACUATONS_ADDRESS);
+        navigator.clipboard.writeText(TRUSTEE_ADDRESS);
         setCopied(true);
       }}
       className="flex h-[40px] gap-2 bg-white border-none items-center justify-center font-medium text-neutral-400 pt-2 hover:text-neutral-600 active:text-black transition-all"
@@ -67,7 +67,7 @@ function PrimaryButton({
         </span>
       ) : (
         <>
-          <span className="text-lg text-grey">{truncateAddress(ETH_EVACUATONS_ADDRESS)}</span>
+          <span className="text-lg text-grey">{truncateAddress(TRUSTEE_ADDRESS)}</span>
           <svg
             width="16"
             height="16"

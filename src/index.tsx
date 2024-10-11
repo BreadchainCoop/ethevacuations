@@ -8,9 +8,8 @@ import Layout from "./components/Layout";
 import { Footer } from "./components/Footer";
 import { Donations } from "./components/Donations";
 import { Navigation } from "./components/Navigation";
-import { CopyAddressButton } from "./components/CopyAddressButton";
 
-import { ETH_EVACUATONS_ADDRESS, PAGE_WRAP } from "./utils/constants";
+import { PAGE_WRAP } from "./utils/constants";
 
 import '@rainbow-me/rainbowkit/styles.css'
 

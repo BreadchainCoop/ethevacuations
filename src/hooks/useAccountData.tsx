@@ -1,18 +1,17 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-const FROM_BLOCK = "19435069";
+import {
+  CHAIN_MAP,
+  MORALIS_API_BALANCE_CALL,
+  TRUSTEE_ADDRESS,
+  BALANCE_FROM_BLOCK
+} from "../utils/constants";
 
-import { ETH_EVACUATONS_ADDRESS } from "../utils/constants";
-
-const chainMap = {
-  eth: "0x1",
-  gnosis: "0x64",
-  polygon: "0x89",
-  optimism: "0xa",
-  base: "0x2105",
-  arbitrum: "0xa4b1",
-};
+interface DataState {
+  status: 'loading' | 'success' | 'error';
+  data: any[];
+}
 
 const MORALIS_API_KEY = process.env.REACT_APP_MORALIS_API_KEY;
 
@@ -20,37 +19,38 @@ if (!MORALIS_API_KEY)
   throw new Error("MORALIS_API_KEY not provided");
 
 export function useAccountData(
-  chainString: keyof typeof chainMap,
+  network: keyof typeof CHAIN_MAP,
   account: string
-) {
-  const [dataState, setDataState] = useState<{
-    status: "loading" | "success" | "error";
-    data: any[];
-  }>({
+): DataState {
+  const [dataState, setDataState] = useState<DataState>({
     status: "loading",
     data: [],
   });
 
   const fetchTransactions = () => {
+    const headers: HeadersInit = new Headers();
+
+    headers.set('Content-Type', 'application/json');
+    headers.set('X-API-Key', MORALIS_API_KEY || '');
+
     return fetch(
-      `https://deep-index.moralis.io/api/v2.2/wallets/${ETH_EVACUATONS_ADDRESS}/history?chain=${chainMap[chainString]}&from_block=${FROM_BLOCK}&include_internal_transactions=false&order=DESC`, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-Key": MORALIS_API_KEY,
+      MORALIS_API_BALANCE_CALL(TRUSTEE_ADDRESS, CHAIN_MAP[network], BALANCE_FROM_BLOCK),
+      {
+        headers,
+        method: 'GET'
       }
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      // setCursor(data.cursor);
-      return data;
-    })
-    .catch((err) => {
-      setDataState({ status: "error", data: [] });
-    });
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        return data;
+      })
+      .catch((err) => {
+        setDataState({ status: 'error', data: [] });
+      });
   };
 
   const { data } = useQuery({
-    queryKey: [`accountData_${chainString}`],
+    queryKey: [`accountData_${network}`],
     queryFn: () => fetchTransactions(),
     placeholderData: keepPreviousData,
     refetchInterval: 600000,
@@ -61,23 +61,23 @@ export function useAccountData(
 
     const parsedData = data.result.length
       ? data.result
-          .filter((tx: any) => {
-            return (
-              (tx.category === "receive" || tx.category == "token receive") &&
-              !tx.possible_spam &&
-              tx.block_timestamp
-            );
-          })
-          .map((tx: any) => {
-            return {
-              ...tx,
-              chain: chainString,
-            };
-          })
+        .filter((tx: any) => {
+          return (
+            (tx.category === "receive" || tx.category == "token receive") &&
+            !tx.possible_spam &&
+            tx.block_timestamp
+          );
+        })
+        .map((tx: any) => {
+          return {
+            ...tx,
+            chain: network,
+          };
+        })
       : [];
 
-    setDataState({ status: "success", data: parsedData });
-  }, [data, account, chainString]);
+    setDataState({ status: 'success', data: parsedData });
+  }, [data, account, network]);
 
   return dataState;
 }

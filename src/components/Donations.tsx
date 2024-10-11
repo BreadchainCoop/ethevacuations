@@ -3,27 +3,15 @@ import { formatDistanceStrict } from "date-fns";
 
 import { useAccountData } from "../hooks/useAccountData";
 
-import { ETH_EVACUATONS_ADDRESS } from "../utils/constants";
+import { TRUSTEE_ADDRESS } from "../utils/constants";
 
 export function Donations() {
   const [aggData, setAggData] = useState<Array<any>>([]);
 
-  const { data: ethData, status: ethDataStatus } = useAccountData(
-    "eth",
-    ETH_EVACUATONS_ADDRESS
-  );
-  const { data: optimismData, status: optimismDataStatus } = useAccountData(
-    "optimism",
-    ETH_EVACUATONS_ADDRESS
-  );
-  const { data: gnosisData, status: gnosisDataStatus } = useAccountData(
-    "gnosis",
-    ETH_EVACUATONS_ADDRESS
-  );
-  const { data: arbitrumData, status: arbitrumDataStatus } = useAccountData(
-    "arbitrum",
-    ETH_EVACUATONS_ADDRESS
-  );
+  const { data: ethData, status: ethDataStatus } = useAccountData("eth", TRUSTEE_ADDRESS);
+  const { data: optimismData, status: optimismDataStatus } = useAccountData("optimism", TRUSTEE_ADDRESS);
+  const { data: gnosisData, status: gnosisDataStatus } = useAccountData("gnosis", TRUSTEE_ADDRESS);
+  const { data: arbitrumData, status: arbitrumDataStatus } = useAccountData("arbitrum", TRUSTEE_ADDRESS);
 
   useEffect(() => {
     if (
@@ -69,7 +57,7 @@ export function Donations() {
       <p className="text-2xl font-bold mb-6">Recent Donations</p>
       <div className="h-[150px] lg:h-[250px] overflow-hidden relative min-w-0">
         <div className="h-full grid gap-2 overflow-y-scroll">
-          {aggData && aggData.map((tx) => 
+          {aggData && aggData.map((tx) =>
             <Donation key={`tx_${tx.hash}`} tx={tx} />
           )}
         </div>

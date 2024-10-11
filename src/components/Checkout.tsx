@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
-import { useDebounce } from '../hooks/useDebounce' 
+import type { SetStateAction } from "react"
+import { useState, useEffect } from "react"
+import { useDebounce } from '../hooks/useDebounce'
 
 import { NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants'
 
@@ -8,11 +9,11 @@ import Select from "./Select"
 import Input from "./Input"
 
 interface Props {
-  onClick(): void;
-  onDismiss(): void;
+  onClick?(): void;
+  onDismiss?(): void;
 }
 
-function CheckoutRoot({ onClick } : Props) {
+function CheckoutRoot({ onClick }: Props) {
   return (
     <div className="h-full flexbox gap-2 text-center p-4">
       <div>
@@ -35,7 +36,7 @@ function CheckoutRoot({ onClick } : Props) {
           alt="network icons"
           src="assets/network_icons.png"
           className="block m-auto w-[127px] h-[24px]"
-         />
+        />
         <label className="pt-2 lg:text-xl">Recommended networks</label>
       </div>
       <div className="text-sm text-neutral-500 lg:w-2/3,">
@@ -43,7 +44,7 @@ function CheckoutRoot({ onClick } : Props) {
       </div>
       <div className="w-4/5 pb-6">
         <Button.Primary className="lg:text-xl" onClick={onClick}>
-          <img 
+          <img
             alt="btn-logo"
             src="/assets/logo.png"
             className="block float-left mr-2 h–[25px] w-[25px]"
@@ -58,7 +59,7 @@ function CheckoutRoot({ onClick } : Props) {
 function CheckoutReceipt({ onDismiss }: Props) {
   return (
     <div className="h-full p-4">
-      <button 
+      <button
         onClick={onDismiss}
         className="absolute bg-transparent font-sans font-light text-neutral-300 border-none text-4xl scale-x-90 scale-y-155"
       >
@@ -69,25 +70,25 @@ function CheckoutReceipt({ onDismiss }: Props) {
           Spread the action
         </label>
       </div>
-      <div className="w-full flexbox gap-3 mt-8"> 
+      <div className="w-full flexbox gap-3 mt-8">
       </div>
     </div>
   )
 }
 
-function CheckoutOrder({ onClick, onDismiss } : Props){
-  const [input, setInput] = useState(null)
-  const [optionSelection, setSelection] = useState(null)
+function CheckoutOrder({ onClick, onDismiss }: Props) {
+  const [input, setInput] = useState('')
+  const [optionSelection, setSelection] = useState(0)
 
   const debouncedValue = useDebounce(input, 1000)
 
-  const CheckoutButton = ({ 
-    option, 
+  const CheckoutButton = ({
+    option,
     onClick,
     isSelected
-  } : { 
-    option: number; 
-    onClick(): void;
+  }: {
+    option: number;
+    onClick?(): void;
     isSelected: boolean;
   }) => (
     <button className={`border-[1px] border-black/10 bg-white rounded-[25px] shadow-2xl py-2 px-4 hover:bg-secondary/80 hover:translate-y-[-5px] 
@@ -95,7 +96,7 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
       `}
     >
       <span className="float-left mr-2">
-        <img  
+        <img
           src="/assets/logo.png"
           className="frame h–[35px] w-[35px]"
         />
@@ -106,7 +107,7 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
 
   return (
     <div className="h-full p-4">
-      <button 
+      <button
         onClick={onDismiss}
         className="absolute bg-transparent font-sans font-light text-neutral-300 border-none text-4xl scale-x-90 scale-y-155"
       >
@@ -117,28 +118,28 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
           Donate
         </label>
       </div>
-      <div className="w-full flexbox gap-3 mt-8"> 
+      <div className="w-full flexbox gap-3 mt-8">
         <div className="w-full lg:w-3/5 py-2 px-4">
           <div className="w-full inline-flexbox gap-4">
-            <Select 
+            <Select
               label="Network"
               defaultValue={0}
-              options={NETWORK_SELECT_OPTIONS} 
+              options={NETWORK_SELECT_OPTIONS}
             />
-            <Select 
-              label="Token" 
+            <Select
+              label="Token"
               defaultValue={0}
-              options={ASSET_SELECT_OPTIONS} 
+              options={ASSET_SELECT_OPTIONS}
             />
           </div>
         </div>
 
         <div className="w-3/5 flexbox gap-5">
           <label className="text-lg font-light text-neutral-400">
-           Click for a custom amount
+            Click for a custom amount
           </label>
-          <Input.Circular 
-            title="0.00" 
+          <Input.Circular
+            title="0.00"
             value={input}
             inputType="number"
             onChange={setInput}
@@ -147,18 +148,18 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
         </div>
 
         <div className="inline-flex items-center justify-center gap-3">
-          {['1', '2', '5'].map((e: string) => ( 
-            <CheckoutButton 
+          {[1, 2, 5].map((e: number) => (
+            <CheckoutButton
               option={e}
               isSelected={e === optionSelection}
               onClick={() => setSelection(e)}
             />
           ))}
-        </div> 
+        </div>
 
         <p>
           <span className="float-left mr-2">
-            <img  
+            <img
               src="/assets/logo.png"
               className="frame h–[35px] w-[35px]"
             />
@@ -168,12 +169,12 @@ function CheckoutOrder({ onClick, onDismiss } : Props){
 
         <div className="w-2/3 pb-6">
           <Button.Primary className="lg:text-xl">
-            <img 
+            <img
               alt="btn-logo"
               src="/assets/logo.png"
               className="block float-left mr-2 h–[25px] w-[25px]"
             />
-            Insert amount 
+            Insert amount
           </Button.Primary>
         </div>
       </div>
