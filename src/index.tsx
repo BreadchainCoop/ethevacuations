@@ -5,10 +5,10 @@ import clsx from "clsx";
 import Checkout from "./components/Checkout";
 import Button from "./elements/Button";
 import Layout from "./components/Layout";
+import Modal from "./elements/Modal";
 import { Footer } from "./components/Footer";
 import { Donations } from "./components/Donations";
 import { Navigation } from "./components/Navigation";
-
 import { PAGE_WRAP } from "./utils/constants";
 
 import '@rainbow-me/rainbowkit/styles.css'

@@ -26,12 +26,14 @@ export const CHAIN_MAP = {
   polygon: "0x89",
   optimism: "0xa",
   base: "0x2105",
-  arbitrum: "0xa4b1",
+  zora: "0x76adf1",
+  arbitrum: "0xa4b1"
 };
 
 export const NETWORK_MAP = {
   1: 'ethereum',
   100: 'gnosis',
+  7777777: 'zora',
   10: 'optimism',
   137: 'polygon',
   8453: 'base',

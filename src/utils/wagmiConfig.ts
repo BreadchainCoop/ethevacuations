@@ -17,5 +17,5 @@ if (!WALLET_CONNECT_PROJECT_ID)
 export const wagmiConfig = getDefaultConfig({
   appName: "Eth Evacuations",
   projectId: WALLET_CONNECT_PROJECT_ID,
-  chains: [mainnet, optimism, arbitrum, base, gnosis, zora]
+  chains: [mainnet, optimism, arbitrum, polygon, base, gnosis, zora]
 });
