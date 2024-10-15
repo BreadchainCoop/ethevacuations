@@ -1,44 +1,46 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MicroModal from 'micromodal';
 
 interface Props {
   id: string;
+  title: string;
   isOpen: boolean;
+  onClose(): void;
   children: React.ReactNode;
 }
 
-MicroModal.init()
+MicroModal.init();
 
-function Modal({ children, id, isOpen }: Props) {
+function Modal(props: Props) {
+  const [isInitialised, setInitialisation] = useState(false);
+
+  const dismiss = () => {
+    MicroModal.close(props.id);
+    props.onClose();
+  }
 
   useEffect(() => {
-    if (isOpen) MicroModal.show(id);
-  }, [isOpen])
+    if (props.isOpen) {
+      setInitialisation(true);
+      MicroModal.show(props.id);
+    } else if (isInitialised) {
+      MicroModal.close(props.id);
+    }
+  }, [props.isOpen])
 
   return (
-    <div className="modal micromodal-slide" id={id} aria-hidden="true">
+    <div className="modal micromodal-slide" id={props.id} aria-hidden="true">
       <div className="modal-overlay" tabIndex={-1} data-micromodal-close>
-        <div className="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-          {children}
+        <div className="modal-container" role="dialog" aria-modal="true">
+          <header className="modal-header">
+            <h2 className="modal-title text-neutral-800">{props.title}</h2>
+            <button className="modal-close" onClick={dismiss}></button>
+          </header>
+          {props.children}
         </div>
       </div>
     </div>
   );
-}
-
-function ModalHeader({ id, children, onClose }: { id: string; children: React.ReactNode; onClose(): void; }) {
-
-  const dismiss = () => {
-    MicroModal.close(id);
-    onClose();
-  }
-
-  return (
-    <header className="modal-header">
-      <h2 className="modal-title">{children}</h2>
-      <button className="modal-close" onClick={dismiss}></button>
-    </header>
-  )
 }
 
 function ModalContent({ children }: { children: React.ReactNode }) {
@@ -59,7 +61,6 @@ function ModalFooter({ children }: { children: React.ReactNode }) {
 
 export default {
   Root: Modal,
-  Header: ModalHeader,
   Content: ModalContent,
   Footer: ModalFooter
 }

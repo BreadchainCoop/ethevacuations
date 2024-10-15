@@ -5,17 +5,17 @@ import Button from "../elements/Button";
 export function Footer() {
   return (
     <footer className="w-full flex flex-start pt-2 pb-2">
-      <p className="inline-block mt-[12px]">
+      <p className="inline-block mt-[15px]">
         <div className="float-left">
           <img
             alt="ethevacuations"
             src="assets/logo.png"
-            className="mt-[3px] mr-[10px] h-[30px] w-[30px]"
+            className="mt-[-3px] mr-[10px] h-[30px] w-[30px]"
           />
         </div>
         <span className="font-bold lg:text-xl">ethevacuations</span>
       </p>
-      <ul className="hidden lg:gap-8 md:inline-flex md:text-sm ">
+      <ul className="hidden gap-6 lg:gap-8 md:inline-flex md:text-sm ">
         <li>
           <a href="">
             How does it work?

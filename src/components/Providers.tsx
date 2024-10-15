@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 
 import { wagmiConfig } from "../utils/wagmiConfig";
@@ -13,8 +13,14 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>{children}</RainbowKitProvider>
+        <RainbowKitProvider theme={
+          lightTheme({
+            accentColor: process.env.REACT_APP_SECONDARY_COLOR || '#ffd0d0'
+          })}
+        >
+          {children}
+        </RainbowKitProvider>
       </QueryClientProvider>
-    </WagmiProvider>
+    </WagmiProvider >
   );
 }

@@ -1,8 +1,7 @@
 @unocss;
 
 body {
-  @apply font-sans;
-  background-color: #f8f8f8;
+  @apply font-sans bg-secondary/15 md:bg-secondary/8;
 }
 
 .transactions-gradient-bg {
@@ -19,10 +18,6 @@ li {
   padding: 0px;
   list-style: none;
   list-style-type: none;
-}
-
-h1 {
-  @apply m-0 p-0 text-2xl lg:text-4xl font-bold;
 }
 
 .card {
@@ -64,31 +59,32 @@ h1 {
   }
 
   .modal-overlay {
-    @apply fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center;
+    @apply fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-1;
   }
 
   .modal-container {
-    @apply bg-white p-8 min-w-[325px] max-w-lg max-h-screen rounded-2xl overflow-y-auto;
+    @apply bg-white px-8 py-6 max-w-lg max-h-screen rounded-2xl overflow-y-auto;
   }
 
   .modal-header {
-    @apply flex justify-between items-center;
+    @apply flex justify-between items-center mt-[-10px];
   }
 
   .modal-title {
-    @apply m-0 font-semibold text-xl leading-tight;
+    @apply m-0 font-semibold text-xl leading-tight ml-[-14px];
   }
 
   .modal-close {
-    @apply bg-transparent border-0;
+    @apply bg-grey/70 border-0 px-3 py-[5px] md:py-[1px] md:px-2 rounded-[2rem] mt-[2px] mr-[-18px];
   }
 
   .modal-close::before {
+    @apply text-xl md:text-[.95rem];
     content: "\2715";
   }
 
   .modal-content {
-    @apply my-8 leading-relaxed text-gray-800;
+    @apply leading-relaxed text-gray-800 mt-1;
   }
 
   .micromodal-slide {

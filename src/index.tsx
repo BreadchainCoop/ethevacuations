@@ -10,8 +10,9 @@ import { Footer } from "./components/Footer";
 import { Donations } from "./components/Donations";
 import { Navigation } from "./components/Navigation";
 import { PAGE_WRAP } from "./utils/constants";
+import { formatNumber } from "./utils";
 
-import '@rainbow-me/rainbowkit/styles.css'
+import "@rainbow-me/rainbowkit/styles.css";
 
 export default function Home() {
   const [checkoutCanvas, setCanvas] = useState(<></>)
@@ -43,12 +44,12 @@ export default function Home() {
 
   return (
     <>
-      <main className={clsx(PAGE_WRAP, "min-h-screen grid grid-cols-1 items-start justify-center md:w-2/3")}>
+      <main className={clsx(PAGE_WRAP, "min-h-screen grid grid-cols-1 items-start justify-between gap-y-10 lg:gap-y-24 md:w-4/5")}>
         <Navigation />
-        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 md:gap-2 md:gap-x-12 lg:gap-x-36">
+        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 gap-x-36 lg:gap-x-48">
           <section className="grid grid-cols-1 flex-center gap-4 lg:gap-6">
             <div className="lg:w-2/3 sm:h-auto">
-              <h1 className="tracking-[-.02em]">
+              <h1 className="m-0 p-0 mb-2 text-[33px] font-bold tracking-[-.02em]">
                 Fund evacuations from Gaza with crypto <br></br>
               </h1>
               <label className="text-xl font-medium text-neutral-400 pt-4">
@@ -56,14 +57,18 @@ export default function Home() {
               </label>
             </div>
             <div className="w-full px-4 grid grid-cols-2 text-center">
-              <div className="grid grid-cols-1 flex-start gap-6">
+              <div className="grid grid-cols-1 flex-start gap-4">
                 <label className="text-lg text-neutral-400 font-medium lg:text-xl">
                   Total Raised
                 </label>
-                <label className="text-2xl lg:text-4xl text-black font-bold">+ $300k</label>
-                <label className="text-lg text-neutral-500">0.00 ETH</label>
+                <label className="text-2xl lg:text-4xl text-black font-bold">
+                  + ${formatNumber(process.env.REACT_APP_PROCEEDS_AMOUNT || 0, 2)}
+                </label>
+                <label className="text-lg text-neutral-500">
+                  {formatNumber(process.env.REACT_APP_PROCEEDS_AMOUNT || 0 / 1, 2)} ETH
+                </label>
               </div>
-              <div className="grid flex-center gap-6">
+              <div className="grid flex-center gap-4">
                 <label className="text-lg text-neutral-400 font-medium lg:text-xl">
                   Evacuations Registered
                 </label>
@@ -83,11 +88,15 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section className="card h-auto md:h-[550px] lg:h-[600px]">{checkoutCanvas}</section>
-          <section className="md:mt-[-240px] lg:mt-[-400px]"></section>
+          <section className="w-full flexbox">
+            <div className="card px-0 h-auto md:w-8/10">
+              {checkoutCanvas}
+            </div>
+          </section>
+          <section className="md:mt-[-375px] lg:mt-[-400px]"><></></section>
         </div>
         <Footer />
-      </main>
+      </main >
     </>
   );
 }

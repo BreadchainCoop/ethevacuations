@@ -15,7 +15,8 @@ function CircularInput({ title, onChange, inputType, value }: Props) {
       value={value === null ? '' : value}
       min={inputType === 'number' ? '0' : ''}
       onChange={(e) => onChange(e.target.value)}
-      className="flex w-full border-black/10 bg-input font-light font-sans text-center text-4xl px-4 py-6 rounded-[10px] focus:outline-none"
+      className="flex w-full text-ellipsis border-black/10 bg-white font-light font-sans text-center text-4xl md:text-[28px] px-4 py-6 rounded-[10px] focus:outline-none"
+
     />
   )
 }

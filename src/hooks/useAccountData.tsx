@@ -30,8 +30,8 @@ export function useAccountData(
   const fetchTransactions = () => {
     const headers: HeadersInit = new Headers();
 
-    headers.set('Content-Type', 'application/json');
-    headers.set('X-API-Key', MORALIS_API_KEY || '');
+    headers.append('Content-Type', 'application/json');
+    headers.append('X-API-Key', MORALIS_API_KEY || '');
 
     return fetch(
       MORALIS_API_BALANCE_CALL(TRUSTEE_ADDRESS, CHAIN_MAP[network], BALANCE_FROM_BLOCK),
@@ -45,6 +45,7 @@ export function useAccountData(
         return data;
       })
       .catch((err) => {
+        console.log(err);;
         setDataState({ status: 'error', data: [] });
       });
   };

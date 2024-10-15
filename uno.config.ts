@@ -23,15 +23,14 @@ export default defineConfig({
   },
   theme: {
     colors: {
-      primary: '#ff7777',
-      secondary: '#ffd0d0',
-      ternary: '#dd2e44',
-      input: '#f5f5f5'
+      primary: process.env.REACT_APP_PRIMARY_COLOR || '#ff7777',
+      secondary: process.env.REACT_APP_SECONDARY_COLOR || '#ffd0d0',
+      ternary: process.env.REACT_APP_TERNARY_COLOR || '#dd2e44'
     },
     breakpoints: {
       sm: '460px',
       md: '840px',
-      lg: '1360px'
+      lg: '2200px'
     },
     fontWeight: {
       thin: '100',
