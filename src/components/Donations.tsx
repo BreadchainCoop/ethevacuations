@@ -8,7 +8,7 @@ import { TRUSTEE_ADDRESS } from "../utils/constants";
 export function Donations() {
   const [aggData, setAggData] = useState<Array<any>>([]);
 
-  const { data: ethData, status: ethDataStatus } = useAccountData("eth", TRUSTEE_ADDRESS);
+  const { data: ethData, status: ethDataStatus } = useAccountData("ethereum", TRUSTEE_ADDRESS);
   const { data: optimismData, status: optimismDataStatus } = useAccountData("optimism", TRUSTEE_ADDRESS);
   const { data: gnosisData, status: gnosisDataStatus } = useAccountData("gnosis", TRUSTEE_ADDRESS);
   const { data: arbitrumData, status: arbitrumDataStatus } = useAccountData("arbitrum", TRUSTEE_ADDRESS);

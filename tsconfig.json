@@ -16,7 +16,7 @@
     "jsx": "react-jsx",
     "incremental": true,
     "plugins": [],
-    "target": "es6",
+    "target": "es2016",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true

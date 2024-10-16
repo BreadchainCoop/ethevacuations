@@ -11,7 +11,7 @@ interface Option {
 interface Props {
   label: string;
   error?: boolean;
-  onSelect?(): void;
+  onSelect?(e: string): void;
   options: Option[];
   defaultValue?: number;
 }
@@ -34,7 +34,7 @@ export default function Select({
   } = useSelect({
     items: options,
     itemToString: (item: Option | null) => item ? item.title : '',
-    onSelectedItemChange: ({ selectedItem: Option }) => { },
+    onSelectedItemChange: ({ selectedItem: Option }) => { onSelect(selectedItem.id) },
   })
 
   return (
@@ -73,7 +73,7 @@ export default function Select({
             return (
               <li
                 className={clsx(
-                  highlightedIndex === index && 'bg-secondary/40',
+                  highlightedIndex === index && 'bg-secondary/30',
                   selectedItem === item && 'font-bold',
                   'text-xl md:text-[16px] shadow-sm flex gap-4 border-b-[1px] border-b-black/10 border-b-solid py-3 px-2 last:rounded-b-none last:border-none first:border-t-solid first:border-t-[1px] first:border-t-black/10',
                 )}

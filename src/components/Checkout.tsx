@@ -1,8 +1,9 @@
 import type { SetStateAction } from "react"
 import { useState, useEffect } from "react"
 import { fetchBalance, getAccount } from '@wagmi/core';
+import { useSwitchChain } from "wagmi";
 
-import { UNISWAP_USDC_POOL_ADDRESS, NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants'
+import { ZERO_ADDRESS, UNISWAP_USDC_POOL_ADDRESS, NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants'
 
 import Button from "../elements/Button";
 import Select from "../elements/Select";
@@ -87,10 +88,14 @@ function CheckoutReceipt({ onDismiss }: Props) {
 
 function CheckoutOrder({ onClick, onDismiss }: Props) {
   const [input, setInput] = useState('');
+  const [tokenAddress, setTokenAddress] = useState(ZERO_ADDRESS);
 
-  const account = getAccount(wagmiConfig);
   const value = useDebounce(input, 1000);
-  const ethPrice = useTokenPrice(UNISWAP_USDC_POOL_ADDRESS);
+  const account = getAccount(wagmiConfig);
+  const tokenPrice = useTokenPrice(tokenAddress, 18);
+  const ethPrice = useTokenPrice(UNISWAP_USDC_POOL_ADDRESS, 6);
+
+  const { switchChain } = useSwitchChain();
 
   const CheckoutButton = ({
     option,
@@ -134,11 +139,13 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             label="Network"
             defaultValue={0}
             options={NETWORK_SELECT_OPTIONS}
+            onSelect={(chainId: string) => switchChain({ chainId })}
           />
           <Select
             label="Token"
             defaultValue={0}
             options={ASSET_SELECT_OPTIONS}
+            onSelect={(e: string) => setTokenAddress(e)}
           />
         </div>
 
@@ -152,6 +159,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             inputType="number"
             onChange={setInput}
           />
+          <label className="absolute text-sm mt-4">$ 0.00</label>
           <span className="text-neutral-400">Balance: 0.00</span>
         </div>
 
