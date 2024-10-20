@@ -89,7 +89,7 @@ export default function Home() {
             </div>
           </section>
           <section className="w-full flexbox">
-            <div className="card px-0 h-auto md:w-8/10">
+            <div className="card px-0 h-auto md:w-8/10 lg:w-6/10">
               {checkoutCanvas}
             </div>
           </section>

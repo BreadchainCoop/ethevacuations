@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { fetchBalance, getAccount } from '@wagmi/core';
 import { useSwitchChain } from "wagmi";
 
-import { ZERO_ADDRESS, UNISWAP_USDC_POOL_ADDRESS, NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants'
+import { PAIR_MAP, ZERO_ADDRESS, NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants';
 
 import Button from "../elements/Button";
 import Select from "../elements/Select";
@@ -14,14 +14,23 @@ import { useTokenPrice } from "../hooks/useTokenPrice";
 import { wagmiConfig } from "../utils/wagmiConfig";
 import { formatNumber } from "../utils";
 
+type TokenAddress = keyof typeof PAIR_MAP;
+
 interface Props {
   onClick?(): void;
   onDismiss?(): void;
 }
 
+type Option = {
+  id: string;
+  chainId: string;
+  title: string;
+  logo: string;
+}
+
 function CheckoutRoot({ onClick }: Props) {
   return (
-    <div className="flexbox text-center pt-8 pb-11 px-2 gap-8">
+    <div className="flexbox text-center pt-8 pb-11 px-2 gap-8 lg:gap-24">
       <div>
         <div className="grid justify-center px-4 py-2">
           <span className="font-medium text-xl rounded-full bg-white text-black">
@@ -88,12 +97,16 @@ function CheckoutReceipt({ onDismiss }: Props) {
 
 function CheckoutOrder({ onClick, onDismiss }: Props) {
   const [input, setInput] = useState('');
-  const [tokenAddress, setTokenAddress] = useState(ZERO_ADDRESS);
+  const [selectionIndex, setSelectionIndex] = useState(0);
+  const [tokenAddress, setTokenAddress] = useState<TokenAddress>(ZERO_ADDRESS);
 
   const value = useDebounce(input, 1000);
   const account = getAccount(wagmiConfig);
-  const tokenPrice = useTokenPrice(tokenAddress, 18);
-  const ethPrice = useTokenPrice(UNISWAP_USDC_POOL_ADDRESS, 6);
+  const chainId = `0x${account.chain?.id.toString(16)}`;
+  const usdcPrice = useTokenPrice(chainId, ZERO_ADDRESS, 6);
+  const selectedPrice = useTokenPrice(chainId, tokenAddress, 18);
+  const ethPrice = usdcPrice.isInvertedPair ? Math.pow(usdcPrice.tokenPrice, -1) : usdcPrice.tokenPrice;
+  const tokenPrice = selectedPrice.isInvertedPair ? Math.pow(selectedPrice.tokenPrice, -1) : selectedPrice.tokenPrice;
 
   const { switchChain } = useSwitchChain();
 
@@ -118,6 +131,16 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
     </button>
   )
 
+  useEffect(() => {
+    const i = NETWORK_SELECT_OPTIONS.find((e) => parseInt(e.id) === account.chain?.id);
+
+    if (i) {
+      setSelectionIndex(NETWORK_SELECT_OPTIONS.indexOf(i));
+    }
+  }, [, selectionIndex, account.chain?.id])
+
+  const inputValue = isNaN(Number(input)) ? 0 : Number(input);
+
   return (
     <div className="pt-8 pb-11 px-2">
       <div className="mt-[-15px] mb-[25px]">
@@ -133,19 +156,19 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           </label>
         </div>
       </div>
-      <div className="w-full flexbox gap-8 mt-4">
+      <div className="w-full flexbox gap-8 mt-4 lg:gap-18">
         <div className="w-9/10 md:w-7/10 grid grid-cols-1 md:grid-cols-2 py-2 px-4 gap-4">
           <Select
             label="Network"
-            defaultValue={0}
+            defaultValue={selectionIndex}
             options={NETWORK_SELECT_OPTIONS}
-            onSelect={(chainId: string) => switchChain({ chainId })}
+            onSelect={(chainId: string) => switchChain(chainId)}
           />
           <Select
             label="Token"
             defaultValue={0}
-            options={ASSET_SELECT_OPTIONS}
-            onSelect={(e: string) => setTokenAddress(e)}
+            onSelect={(e: TokenAddress) => setTokenAddress(e)}
+            options={ASSET_SELECT_OPTIONS.filter((e) => parseInt(e.chainId) === account.chain?.id)}
           />
         </div>
 
@@ -159,8 +182,13 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             inputType="number"
             onChange={setInput}
           />
-          <label className="absolute text-sm mt-4">$ 0.00</label>
           <span className="text-neutral-400">Balance: 0.00</span>
+          <label className="absolute mr-6 text-lg font-bold mt-28">
+            $ {formatNumber(tokenAddress !== ZERO_ADDRESS
+              ? tokenPrice * ethPrice * inputValue
+              : ethPrice * inputValue
+              , 2)}
+          </label>
         </div>
 
         <div className="flexbox text-center gap-3">

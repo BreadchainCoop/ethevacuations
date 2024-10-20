@@ -1,52 +1,89 @@
 import { useEffect, useState } from "react";
 import { useReadContract } from 'wagmi';
+import { useQuery } from "@tanstack/react-query";
 
-import { ZERO_ADDRESS, UNIV2_POOL_ABI, UNIV3_POOL_ABI, PAIR_MAP, Q96 } from "../utils/constants";
+import { ZERO_ADDRESS, UNIV2_POOL_ABI, UNIV3_POOL_ABI, PAIR_MAP } from "../utils/constants";
 import { formatNumber, formatV2Rate, formatV3Rate } from "../utils";
 
-type ContractCalldata = Array<number | string | BigInt>;
+type TokenAddress = keyof typeof PAIR_MAP;
+
+type ContractCallParameter = number | string | bigint | boolean;
+
+type ContractCalldata = Array<ContractCallParameter>;
 
 type UseReadContractReturnType = ReturnType<typeof useReadContract>;
 
-export function useTokenPrice(address: keyof PAIR_MAP, decimals: number): number | null {
-  const [tokenPrice, setTokenPrice] = useState<null | number>(null);
+interface DataState {
+  status: 'loading' | 'success' | 'error';
+  tokenPrice: number;
+  tokenAddress: string;
+  isInvertedPair: boolean;
+}
 
-  if (!address || address === ZERO_ADDRESS) return 0;
+export function useTokenPrice(chainId: string, address: TokenAddress, decimals: number): DataState {
+  const [dataState, setDataState] = useState<DataState>({
+    status: "loading",
+    tokenPrice: 0,
+    isInvertedPair: false,
+    tokenAddress: ZERO_ADDRESS
+  });
 
-  const pairAddress = PAIR_MAP[address].address;
-  const isUniswapV2 = PAIR_MAP[address].version === '2';
+  const pair = address === ZERO_ADDRESS ? PAIR_MAP[address][chainId] : PAIR_MAP[address];
+  const isUniswapV2 = pair?.version === '2';
 
   const payload: UseReadContractReturnType = useReadContract({
     abi: isUniswapV2 ? UNIV2_POOL_ABI : UNIV3_POOL_ABI,
     functionName: isUniswapV2 ? 'getReserves' : 'slot0',
-    address: pairAddress
+    address: `0x${pair?.address.substring(2, pair?.address.length)}`
   });
 
-  const getV3TokenPrice = (data: ContractCalldata) => {
-    const sqrtPrice: BigInt = BigInt(data[0]);
-    const currentTick: BigInt = BigInt(data[1]);
-
-    return formatV3Rate(sqrtPrice);
-  }
-
   const getV2TokenPrice = (data: ContractCalldata) => {
-    const reservesX: BigInt = BigInt(data[0]);
-    const reservesY: BigInt = BigInt(data[1]);
+    const reservesX: ContractCallParameter = data[0];
+    const reservesY: ContractCallParameter = data[1];
 
-    return formatV2Rate(reservesX, reservesY, 18, decimals);
+    return formatV2Rate(`${reservesX}`, `${reservesY}`, 18, decimals);
   }
+
+  const getV3TokenPrice = (data: ContractCalldata) => {
+    const sqrtPrice: ContractCallParameter = data[0];
+    const currentTick: ContractCallParameter = data[1];
+
+    return formatV3Rate(`${currentTick}`, 18, decimals);
+  }
+
+  const getTokenPrice = () => {
+    const e: ContractCalldata = Object.values(payload.data);
+
+    return isUniswapV2 ? getV2TokenPrice(e) : getV3TokenPrice(e);
+  }
+
+  const { data, isError, error } = useQuery({
+    queryKey: [`getTokenPrice(${address})`],
+    queryFn: () => getTokenPrice(),
+    refetchInterval: 1000
+  })
 
   useEffect(() => {
-    if (payload.data) {
-      const e: ContractCalldata = Object.values(payload.data);
-
-      if (isUniswapV2) {
-        setTokenPrice(getV2TokenPrice(e));
-      } else {
-        setTokenPrice(getV3TokenPrice(e));
-      }
+    if (data) {
+      setDataState({
+        status: "success",
+        tokenPrice: data,
+        tokenAddress: address,
+        isInvertedPair: pair.inverted
+      });
     }
-  }, [payload]);
+  }, [data]);
 
-  return tokenPrice;
+  useEffect(() => {
+    if (address && dataState.tokenAddress !== address) {
+      setDataState({
+        status: 'loading',
+        tokenAddress: address,
+        isInvertedPair: pair.inverted,
+        tokenPrice: 0
+      })
+    }
+  }, [address])
+
+  return dataState;
 }

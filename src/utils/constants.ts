@@ -6,8 +6,6 @@ export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export const TRUSTEE_ADDRESS = "0x8d5bf23b181ea94d3104d4192acb52427e54875a";
 
-export const UNISWAP_USDC_POOL_ADDRESS = "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc";
-
 export const PAGE_WRAP = "font-sans max-w-[400px] mx-auto px-4 lg:max-w-6xl";
 
 export const UNIV2_POOL_ABI = [{ "constant": true, "inputs": [], "name": "getReserves", "outputs": [{ "internalType": "uint112", "name": "_reserve0", "type": "uint112" }, { "internalType": "uint112", "name": "_reserve1", "type": "uint112" }, { "internalType": "uint32", "name": "_blockTimestampLast", "type": "uint32" }], "payable": false, "stateMutability": "view", "type": "function" }]
@@ -18,7 +16,7 @@ export const MORALIS_API_BALANCE_CALL = (address: string, network: string, block
 
 export const ASSET_SELECT_OPTIONS = [
   { id: '0x0000000000000000000000000000000000000000', chainId: '0x1', title: 'ETH', logo: 'assets/tokens/ethereum.png' },
-  { id: '0x6810e776880c02933d47db1b9fc05908e5386b96', chainId: '0x64', title: 'GNO', logo: 'assets/tokens/gnosis.png' },
+  { id: '0x6810e776880c02933d47db1b9fc05908e5386b96', chainId: '0x1', title: 'GNO', logo: 'assets/tokens/gnosis.png' },
   { id: '0x4200000000000000000000000000000000000042', chainId: '0xa', title: 'OP', logo: 'assets/tokens/optimism.png' }
 ];
 
@@ -32,17 +30,27 @@ export const NETWORK_SELECT_OPTIONS = [
 ];
 
 export const PAIR_MAP = {
-  '0x0000000000000000000000000000000000000000': {
-    address: '0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc',
-    version: '2'
-  },
   '0x6810e776880c02933d47db1b9fc05908e5386b96': {
-    address: '0x3e8468f66d30Fc99F745481d4B383f89861702C6',
-    version: '2'
+    address: '0xa46466ad5507bE77Ff5aBDc27DF9dFeDA9bD7aee',
+    inverted: false,
+    version: '3'
   },
   '0x4200000000000000000000000000000000000042': {
     address: '0x68F5C0A2DE713a54991E01858Fd27a3832401849',
+    inverted: true,
     version: '3'
+  },
+  '0x0000000000000000000000000000000000000000': {
+    '0x1': {
+      address: '0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc',
+      inverted: true,
+      version: '2'
+    },
+    '0xa': {
+      address: '0x1fb3cf6e48F1E7B10213E7b6d87D4c073C7Fdb7b',
+      inverted: true,
+      version: '3'
+    }
   }
 }
 

@@ -11,9 +11,9 @@ interface Option {
 interface Props {
   label: string;
   error?: boolean;
-  onSelect?(e: string): void;
   options: Option[];
   defaultValue?: number;
+  onSelect(e: string | undefined): void;
 }
 
 export default function Select({
@@ -28,14 +28,22 @@ export default function Select({
     getToggleButtonProps,
     getLabelProps,
     getMenuProps,
+    selectItem,
     selectedItem,
     highlightedIndex,
     getItemProps,
   } = useSelect({
     items: options,
     itemToString: (item: Option | null) => item ? item.title : '',
-    onSelectedItemChange: ({ selectedItem: Option }) => { onSelect(selectedItem.id) },
   })
+
+  useEffect(() => {
+    onSelect(selectedItem?.id)
+  }, [selectedItem])
+
+  useEffect(() => {
+    selectItem(options[defaultValue])
+  }, [, defaultValue])
 
   return (
     <div className="w-full relative">
