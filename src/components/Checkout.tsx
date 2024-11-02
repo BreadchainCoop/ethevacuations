@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { fetchBalance, getAccount } from '@wagmi/core';
 import { useSwitchChain } from "wagmi";
 
-import { PAIR_MAP, ZERO_ADDRESS, NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants';
+import { PAIR_MAP, FIXED_CURRENCY_MAP, ZERO_ADDRESS, NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants';
 
 import Button from "../elements/Button";
 import Select from "../elements/Select";
@@ -104,17 +104,16 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
 
   const value = useDebounce(input, 1000);
   const account = getAccount(wagmiConfig);
-  const { nativeBalance } = useNativeBalance(account?.address);
   const chainId = `0x${account.chain?.id.toString(16)}`;
-  const usdcPrice = useTokenPrice(chainId, ZERO_ADDRESS, 6);
-  const selectedPrice = useTokenPrice(chainId, tokenAddress, 18);
-  const { tokenBalance } = useTokenBalance(tokenAddress, account?.address);
-  const ethPrice = usdcPrice.isInvertedPair ? Math.pow(usdcPrice.tokenPrice, -1) : usdcPrice.tokenPrice;
-  const tokenPrice = selectedPrice.isInvertedPair ? Math.pow(selectedPrice.tokenPrice, -1) : selectedPrice.tokenPrice;
 
   const { switchChain } = useSwitchChain();
+  const { nativeBalance } = useNativeBalance(account?.address);
+  const { tokenBalance } = useTokenBalance(tokenAddress, account?.address);
 
-  console.log(tokenBalance, nativeBalance);
+  const usdcPrice = useTokenPrice(chainId, ZERO_ADDRESS, 6);
+  const selectedPrice = useTokenPrice(chainId, tokenAddress, 18);
+  const ethPrice = usdcPrice.isInvertedPair ? Math.pow(usdcPrice.tokenPrice, -1) : usdcPrice.tokenPrice;
+  const tokenPrice = selectedPrice.isInvertedPair ? Math.pow(selectedPrice.tokenPrice, -1) : selectedPrice.tokenPrice;
 
   const CheckoutButton = ({
     option,
@@ -188,10 +187,14 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             inputType="number"
             onChange={setInput}
           />
-          <span className="text-neutral-400">Balance: {tokenBalance.formatted} {tokenBalance.symbol}</span>
+          <label className="text-neutral-400">
+            Balance:&nbsp;
+            <span>{tokenAddress === ZERO_ADDRESS ? nativeBalance.formatted : tokenBalance.formatted}</span>
+            <span>&nbsp;{tokenAddress === ZERO_ADDRESS ? nativeBalance.symbol : tokenBalance.symbol}</span>
+          </label>
           <label className="absolute mr-6 text-lg font-bold mt-28">
             $ {formatNumber(tokenAddress !== ZERO_ADDRESS
-              ? tokenPrice * ethPrice * inputValue
+              ? (FIXED_CURRENCY_MAP[chainId][tokenAddress] ? tokenPrice * inputValue : tokenPrice * ethPrice * inputValue)
               : ethPrice * inputValue
               , 2)}
           </label>

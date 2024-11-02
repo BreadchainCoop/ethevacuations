@@ -78,7 +78,7 @@ export function Footer() {
             <label className="float-left">
               <img
                 alt="breadchain"
-                src="assets/breadchain.png"
+                src="assets/tokens/bread.png"
                 className="mt-[3px] mr-[5px] h-[20px] w-[20px]"
               />
             </label>

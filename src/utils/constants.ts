@@ -18,8 +18,12 @@ export const MORALIS_API_BALANCE_CALL = (address: string, network: string, block
 
 export const ASSET_SELECT_OPTIONS = [
   { id: '0x0000000000000000000000000000000000000000', chainId: '0x1', title: 'ETH', logo: 'assets/tokens/ethereum.png' },
+  { id: '0x0000000000000000000000000000000000000000', chainId: '0x64', title: 'xDAI', logo: 'assets/tokens/xdai.png' },
   { id: '0x6810e776880c02933d47db1b9fc05908e5386b96', chainId: '0x1', title: 'GNO', logo: 'assets/tokens/gnosis.png' },
-  { id: '0x4200000000000000000000000000000000000042', chainId: '0xa', title: 'OP', logo: 'assets/tokens/optimism.png' }
+  { id: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', chainId: '0x1', title: 'USDC', logo: 'assets/tokens/usdc.png' },
+  { id: '0xdAC17F958D2ee523a2206206994597C13D831ec7', chainId: '0x1', title: 'USDT', logo: 'assets/tokens/usdt.png' },
+  { id: '0x4200000000000000000000000000000000000042', chainId: '0xa', title: 'OP', logo: 'assets/tokens/optimism.png' },
+  { id: '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3', chainId: '0x64', title: 'BREAD', logo: 'assets/tokens/bread.png' }
 ];
 
 export const NETWORK_SELECT_OPTIONS = [
@@ -52,7 +56,18 @@ export const PAIR_MAP = {
       address: '0x1fb3cf6e48F1E7B10213E7b6d87D4c073C7Fdb7b',
       inverted: true,
       version: '3'
-    }
+    },
+  }
+}
+
+export const FIXED_CURRENCY_MAP = {
+  '0x1': {
+    '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': true,
+    '0xdAC17F958D2ee523a2206206994597C13D831ec7': true,
+  },
+  '0x64': {
+    '0x0000000000000000000000000000000000000000': true,
+    '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3': true
   }
 }
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useReadContract } from 'wagmi';
 import { useQuery } from "@tanstack/react-query";
 
-import { ZERO_ADDRESS, UNIV2_POOL_ABI, UNIV3_POOL_ABI, PAIR_MAP } from "../utils/constants";
+import { ZERO_ADDRESS, FIXED_CURRENCY_MAP, UNIV2_POOL_ABI, UNIV3_POOL_ABI, PAIR_MAP } from "../utils/constants";
 import { formatNumber, formatV2Rate, formatV3Rate } from "../utils";
 
 type TokenAddress = keyof typeof PAIR_MAP;
@@ -64,6 +64,7 @@ export function useTokenPrice(chainId: string, address: TokenAddress, decimals: 
   })
 
   useEffect(() => {
+    if (FIXED_CURRENCY_MAP[chainId][address]) return;
     if (data) {
       setDataState({
         status: "success",
@@ -79,11 +80,22 @@ export function useTokenPrice(chainId: string, address: TokenAddress, decimals: 
       setDataState({
         status: 'loading',
         tokenAddress: address,
-        isInvertedPair: pair.inverted,
+        isInvertedPair: false,
         tokenPrice: 0
       })
     }
   }, [address])
+
+  useEffect(() => {
+    if (FIXED_CURRENCY_MAP[chainId][address]) {
+      setDataState({
+        status: 'success',
+        tokenPrice: 1,
+        isInvertedPair: false,
+        tokenAddress: ZERO_ADDRESS,
+      })
+    }
+  }, [, address])
 
   return dataState;
 }
