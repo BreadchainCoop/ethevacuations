@@ -46,9 +46,9 @@ export default function Home() {
     <>
       <main className={clsx(PAGE_WRAP, "min-h-screen grid grid-cols-1 items-start justify-between gap-y-10 lg:gap-y-6 md:w-4/5")}>
         <Navigation />
-        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 gap-x-36 lg:gap-x-48">
+        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 gap-x-36 lg:gap-x-56">
           <section className="grid grid-cols-1 flex-center gap-4 lg:gap-6">
-            <div className="lg:w-2/3 sm:h-auto">
+            <div className="lg:w-1/2 sm:h-auto">
               <h1 className="m-0 p-0 mb-2 text-[33px] font-bold tracking-[-.02em]">
                 Fund evacuations from Gaza with crypto <br></br>
               </h1>
@@ -93,7 +93,7 @@ export default function Home() {
               {checkoutCanvas}
             </div>
           </section>
-          <section className="md:mt-[-375px] lg:mt-[-400px]"><></></section>
+          <section className="md:mt-[-500px] lg:mt-[-700px]"><Donations /></section>
         </div>
         <Footer />
       </main >

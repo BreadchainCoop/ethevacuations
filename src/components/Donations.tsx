@@ -55,8 +55,8 @@ export function Donations() {
   return (
     <div>
       <p className="text-2xl font-bold mb-6">Recent Donations</p>
-      <div className="h-[250px] lg:h-[300px] overflow-hidden relative min-w-0">
-        <div className="h-full grid gap-2 overflow-y-scroll">
+      <div className="h-[320px] lg:h-[500px] overflow-hidden relative min-w-0">
+        <div className="h-full grid gap-4 overflow-y-scroll">
           {aggData && aggData.map((tx) =>
             <Donation key={`tx_${tx.hash}`} tx={tx} />
           )}
@@ -69,26 +69,38 @@ export function Donations() {
 
 function Donation({ tx }: { tx: any }) {
   return (
-    <div className="text-lg bg-white rounded-lg p-4 flex justify-between gap-4 min-w-0">
-      <span className="col-span-3 min-w-0 text-[#8b8b8b]">
-        {formatDistanceStrict(new Date(tx.block_timestamp), new Date(), {
-          addSuffix: true,
-        })}
-      </span>
-      <div className="col-span-3 flex items-center font-medium">
+    <div className="text-lg bg-white rounded-2xl px-4 py-3 flex justify-between gap-4 min-w-0">
+      <div className="col-span-3 min-w-0 text-[#8b8b8b]">
+        <div className="inline-flexbox gap-4">
+          <img
+            className="frame h-[32px] w-[32px]"
+            src={`assets/tokens/${tx.chain}.png`}
+          />
+          <div className="flexbox flex-start">
+            <label>{formatDistanceStrict(new Date(tx.block_timestamp), new Date(), { addSuffix: true })}</label>
+            <label>
+              from {tx.erc20_transfers.length
+                ? tx.erc20_transfers[0].from_address.substring(0, 6)
+                : tx.native_transfers[0].from_address.substring(0, 6)
+              }...
+            </label>
+          </div>
+        </div>
+      </div>
+      <div className="col-span-3 flex items-center text-xl font-medium text-green/80">
         {tx.erc20_transfers.length ? (
           <>
             <span>
-              {formatBalance(tx.erc20_transfers[0].value_formatted, 2)}
+              + {formatBalance(tx.erc20_transfers[0].value_formatted, 2)}
             </span>
-            <span>{tx.erc20_transfers[0].token_symbol}</span>
+            <span>&nbsp;{tx.erc20_transfers[0].token_symbol}</span>
           </>
         ) : tx.native_transfers.length ? (
           <>
             <span>
-              {formatBalance(tx.native_transfers[0].value_formatted, 2)}
+              + {formatBalance(tx.native_transfers[0].value_formatted, 4)}
             </span>
-            <span>{tx.native_transfers[0].token_symbol}</span>
+            <span>&nbsp;{tx.native_transfers[0].token_symbol}</span>
           </>
         ) : (
           "err"

@@ -10,7 +10,9 @@ import Select from "../elements/Select";
 import Input from "../elements/Input";
 
 import { useDebounce } from "../hooks/useDebounce";
+import { useNativeBalance } from "../hooks/useNativeBalance";
 import { useTokenPrice } from "../hooks/useTokenPrice";
+import { useTokenBalance } from "../hooks/useTokenBalance";
 import { wagmiConfig } from "../utils/wagmiConfig";
 import { formatNumber } from "../utils";
 
@@ -41,7 +43,7 @@ function CheckoutRoot({ onClick }: Props) {
             <img
               alt="qr-unicode"
               src="assets/qr_code.png"
-              className="frame h-[225px] w-[225px] lg:h-[200px] lg:w-[200px]"
+              className="frame h-[225px] w-[225px] lg:h-[300px] lg:w-[300px]"
             />
           </div>
         </div>
@@ -102,13 +104,17 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
 
   const value = useDebounce(input, 1000);
   const account = getAccount(wagmiConfig);
+  const { nativeBalance } = useNativeBalance(account?.address);
   const chainId = `0x${account.chain?.id.toString(16)}`;
   const usdcPrice = useTokenPrice(chainId, ZERO_ADDRESS, 6);
   const selectedPrice = useTokenPrice(chainId, tokenAddress, 18);
+  const { tokenBalance } = useTokenBalance(tokenAddress, account?.address);
   const ethPrice = usdcPrice.isInvertedPair ? Math.pow(usdcPrice.tokenPrice, -1) : usdcPrice.tokenPrice;
   const tokenPrice = selectedPrice.isInvertedPair ? Math.pow(selectedPrice.tokenPrice, -1) : selectedPrice.tokenPrice;
 
   const { switchChain } = useSwitchChain();
+
+  console.log(tokenBalance, nativeBalance);
 
   const CheckoutButton = ({
     option,
@@ -132,7 +138,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   )
 
   useEffect(() => {
-    const i = NETWORK_SELECT_OPTIONS.find((e) => parseInt(e.id) === account.chain?.id);
+    const i = NETWORK_SELECT_OPTIONS.find((e) => e.id === chainId);
 
     if (i) {
       setSelectionIndex(NETWORK_SELECT_OPTIONS.indexOf(i));
@@ -168,7 +174,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             label="Token"
             defaultValue={0}
             onSelect={(e: TokenAddress) => setTokenAddress(e)}
-            options={ASSET_SELECT_OPTIONS.filter((e) => parseInt(e.chainId) === account.chain?.id)}
+            options={ASSET_SELECT_OPTIONS.filter((e) => e.chainId === chainId)}
           />
         </div>
 
@@ -182,7 +188,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             inputType="number"
             onChange={setInput}
           />
-          <span className="text-neutral-400">Balance: 0.00</span>
+          <span className="text-neutral-400">Balance: {tokenBalance.formatted} {tokenBalance.symbol}</span>
           <label className="absolute mr-6 text-lg font-bold mt-28">
             $ {formatNumber(tokenAddress !== ZERO_ADDRESS
               ? tokenPrice * ethPrice * inputValue
@@ -218,7 +224,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
               src="/assets/logo.png"
               className="block float-left mr-2 h–[25px] w-[25px]"
             />
-            Insert amount
+            Confirm
           </Button.Primary>
         </div>
       </div>
