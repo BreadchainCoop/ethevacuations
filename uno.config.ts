@@ -30,7 +30,8 @@ export default defineConfig({
     breakpoints: {
       sm: '460px',
       md: '840px',
-      lg: '2200px'
+      lg: '1800px',
+      xl: '2200px'
     },
     fontWeight: {
       thin: '100',

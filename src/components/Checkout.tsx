@@ -2,6 +2,7 @@ import type { SetStateAction } from "react"
 import { useState, useEffect } from "react"
 import { fetchBalance, getAccount } from '@wagmi/core';
 import { useSwitchChain } from "wagmi";
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import { PAIR_MAP, FIXED_CURRENCY_MAP, ZERO_ADDRESS, NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants';
 
@@ -31,6 +32,20 @@ type Option = {
 }
 
 function CheckoutRoot({ onClick }: Props) {
+  const [hasConnected, setConnected] = useState(false);
+
+  const account = getAccount(wagmiConfig);
+  const { openConnectModal } = useConnectModal();
+
+  const initialise = () => {
+    if (!hasConnected) openConnectModal()
+    else onClick()
+  }
+
+  useEffect(() => {
+    if (account.address) setConnected(true);
+  }, [, account.address])
+
   return (
     <div className="flexbox text-center pt-8 pb-11 px-2 gap-8 lg:gap-24">
       <div>
@@ -43,7 +58,7 @@ function CheckoutRoot({ onClick }: Props) {
             <img
               alt="qr-unicode"
               src="assets/qr_code.png"
-              className="frame h-[225px] w-[225px] lg:h-[300px] lg:w-[300px]"
+              className="frame md:h-[175px] md:w-[175px] lg:h-[225px] lg:w-[225px] xl:w-[300px] xl:h-[300px]"
             />
           </div>
         </div>
@@ -62,7 +77,7 @@ function CheckoutRoot({ onClick }: Props) {
         </div>
       </div>
       <div className="w-4/5">
-        <Button.Primary className="text-2xl md:text-xl" onClick={onClick}>
+        <Button.Primary className="text-2xl md:text-xl" onClick={initialise}>
           <img
             alt="btn-logo"
             src="/assets/logo.png"
@@ -75,7 +90,7 @@ function CheckoutRoot({ onClick }: Props) {
   )
 }
 
-function CheckoutReceipt({ onDismiss }: Props) {
+function CheckoutReceipt({ onDismiss, onClick }: Props) {
   return (
     <div className="pt-8 pb-11 px-2">
       <div className="mt-[-15px] mb-[25px]">
@@ -91,7 +106,26 @@ function CheckoutReceipt({ onDismiss }: Props) {
           </label>
         </div>
       </div>
-      <div className="w-full flexbox gap-3 mt-4">
+      <div className="w-full flexbox gap-10 mt-4">
+        <img
+          src="assets/reciept.png"
+          className="frame w-[100px] md:w-[300px] lg:w-[350px] xl:w-[500px]"
+        />
+        <label className="text-xl font-medium">Successfully donated!</label>
+        <ul className="w-4/5 flexbox gap-4">
+          <Button.Secondary>View NFT</Button.Secondary>
+          <Button.Secondary>Share on Farcaster</Button.Secondary>
+          <Button.Secondary>Share on X</Button.Secondary>
+          <Button.Secondary>Copy URL</Button.Secondary>
+          <Button.Primary className="text-2xl md:text-xl" onClick={onClick}>
+            <img
+              alt="btn-logo"
+              src="/assets/logo.png"
+              className="block float-left mr-2 h–[25px] w-[25px]"
+            />
+            Donate again
+          </Button.Primary>
+        </ul>
       </div>
     </div>
   )
@@ -221,7 +255,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
         </div>
 
         <div className="w-4/5">
-          <Button.Primary className="text-2xl md:text-xl">
+          <Button.Primary className="text-2xl md:text-xl" onClick={onClick}>
             <img
               alt="btn-logo"
               src="/assets/logo.png"

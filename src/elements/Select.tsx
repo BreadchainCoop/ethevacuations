@@ -58,10 +58,10 @@ export default function Select({
           <span>
             <div className="flex gap-3">
               <img
-                className="my-auto w-[33px] h-[33px]"
+                className="my-auto w-[30px] h-[30px]"
                 src={`${selectedItem ? selectedItem.logo : options[defaultValue || 0].logo}`}
               />
-              <label className="my-auto leading–[35px] text-xl md:text-[16px]">
+              <label className="my-auto leading–[30px] text-xl md:text-[16px]">
                 {selectedItem ? selectedItem.title : options[defaultValue || 0].title}
               </label>
             </div>
@@ -88,8 +88,8 @@ export default function Select({
                 key={item.id}
                 {...getItemProps({ item, index })}
               >
-                <img src={item.logo} className="my-auto w-[33px] h-[33px]" />
-                <label className="my-auto leading–[35px]">{item.title}</label>
+                <img src={item.logo} className="my-auto w-[30px] h-[30px]" />
+                <label className="my-auto leading–[30px]">{item.title}</label>
               </li>
             )
           }

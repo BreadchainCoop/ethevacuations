@@ -23,6 +23,26 @@ function PrimaryButton({
   )
 }
 
+function SecondaryButton({
+  onClick,
+  children,
+  className
+}: {
+  onClick?(): void;
+  children: React.ReactNode;
+  className: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full flex text-center border-primary/40 border-solid border-2px justify-center items-center bg-white px-6 py-3 rounded-[30px] md:text-xl hover:bg-primary hover:text-white 
+      ${className}
+    `}>
+      {children}
+    </button>
+  )
+}
+
 function CopyButton() {
   const [copied, setCopied] = useState(false);
 
@@ -81,6 +101,7 @@ function CopyButton() {
 }
 
 export default {
+  Secondary: SecondaryButton,
   Primary: PrimaryButton,
   Copy: CopyButton
 }

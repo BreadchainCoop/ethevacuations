@@ -22,16 +22,18 @@ export default function Home() {
 
   const backwardStep = () => setStep(checkoutStep - 1)
 
+  const finalStep = () => setStep(0);
+
   useEffect(() => {
     switch (checkoutStep) {
       case 1:
         setCanvas(
-          <Checkout.Order onDismiss={backwardStep} />
+          <Checkout.Order onDismiss={backwardStep} onClick={forwardStep} />
         );
         break;
       case 2:
         setCanvas(
-          <Checkout.Receipt onDismiss={backwardStep} />
+          <Checkout.Receipt onDismiss={backwardStep} onClick={finalStep} />
         );
         break;
       default:
@@ -46,9 +48,9 @@ export default function Home() {
     <>
       <main className={clsx(PAGE_WRAP, "min-h-screen grid grid-cols-1 items-start justify-between gap-y-10 lg:gap-y-6 md:w-4/5")}>
         <Navigation />
-        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 gap-x-36 lg:gap-x-56">
+        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 gap-x-36 xl:gap-x-12">
           <section className="grid grid-cols-1 flex-center gap-4 lg:gap-6">
-            <div className="lg:w-1/2 sm:h-auto">
+            <div className="mx-auto text-left sm:h-auto">
               <h1 className="m-0 p-0 mb-2 text-[33px] font-bold tracking-[-.02em]">
                 Fund evacuations from Gaza with crypto <br></br>
               </h1>
@@ -56,8 +58,8 @@ export default function Home() {
                 Crypto was made for this
               </label>
             </div>
-            <div className="w-full px-4 grid grid-cols-2 text-center">
-              <div className="grid grid-cols-1 flex-start gap-4">
+            <div className="w-full lg:w-4/5 ml-auto grid grid-cols-2 justify-between flex-center text-center">
+              <div className="grid grid-cols-1 flex-center gap-4">
                 <label className="text-lg text-neutral-400 font-medium lg:text-xl">
                   Total Raised
                 </label>
@@ -65,7 +67,7 @@ export default function Home() {
                   + ${formatNumber(process.env.REACT_APP_PROCEEDS_AMOUNT || 0, 2)}
                 </label>
                 <label className="text-lg text-neutral-500">
-                  {formatNumber(process.env.REACT_APP_PROCEEDS_AMOUNT || 0 / 1, 2)} ETH
+                  {formatNumber(process.env.REACT_APP_PROCEEDS_ETH_AMOUNT || 0 / 1, 2)} ETH
                 </label>
               </div>
               <div className="grid flex-center gap-4">
