@@ -52,30 +52,66 @@ li {
   MicroModal
 \**************************/
 
-
 @layer components {
   .modal {
-    @apply font-sans;
+    @apply font-sans hidden;
+  }
+
+  .modal.is-open {
+    @apply block;
   }
 
   .modal-overlay {
-    @apply fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-1;
+    @apply fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50;
+    animation: mmfadeIn 0.3s ease-in-out;
+  }
+
+  .modal-overlay.is-closing {
+    animation: mmfadeOut 0.3s ease-in-out;
   }
 
   .modal-container {
     @apply bg-white px-8 py-6 max-w-lg max-h-screen rounded-2xl overflow-y-auto;
+    animation: mmslideIn 0.3s ease-in-out;
+  }
+
+  .modal-container.is-closing {
+    animation: mmslideOut 0.3s ease-in-out;
+  }
+
+  /* Mobile sheet specific styles */
+  .mobile-sheet .modal-overlay {
+    @apply items-end;
+  }
+
+  .mobile-sheet .modal-container {
+    @apply w-full max-w-full rounded-b-none rounded-t-3xl px-4 py-4;
+    max-height: 90vh;
+    animation: mmsheetIn 0.3s ease-in-out;
+  }
+
+  .mobile-sheet .modal-container.is-closing {
+    animation: mmsheetOut 0.3s ease-in-out;
+  }
+
+  .sheet-indicator {
+    @apply flex justify-center mb-2;
+  }
+
+  .sheet-indicator-bar {
+    @apply w-12 h-1.5 bg-gray-300 rounded-full;
   }
 
   .modal-header {
-    @apply flex justify-between items-center mt-[-10px];
+    @apply flex justify-between items-center mt-1;
   }
 
   .modal-title {
-    @apply m-0 font-semibold text-xl leading-tight ml-[-14px];
+    @apply m-0 font-semibold text-xl leading-tight;
   }
 
   .modal-close {
-    @apply bg-grey/70 border-0 px-3 py-[5px] md:py-[1px] md:px-2 rounded-[2rem] mt-[2px] mr-[-18px];
+    @apply bg-gray-200 border-0 px-3 py-[5px] md:py-[1px] md:px-2 rounded-full;
   }
 
   .modal-close::before {
@@ -84,75 +120,75 @@ li {
   }
 
   .modal-content {
-    @apply leading-relaxed text-gray-800 mt-1;
-  }
-
-  .micromodal-slide {
-    @apply hidden;
-  }
-
-  .micromodal-slide.is-open {
-    @apply block;
-  }
-
-  .micromodal-slide[aria-hidden="false"] .modal-overlay {
-    animation: mmfadeIn 0.3s cubic-bezier(0.0, 0.0, 0.2, 1);
-  }
-
-  .micromodal-slide[aria-hidden="false"] .modal-container {
-    animation: mmslideIn 0.3s cubic-bezier(0, 0, 0.2, 1);
-  }
-
-  .micromodal-slide[aria-hidden="true"] .modal-overlay {
-    animation: mmfadeOut 0.3s cubic-bezier(0.0, 0.0, 0.2, 1);
-  }
-
-  .micromodal-slide[aria-hidden="true"] .modal-container {
-    animation: mmslideOut 0.3s cubic-bezier(0, 0, 0.2, 1);
-  }
-
-  .micromodal-slide .modal-container,
-  .micromodal-slide .modal-overlay {
-    @apply will-change-transform;
+    @apply leading-relaxed text-gray-800 mt-4;
   }
 }
 
 @keyframes mmfadeIn {
-  from {
+  0% {
     opacity: 0;
   }
 
-  to {
+  100% {
     opacity: 1;
   }
 }
 
 @keyframes mmfadeOut {
-  from {
+  0% {
     opacity: 1;
   }
 
-  to {
+  100% {
     opacity: 0;
   }
 }
 
 @keyframes mmslideIn {
-  from {
-    transform: translateY(15%);
+  0% {
+    transform: translateY(-15%);
+    opacity: 0;
   }
 
-  to {
+  100% {
     transform: translateY(0);
+    opacity: 1;
   }
 }
 
 @keyframes mmslideOut {
-  from {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-15%);
+    opacity: 0;
+  }
+}
+
+@keyframes mmsheetIn {
+  0% {
+    transform: translateY(100%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mmsheetOut {
+  0% {
     transform: translateY(0);
   }
 
-  to {
-    transform: translateY(-10%);
+  100% {
+    transform: translateY(100%);
   }
+}
+
+.modal-overlay,
+.modal-container {
+  animation-fill-mode: forwards;
 }

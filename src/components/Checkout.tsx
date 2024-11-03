@@ -68,7 +68,7 @@ function CheckoutRoot({ onClick }: Props) {
           <img
             alt="network icons"
             src="assets/network_icons.png"
-            className="block m-auto w-[127px] h-[24px]"
+            className="block m-auto w-[127px] h-[24px] lg:w-[200px] lg:h-[38px]"
           />
           <label className="pt-2 lg:text-xl">Recommended networks</label>
         </div>
@@ -106,12 +106,30 @@ function CheckoutReceipt({ onDismiss, onClick }: Props) {
           </label>
         </div>
       </div>
-      <div className="w-full flexbox gap-10 mt-4">
+      <div className="w-full flexbox gap-8 mt-6">
         <img
           src="assets/reciept.png"
           className="frame w-[100px] md:w-[300px] lg:w-[350px] xl:w-[500px]"
         />
-        <label className="text-xl font-medium">Successfully donated!</label>
+        <div className="flexbox gap-4">
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke="lightgreen"
+              stroke-width="0"
+              d="M14.1475 7.3525C14.2528 7.45797 14.312 7.60094 14.312 7.75C14.312 7.89906 14.2528 8.04203 14.1475 8.1475L8.8975 13.3975C8.79204 13.5028 8.64907 13.562 8.5 13.562C8.35094 13.562 8.20797 13.5028 8.1025 13.3975L5.8525 11.1475C5.75314 11.0409 5.69905 10.8998 5.70162 10.7541C5.70419 10.6084 5.76323 10.4693 5.86629 10.3663C5.96935 10.2632 6.10839 10.2042 6.25411 10.2016C6.39984 10.199 6.54087 10.2531 6.6475 10.3525L8.5 12.2041L13.3525 7.3525C13.458 7.24716 13.6009 7.18799 13.75 7.18799C13.8991 7.18799 14.042 7.24716 14.1475 7.3525ZM19.5625 10C19.5625 11.8913 19.0017 13.7401 17.9509 15.3126C16.9002 16.8852 15.4067 18.1108 13.6594 18.8346C11.9121 19.5584 9.9894 19.7477 8.13445 19.3788C6.27951 19.0098 4.57564 18.099 3.2383 16.7617C1.90096 15.4244 0.990216 13.7205 0.621245 11.8656C0.252274 10.0106 0.441643 8.08791 1.16541 6.34059C1.88917 4.59327 3.11482 3.09981 4.68736 2.04907C6.25991 0.998331 8.10872 0.4375 10 0.4375C12.5352 0.440477 14.9658 1.44891 16.7584 3.24158C18.5511 5.03425 19.5595 7.46478 19.5625 10ZM18.4375 10C18.4375 8.33122 17.9427 6.69992 17.0155 5.31238C16.0884 3.92484 14.7706 2.84338 13.2289 2.20477C11.6871 1.56615 9.99064 1.39906 8.35393 1.72462C6.71722 2.05019 5.2138 2.85378 4.03379 4.03379C2.85379 5.21379 2.05019 6.71721 1.72463 8.35393C1.39907 9.99064 1.56616 11.6871 2.20477 13.2289C2.84338 14.7706 3.92484 16.0884 5.31238 17.0155C6.69992 17.9426 8.33122 18.4375 10 18.4375C12.237 18.435 14.3817 17.5453 15.9635 15.9635C17.5453 14.3817 18.435 12.237 18.4375 10Z"
+              fill="#0FBC00"
+            />
+          </svg>
+          <label className="text-xl font-medium">
+            Successfully donated!
+          </label>
+        </div>
         <ul className="w-4/5 flexbox gap-4">
           <Button.Secondary>View NFT</Button.Secondary>
           <Button.Secondary>Share on Farcaster</Button.Secondary>

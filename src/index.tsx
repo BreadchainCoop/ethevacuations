@@ -48,7 +48,7 @@ export default function Home() {
     <>
       <main className={clsx(PAGE_WRAP, "min-h-screen grid grid-cols-1 items-start justify-between gap-y-10 lg:gap-y-6 md:w-4/5")}>
         <Navigation />
-        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 gap-x-36 xl:gap-x-12">
+        <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 gap-x-36">
           <section className="grid grid-cols-1 flex-center gap-4 lg:gap-6">
             <div className="mx-auto text-left sm:h-auto">
               <h1 className="m-0 p-0 mb-2 text-[33px] font-bold tracking-[-.02em]">
