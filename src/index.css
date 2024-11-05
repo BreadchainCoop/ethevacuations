@@ -1,7 +1,7 @@
 @unocss;
 
 body {
-  @apply font-sans bg-secondary/15 md:bg-secondary/8;
+  @apply m-0 font-sans bg-secondary/15 md:bg-secondary/8;
 }
 
 .transactions-gradient-bg {

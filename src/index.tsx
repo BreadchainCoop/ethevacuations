@@ -95,7 +95,7 @@ export default function Home() {
               {checkoutCanvas}
             </div>
           </section>
-          <section className="md:mt-[-500px] lg:mt-[-700px]"><></></section>
+          <section className="md:mt-[-500px] lg:mt-[-700px]"></section>
         </div>
         <Footer />
       </main >

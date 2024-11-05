@@ -131,7 +131,6 @@ function CheckoutReceipt({ onDismiss, onClick }: Props) {
           </label>
         </div>
         <ul className="w-4/5 flexbox gap-4">
-          <Button.Secondary>View NFT</Button.Secondary>
           <Button.Secondary>Share on Farcaster</Button.Secondary>
           <Button.Secondary>Share on X</Button.Secondary>
           <Button.Secondary>Copy URL</Button.Secondary>
@@ -150,7 +149,7 @@ function CheckoutReceipt({ onDismiss, onClick }: Props) {
 }
 
 function CheckoutOrder({ onClick, onDismiss }: Props) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(null);
   const [selectionIndex, setSelectionIndex] = useState(0);
   const [tokenAddress, setTokenAddress] = useState<TokenAddress>(ZERO_ADDRESS);
 
@@ -199,7 +198,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   const inputValue = isNaN(Number(input)) ? 0 : Number(input);
 
   return (
-    <div className="pt-8 pb-11 px-2">
+    <div className="pt-8 pb-11 px-2 sm:px-0">
       <div className="mt-[-15px] mb-[25px]">
         <button
           onClick={onDismiss}
@@ -214,7 +213,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
         </div>
       </div>
       <div className="w-full flexbox gap-8 mt-4 lg:gap-18">
-        <div className="w-9/10 md:w-7/10 grid grid-cols-1 md:grid-cols-2 py-2 px-4 gap-4">
+        <div className="w-9/10 md:w-7/10 lg:8/10 grid grid-cols-1 md:grid-cols-2 py-2 px-4 gap-4">
           <Select
             label="Network"
             defaultValue={selectionIndex}
@@ -229,22 +228,22 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           />
         </div>
 
-        <div className="w-8/10 md:w-3/5 md:px-0 flexbox gap-3">
-          <label className="text-neutral-500">
+        <div className="w-9/10 md:w-3/5 lg:w-2/5 md:px-0 flexbox gap-3 mr-5">
+          <label className="lg:ml-6 text-neutral-500">
             Click for a custom amount
           </label>
           <Input.Circular
-            title="0.00"
             value={input}
             inputType="number"
             onChange={setInput}
+            prefix={tokenAddress !== ZERO_ADDRESS ? tokenBalance.symbol : nativeBalance.symbol}
           />
-          <label className="text-neutral-400">
+          <label className="lg:ml-6 xl:ml-8 text-neutral-400">
             Balance:&nbsp;
             <span>{tokenAddress === ZERO_ADDRESS ? nativeBalance.formatted : tokenBalance.formatted}</span>
             <span>&nbsp;{tokenAddress === ZERO_ADDRESS ? nativeBalance.symbol : tokenBalance.symbol}</span>
           </label>
-          <label className="absolute mr-6 text-lg font-bold mt-28">
+          <label className="absolute lg:ml-6 xl:ml-8 text-lg font-bold mt-28">
             $ {formatNumber(tokenAddress !== ZERO_ADDRESS
               ? (FIXED_CURRENCY_MAP[chainId][tokenAddress] ? tokenPrice * inputValue : tokenPrice * ethPrice * inputValue)
               : ethPrice * inputValue
