@@ -1,60 +1,57 @@
+import type { DataState, NetworkId, ContractCallReturn, ContractCallResult } from "@types";
+
 import { useEffect, useState } from "react";
 import { useReadContract } from 'wagmi';
 import { useQuery } from "@tanstack/react-query";
 
 import { ZERO_ADDRESS, FIXED_CURRENCY_MAP, UNIV2_POOL_ABI, UNIV3_POOL_ABI, PAIR_MAP } from "../utils/constants";
-import { formatNumber, formatV2Rate, formatV3Rate } from "../utils";
-
-type TokenAddress = keyof typeof PAIR_MAP;
-
-type ContractCallParameter = number | string | bigint | boolean;
-
-type ContractCalldata = Array<ContractCallParameter>;
+import { formatNumber, formatAddress, formatV2Rate, formatV3Rate } from "../utils";
 
 type UseReadContractReturnType = ReturnType<typeof useReadContract>;
 
-interface DataState {
-  status: 'loading' | 'success' | 'error';
+interface ExtendedDataState extends DataState {
   tokenPrice: number;
   tokenAddress: string;
   isInvertedPair: boolean;
 }
 
-export function useTokenPrice(chainId: string, address: TokenAddress, decimals: number): DataState {
-  const [dataState, setDataState] = useState<DataState>({
+export function useTokenPrice(chainId: NetworkId, address: string, decimals: number): ExtendedDataState {
+  const [dataState, setDataState] = useState<ExtendedDataState>({
     status: "loading",
     tokenPrice: 0,
     isInvertedPair: false,
     tokenAddress: ZERO_ADDRESS
   });
 
-  const pair = address === ZERO_ADDRESS ? PAIR_MAP[address][chainId] : PAIR_MAP[address];
+  const pair = address === ZERO_ADDRESS ? PAIR_MAP[ZERO_ADDRESS][chainId] : PAIR_MAP[address];
   const isUniswapV2 = pair?.version === '2';
 
   const payload: UseReadContractReturnType = useReadContract({
     abi: isUniswapV2 ? UNIV2_POOL_ABI : UNIV3_POOL_ABI,
     functionName: isUniswapV2 ? 'getReserves' : 'slot0',
-    address: `0x${pair?.address.substring(2, pair?.address.length)}`
+    address: formatAddress(pair?.address)
   });
 
-  const getV2TokenPrice = (data: ContractCalldata) => {
-    const reservesX: ContractCallParameter = data[0];
-    const reservesY: ContractCallParameter = data[1];
+  const getV2TokenPrice = (data: Array<ContractCallReturn>) => {
+    const reservesX: bigint = data[0] as bigint;
+    const reservesY: bigint = data[1] as bigint;
 
     return formatV2Rate(`${reservesX}`, `${reservesY}`, 18, decimals);
   }
 
-  const getV3TokenPrice = (data: ContractCalldata) => {
-    const sqrtPrice: ContractCallParameter = data[0];
-    const currentTick: ContractCallParameter = data[1];
+  const getV3TokenPrice = (data: Array<ContractCallReturn>) => {
+    const sqrtPrice: bigint = data[0] as bigint;
+    const currentTick: bigint = data[1] as bigint;
 
     return formatV3Rate(`${currentTick}`, 18, decimals);
   }
 
   const getTokenPrice = () => {
-    const e: ContractCalldata = Object.values(payload.data);
+    if (payload.data) {
+      const e: Array<ContractCallReturn> = Object.values(payload.data);
 
-    return isUniswapV2 ? getV2TokenPrice(e) : getV3TokenPrice(e);
+      return isUniswapV2 ? getV2TokenPrice(e) : getV3TokenPrice(e)
+    };
   }
 
   const { data, isError, error } = useQuery({

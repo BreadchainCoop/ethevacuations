@@ -4,15 +4,15 @@ import { useRef, useState, useEffect } from "react";
 interface Props {
   value: string | null;
   prefix: string;
-  title: string;
+  title?: string;
   inputType: string;
   onChange: Dispatch<SetStateAction<string>>;
 }
 
 function CircularInput({ title, onChange, prefix, inputType, value }: Props) {
+  const isMobile = window.innerWidth < 540;
   const inputRef = useRef<HTMLInputElement>(null);
   const [prefixPosition, setPrefixPosition] = useState(0);
-  const isMobile = window.innerWidth < 540;
 
   useEffect(() => {
     if (inputRef.current) {

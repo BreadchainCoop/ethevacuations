@@ -25,14 +25,19 @@ export function Donations() {
 
     let combinedArray: Array<any> = [];
 
-    if (ethDataStatus === "success")
-      combinedArray = [...combinedArray, ...ethData];
-    if (optimismDataStatus === "success")
-      combinedArray = [...combinedArray, ...optimismData];
-    if (gnosisDataStatus === "success")
-      combinedArray = [...combinedArray, ...gnosisData];
-    if (arbitrumDataStatus === "success")
-      combinedArray = [...combinedArray, ...arbitrumData];
+    if (ethDataStatus === "success") {
+      combinedArray = combinedArray.concat(ethData);
+    }
+    if (optimismDataStatus === "success") {
+      combinedArray = combinedArray.concat(optimismData);
+    }
+    if (gnosisDataStatus === "success") {
+      combinedArray = combinedArray.concat(gnosisData);
+    }
+    if (arbitrumDataStatus === "success") {
+      combinedArray = combinedArray.concat(arbitrumData);
+    }
+
 
     const sortedArray = combinedArray.sort((a, b) => {
       return (

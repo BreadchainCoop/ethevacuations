@@ -38,12 +38,12 @@ export default function Select({
   })
 
   useEffect(() => {
-    onSelect(selectedItem?.id)
-  }, [selectedItem])
+    if (defaultValue) selectItem(options[defaultValue])
+  }, [, defaultValue])
 
   useEffect(() => {
-    selectItem(options[defaultValue])
-  }, [, defaultValue])
+    onSelect(selectedItem?.id)
+  }, [selectedItem])
 
   return (
     <div className="w-full relative">

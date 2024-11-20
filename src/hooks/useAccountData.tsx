@@ -1,3 +1,5 @@
+import type { DataState } from "@types";
+
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
@@ -7,11 +9,6 @@ import {
   TRUSTEE_ADDRESS,
   BALANCE_FROM_BLOCK
 } from "../utils/constants";
-
-interface DataState {
-  status: 'loading' | 'success' | 'error';
-  data: any[];
-}
 
 const MORALIS_API_KEY = process.env.REACT_APP_MORALIS_API_KEY;
 

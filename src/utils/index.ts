@@ -1,7 +1,11 @@
 import { Q96 } from "./constants";
 
+export function formatAddress(address: string): `0x${string}` {
+  return `0x${address.substring(2, address.length)}`;
+}
+
 export function truncateAddress(address: string): string {
-  return `${address.slice(0, 5)}...${address.slice(address.length - 5)}`;
+  return `${address.slice(0, 5)}...${address.slice(address.length - 5)} `;
 }
 
 export function formatNumber(n: number | string, d: number) {

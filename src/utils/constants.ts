@@ -1,3 +1,5 @@
+import type { Token, Network, TokenPair, TokenPairMap, CurrencyMap } from "@types";
+
 import JSBI from 'jsbi';
 
 export const BALANCE_FROM_BLOCK = "19435069";
@@ -16,7 +18,7 @@ export const UNIV3_POOL_ABI = [{ "inputs": [], "name": "slot0", "outputs": [{ "i
 
 export const MORALIS_API_BALANCE_CALL = (address: string, network: string, block: string) => `https://deep-index.moralis.io/api/v2.2/wallets/${address}/history?chain=${network}&from_block=${block}&include_internal_transactions=false&order=DESC`;
 
-export const ASSET_SELECT_OPTIONS = [
+export const ASSET_SELECT_OPTIONS: Array<Token> = [
   { id: '0x0000000000000000000000000000000000000000', chainId: '0x1', title: 'ETH', logo: 'assets/tokens/ethereum.png' },
   { id: '0x0000000000000000000000000000000000000000', chainId: '0x64', title: 'xDAI', logo: 'assets/tokens/xdai.png' },
   { id: '0x6810e776880c02933d47db1b9fc05908e5386b96', chainId: '0x1', title: 'GNO', logo: 'assets/tokens/gnosis.png' },
@@ -26,7 +28,7 @@ export const ASSET_SELECT_OPTIONS = [
   { id: '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3', chainId: '0x64', title: 'BREAD', logo: 'assets/tokens/bread.png' }
 ];
 
-export const NETWORK_SELECT_OPTIONS = [
+export const NETWORK_SELECT_OPTIONS: Array<Network> = [
   { id: '0x1', title: 'Ethereum', logo: 'assets/tokens/ethereum.png' },
   { id: '0x2105', title: 'Base', logo: 'assets/tokens/base.png' },
   { id: '0xa', title: 'Optimisim', logo: 'assets/tokens/optimism.png' },
@@ -35,7 +37,7 @@ export const NETWORK_SELECT_OPTIONS = [
   { id: '0x64', title: 'Gnosis', logo: 'assets/tokens/gnosis.png' }
 ];
 
-export const PAIR_MAP = {
+export const PAIR_MAP: TokenPairMap = {
   '0x6810e776880c02933d47db1b9fc05908e5386b96': {
     address: '0xa46466ad5507bE77Ff5aBDc27DF9dFeDA9bD7aee',
     inverted: false,
@@ -60,7 +62,7 @@ export const PAIR_MAP = {
   }
 }
 
-export const FIXED_CURRENCY_MAP = {
+export const FIXED_CURRENCY_MAP: CurrencyMap = {
   '0x1': {
     '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': true,
     '0xdAC17F958D2ee523a2206206994597C13D831ec7': true,
@@ -71,17 +73,17 @@ export const FIXED_CURRENCY_MAP = {
   }
 }
 
-export const CHAIN_MAP = {
-  ethereum: '0x1',
-  gnosis: '0x64',
-  polygon: '0x89',
-  optimism: '0xa',
-  base: '0x2105',
-  zora: '0x76adf1',
-  arbitrum: '0xa4b1'
+export const CHAIN_MAP: Record<string, string> = {
+  'ethereum': '0x1',
+  'gnosis': '0x64',
+  'polygon': '0x89',
+  'optimism': '0xa',
+  'base': '0x2105',
+  'zora': '0x76adf1',
+  'arbitrum': '0xa4b1'
 };
 
-export const NETWORK_MAP = {
+export const NETWORK_MAP: Record<number, string> = {
   1: 'ethereum',
   100: 'gnosis',
   7777777: 'zora',

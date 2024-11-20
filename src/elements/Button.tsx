@@ -9,8 +9,8 @@ function PrimaryButton({
   className
 }: {
   onClick?(): void;
-  children: React.ReactNode;
-  className: string;
+  className?: string;
+  children?: React.ReactNode;
 }) {
   return (
     <button
@@ -29,8 +29,8 @@ function SecondaryButton({
   className
 }: {
   onClick?(): void;
-  children: React.ReactNode;
-  className: string;
+  children?: React.ReactNode;
+  className?: string;
 }) {
   return (
     <button

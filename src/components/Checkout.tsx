@@ -1,4 +1,6 @@
-import type { SetStateAction } from "react"
+import type { SetStateAction, Dispatch } from "react";
+import type { NetworkId } from "@types";
+
 import { useState, useEffect } from "react"
 import { fetchBalance, getAccount } from '@wagmi/core';
 import { useSwitchChain } from "wagmi";
@@ -16,8 +18,6 @@ import { useTokenPrice } from "../hooks/useTokenPrice";
 import { useTokenBalance } from "../hooks/useTokenBalance";
 import { wagmiConfig } from "../utils/wagmiConfig";
 import { formatNumber } from "../utils";
-
-type TokenAddress = keyof typeof PAIR_MAP;
 
 interface Props {
   onClick?(): void;
@@ -38,8 +38,11 @@ function CheckoutRoot({ onClick }: Props) {
   const { openConnectModal } = useConnectModal();
 
   const initialise = () => {
-    if (!hasConnected) openConnectModal()
-    else onClick()
+    if (!hasConnected) {
+      if (openConnectModal) openConnectModal()
+    } else {
+      if (onClick) onClick()
+    }
   }
 
   useEffect(() => {
@@ -149,22 +152,23 @@ function CheckoutReceipt({ onDismiss, onClick }: Props) {
 }
 
 function CheckoutOrder({ onClick, onDismiss }: Props) {
-  const [input, setInput] = useState(null);
   const [selectionIndex, setSelectionIndex] = useState(0);
-  const [tokenAddress, setTokenAddress] = useState<TokenAddress>(ZERO_ADDRESS);
+  const [tokenAddress, setTokenAddress] = useState<string>(ZERO_ADDRESS);
+  const [input, setInput]: [string, Dispatch<SetStateAction<string>>] = useState('');
 
   const value = useDebounce(input, 1000);
   const account = getAccount(wagmiConfig);
   const chainId = `0x${account.chain?.id.toString(16)}`;
+  const networkId = chainId as NetworkId;
+
+  const x = useTokenPrice(networkId, ZERO_ADDRESS, 6);
+  const y = useTokenPrice(networkId, tokenAddress, 18);
+  const ethPrice = x.isInvertedPair ? Math.pow(x.tokenPrice, -1) : x.tokenPrice;
+  const tokenPrice = y.isInvertedPair ? Math.pow(y.tokenPrice, -1) : y.tokenPrice;
 
   const { switchChain } = useSwitchChain();
   const { nativeBalance } = useNativeBalance(account?.address);
   const { tokenBalance } = useTokenBalance(tokenAddress, account?.address);
-
-  const usdcPrice = useTokenPrice(chainId, ZERO_ADDRESS, 6);
-  const selectedPrice = useTokenPrice(chainId, tokenAddress, 18);
-  const ethPrice = usdcPrice.isInvertedPair ? Math.pow(usdcPrice.tokenPrice, -1) : usdcPrice.tokenPrice;
-  const tokenPrice = selectedPrice.isInvertedPair ? Math.pow(selectedPrice.tokenPrice, -1) : selectedPrice.tokenPrice;
 
   const CheckoutButton = ({
     option,
@@ -218,12 +222,12 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             label="Network"
             defaultValue={selectionIndex}
             options={NETWORK_SELECT_OPTIONS}
-            onSelect={(chainId: string) => switchChain(chainId)}
+            onSelect={(chainId: string) => switchChain({ chainId: parseInt(chainId) })}
           />
           <Select
             label="Token"
             defaultValue={0}
-            onSelect={(e: TokenAddress) => setTokenAddress(e)}
+            onSelect={(e: string) => setTokenAddress(e)}
             options={ASSET_SELECT_OPTIONS.filter((e) => e.chainId === chainId)}
           />
         </div>
@@ -233,9 +237,9 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             Click for a custom amount
           </label>
           <Input.Circular
-            value={input}
             inputType="number"
             onChange={setInput}
+            value={input === '' ? null : input}
             prefix={tokenAddress !== ZERO_ADDRESS ? tokenBalance.symbol : nativeBalance.symbol}
           />
           <label className="lg:ml-6 xl:ml-8 text-neutral-400">

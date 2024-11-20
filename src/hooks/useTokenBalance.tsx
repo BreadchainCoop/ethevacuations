@@ -1,80 +1,77 @@
+import type {
+  DataState,
+  TokenBalance,
+  ContractCallReturn,
+  ContractCallResult
+} from "@types";
 
 import { useEffect, useState } from "react";
 import { useReadContracts } from 'wagmi';
 import { useQuery } from "@tanstack/react-query";
 
-import { ZERO_ADDRESS, ERC20_ABI } from "../utils/constants";
-import { formatNumber } from "../utils";
+import { formatNumber, formatAddress } from "../utils";
+import { ZERO_ADDRESS, ERC20_ABI, PAIR_MAP } from "../utils/constants";
 
-type TokenAddress = keyof typeof PAIR_MAP;
-
-type ContractCallParameter = number | string | bigint | boolean;
-
-type ContractCalldata = Array<ContractCallParameter>;
-
-type UseReadContractReturnType = ReturnType<typeof useReadContract>;
-
-interface DataState {
-  status: 'loading' | 'success' | 'error';
-  tokenBalance: Balance;
+interface ExtendedDataState extends DataState {
+  tokenBalance: TokenBalance;
 }
 
-interface Balance {
-  decimals: number;
-  formatted: string;
-  symbol: string;
-  value: bigint;
-}
+type UseReadContractReturnType = ReturnType<typeof useReadContracts>;
 
-export function useTokenBalance(token: TokenAddress, address: string): DataState {
-  const [dataState, setDataState] = useState<DataState>({
+export function useTokenBalance(token: string, address: string | undefined): ExtendedDataState {
+  const [dataState, setDataState] = useState<ExtendedDataState>({
     status: "loading",
-    tokenBalance: 0,
+    tokenBalance: {
+      value: BigInt(0),
+      symbol: '',
+      decimals: 0,
+      formatted: ''
+    }
   });
 
-  const payload = useReadContracts({
+  const payload: UseReadContractReturnType = useReadContracts({
     contracts: [
       {
         abi: ERC20_ABI,
         functionName: 'balanceOf',
-        address: token ? `0x${token.substring(2, token.length)}` : '',
+        address: token ? formatAddress(token) : undefined,
         args: [address]
       },
       {
         abi: ERC20_ABI,
         functionName: 'symbol',
-        address: token ? `0x${token.substring(2, token.length)}` : ''
+        address: token ? formatAddress(token) : undefined
       },
       {
         abi: ERC20_ABI,
         functionName: 'decimals',
-        address: token ? `0x${token.substring(2, token.length)}` : ''
+        address: token ? formatAddress(token) : undefined
       }
     ]
   });
 
   const getTokenBalance = () => {
-    const e: ContractCallData = Object.values(payload.data);
-    const tokenSymbol: ContractCallParameter = e[1].result;
-    const tokenDecimals: ContractCallParameter = e[2].result;
-    const tokenBalance: ContractCallParameter = e[0].result;
+    if (payload.data) {
+      const e: Array<ContractCallReturn> = Object.values(payload.data);
 
-    if (tokenBalance > 0) {
-      const value = Number(tokenBalance) / Math.pow(10, tokenDecimals);
+      const symbol: ContractCallResult = e[1].result;
+      const decimals: ContractCallResult = e[2].result;
+      const balance: ContractCallResult = e[0].result;
+
+      const value = Number(balance) / Math.pow(10, Number(decimals));
 
       return {
-        value: tokenBalance,
-        decimals: tokenDecimals,
+        value: balance as bigint,
+        symbol: symbol as string,
+        decimals: decimals as number,
         formatted: formatNumber(value, 2),
-        symbol: tokenSymbol
       }
-    } else {
-      return {
-        value: 0n,
-        decimals: tokenDecimals,
-        formatted: '0.00',
-        symbol: tokenSymbol
-      }
+    }
+    return {
+      value: BigInt(0),
+      symbol: '',
+      decimals: 0,
+      formatted: '0.00',
     }
   }
 
