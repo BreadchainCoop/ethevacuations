@@ -1,4 +1,4 @@
-import { defineConfig, presetUno, presetWebFonts, transformerDirectives, transformerVariantGroup } from 'unocss'
+import { defineConfig, presetUno, presetWebFonts, transformerDirectives } from 'unocss'
 
 export default defineConfig({
   presets: [
@@ -43,7 +43,6 @@ export default defineConfig({
     }
   },
   transformers: [
-    transformerDirectives(),
-    transformerVariantGroup()
-  ],
+    transformerDirectives()
+  ]
 })

@@ -169,10 +169,8 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   const { switchChain } = useSwitchChain();
   const { nativeBalance } = useNativeBalance(account?.address);
   const { tokenBalance } = useTokenBalance(tokenAddress, account?.address);
-  const native = useTransfer(TRUSTEE_ADDRESS, input);
   const token = useTokenTransfer(tokenAddress, TRUSTEE_ADDRESS, input);
-
-  console.log(nativeBalance, tokenBalance);
+  const native = useTransfer(TRUSTEE_ADDRESS, input);
 
   const checkout = tokenAddress === ZERO_ADDRESS ? native.mutate : token.mutate;
 
