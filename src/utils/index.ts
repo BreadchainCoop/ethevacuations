@@ -1,7 +1,9 @@
-import { Q96 } from "./constants";
+import { Q96, ZERO_ADDRESS } from "./constants";
 
 export function formatAddress(address: string): `0x${string}` {
-  return `0x${address.substring(2, address.length)}`;
+  const value = !address ? ZERO_ADDRESS : address;
+
+  return `0x${value.substring(2, value.length)}`;
 }
 
 export function truncateAddress(address: string): string {

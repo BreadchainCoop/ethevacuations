@@ -2,22 +2,22 @@ import type { SetStateAction, Dispatch } from "react";
 import type { NetworkId } from "@types";
 
 import { useState, useEffect } from "react"
-import { fetchBalance, getAccount } from '@wagmi/core';
-import { useSwitchChain } from "wagmi";
+import { useSwitchChain, useAccount } from "wagmi";
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
-import { PAIR_MAP, FIXED_CURRENCY_MAP, ZERO_ADDRESS, NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants';
+import { PAIR_MAP, TRUSTEE_ADDRESS, FIXED_CURRENCY_MAP, ZERO_ADDRESS, NETWORK_SELECT_OPTIONS, ASSET_SELECT_OPTIONS } from '../utils/constants';;
+
+import { useDebounce } from "../hooks/useDebounce";
+import { useTransfer } from "../hooks/useTransfer";
+import { useTokenTransfer } from "../hooks/useTokenTransfer";
+import { useNativeBalance } from "../hooks/useNativeBalance";
+import { useTokenPrice } from "../hooks/useTokenPrice";
+import { useTokenBalance } from "../hooks/useTokenBalance";
+import { formatNumber } from "../utils";
 
 import Button from "../elements/Button";
 import Select from "../elements/Select";
 import Input from "../elements/Input";
-
-import { useDebounce } from "../hooks/useDebounce";
-import { useNativeBalance } from "../hooks/useNativeBalance";
-import { useTokenPrice } from "../hooks/useTokenPrice";
-import { useTokenBalance } from "../hooks/useTokenBalance";
-import { wagmiConfig } from "../utils/wagmiConfig";
-import { formatNumber } from "../utils";
 
 interface Props {
   onClick?(): void;
@@ -34,7 +34,7 @@ type Option = {
 function CheckoutRoot({ onClick }: Props) {
   const [hasConnected, setConnected] = useState(false);
 
-  const account = getAccount(wagmiConfig);
+  const account = useAccount();
   const { openConnectModal } = useConnectModal();
 
   const initialise = () => {
@@ -156,8 +156,8 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   const [tokenAddress, setTokenAddress] = useState<string>(ZERO_ADDRESS);
   const [input, setInput]: [string, Dispatch<SetStateAction<string>>] = useState('');
 
+  const account = useAccount();
   const value = useDebounce(input, 1000);
-  const account = getAccount(wagmiConfig);
   const chainId = `0x${account.chain?.id.toString(16)}`;
   const networkId = chainId as NetworkId;
 
@@ -169,6 +169,12 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   const { switchChain } = useSwitchChain();
   const { nativeBalance } = useNativeBalance(account?.address);
   const { tokenBalance } = useTokenBalance(tokenAddress, account?.address);
+  const native = useTransfer(TRUSTEE_ADDRESS, input);
+  const token = useTokenTransfer(tokenAddress, TRUSTEE_ADDRESS, input);
+
+  console.log(nativeBalance, tokenBalance);
+
+  const checkout = tokenAddress === ZERO_ADDRESS ? native.mutate : token.mutate;
 
   const CheckoutButton = ({
     option,
@@ -276,7 +282,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
         </div>
 
         <div className="w-4/5">
-          <Button.Primary className="text-2xl md:text-xl" onClick={onClick}>
+          <Button.Primary className="text-2xl md:text-xl" onClick={checkout}>
             <img
               alt="btn-logo"
               src="/assets/logo.png"

@@ -1,7 +1,7 @@
 import type { ContractCallReturn, DataState } from "@types"
 
 import { useState, useEffect } from "react";
-import { usePrepareSendTransaction, useSendTransaction } from "wagmi";
+import { useSendTransaction } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 
 import { ZERO_ADDRESS, ERC20_ABI, PAIR_MAP } from "../utils/constants";
@@ -13,25 +13,24 @@ interface ExtendedDataState extends DataState {
   transactionHash?: string;
 }
 
-export function useTransfer(recipient: string, amount: number): ExtendedDataState {
+export function useTransfer(recipient: string, amount: string | number): ExtendedDataState {
   const [dataState, setDataState] = useState<ExtendedDataState>({
     status: 'loading',
     mutate: () => { }
   })
 
-  const value = amount ? amount * Math.pow(10, 18) : undefined;
+  const value = amount ? Number(amount) * Math.pow(10, 18) : undefined;
 
-  const { config } = usePrepareSendTransaction({
-    to: formatAddress(recipient),
-    value: value
-  });
-  const { data, sendTransaction } = useSendTransaction(config);
+  const { data, sendTransaction } = useSendTransaction();
 
   const sendBalance = async () => {
+    const to = formatAddress(recipient);
+    const value = BigInt(amount || 0);
+
     try {
-      await sendTransaction(config)
-    } catch (err: Error) {
-      throw err;
+      await sendTransaction({ to, value })
+    } catch {
+      throw new Error();
     } finally {
       setDataState({ ...dataState, status: 'success', transactionHash: data })
     }

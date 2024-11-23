@@ -1,21 +1,19 @@
 import { useState } from "react";
 
-import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { fetchBalance, getAccount } from '@wagmi/core';
-import { useSwitchChain } from "wagmi";
-
 import clsx from "clsx";
+import { useAccount, useSwitchChain } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+
 import Button from "../elements/Button";
 import Modal from "../elements/Modal";
 
 import { PAGE_WRAP, NETWORK_MAP } from "../utils/constants";
-import { wagmiConfig } from '../utils/wagmiConfig';
 import { truncateAddress } from "../utils";
 
 export function Navigation() {
   const [showModal, setShow] = useState(false);
 
-  const account = getAccount(wagmiConfig);
+  const account = useAccount();
   const { chains, switchChain } = useSwitchChain();
   const { openConnectModal } = useConnectModal();
 

@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
 import MicroModal from 'micromodal';
+import { useEffect, useState, useRef } from "react";
 
 interface Props {
   id: string;

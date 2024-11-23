@@ -16,7 +16,7 @@ interface ExtendedDataState extends DataState {
   transactionHash?: string;
 }
 
-export function useTokenTransfer(token: string, recipient: string, amount: number): ExtendedDataState {
+export function useTokenTransfer(token: string, recipient: string, amount: string | number): ExtendedDataState {
   const [dataState, setDataState] = useState<ExtendedDataState>({
     status: 'loading',
     tokenAddress: token,
@@ -28,25 +28,26 @@ export function useTokenTransfer(token: string, recipient: string, amount: numbe
   const payload: UseReadContractReturnType = useReadContract({
     abi: ERC20_ABI,
     functionName: 'decimals',
-    address: address ? formatAddress(address) : undefined
+    address: formatAddress(token)
   })
 
   const sendBalance = async () => {
     if (payload.data) {
+      const input = Number(amount || 0);
       const decimals: ContractCallReturn = payload.data;
-      const value: Number = amount * Math.pow(10, decimals as number);
+      const value = input * Math.pow(10, decimals as number);
 
       try {
         await writeContract({
           abi: ERC20_ABI,
-          address: ,
-          functionName 'transfer',
-          args: [recipient, amount]
+          address: formatAddress(token),
+          functionName: 'transfer',
+          args: [recipient, BigInt(value)]
         })
-      } catch (err: Error) {
-        throw err;
+      } catch {
+        throw new Error();
       } finally {
-        setDataState({ status: 'success', txHash: data })
+        setDataState({ ...dataState, status: 'success', transactionHash: data })
       }
     }
   }
