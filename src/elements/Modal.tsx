@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 
 interface Props {
   id: string;
-  title: string;
+  title?: string;
   isOpen: boolean;
   onClose(): void;
   children: React.ReactNode;

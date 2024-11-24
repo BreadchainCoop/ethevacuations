@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 import Checkout from "./components/Checkout";
 import Button from "./elements/Button";
-import Layout from "./components/Layout";
+import Providers from "./components/Providers";
 import Modal from "./elements/Modal";
 import { Footer } from "./components/Footer";
 import { Donations } from "./components/Donations";
@@ -15,12 +15,21 @@ import { formatNumber } from "./utils";
 import "@rainbow-me/rainbowkit/styles.css";
 
 export default function Home() {
+  const [showModal, setShowModal] = useState(false)
   const [checkoutCanvas, setCanvas] = useState(<></>)
   const [checkoutStep, setStep] = useState(0)
 
   const forwardStep = () => setStep(checkoutStep + 1)
 
   const backwardStep = () => setStep(checkoutStep - 1)
+
+  const triggerModal = () => setShowModal(!showModal)
+
+  const initiateStep = () => {
+    if (window.innerWidth < 600) setShowModal(true);
+
+    forwardStep();
+  }
 
   const finalStep = () => setStep(0);
 
@@ -38,7 +47,7 @@ export default function Home() {
         break;
       default:
         setCanvas(
-          <Checkout.Root onClick={forwardStep} />
+          <Checkout.Root onClick={initiateStep} />
         );
         break;
     }
@@ -92,7 +101,16 @@ export default function Home() {
           </section>
           <section className="w-full flexbox">
             <div className="card px-0 h-auto md:w-8/10 lg:w-6/10">
-              {checkoutCanvas}
+              {window.innerWidth > 600 || checkoutStep === 0
+                ? checkoutCanvas : (
+                  <Modal.Root
+                    id="drawer"
+                    isOpen={showModal}
+                    onClose={finalStep}
+                  >
+                    <Modal.Content>{checkoutCanvas}</Modal.Content>
+                  </Modal.Root >
+                )}
             </div>
           </section>
           <section className="md:mt-[-400px] lg:mt-[-700px]"></section>
@@ -103,8 +121,5 @@ export default function Home() {
   );
 }
 
-ReactDOM.render(
-  <Layout><Home /></Layout>,
-  document.getElementById("root") || document.body
-)
+ReactDOM.render(<Providers><Home /></Providers>, document.getElementById("root") || document.body);
 

@@ -236,7 +236,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           />
         </div>
 
-        <div className="w-9/10 md:w-3/5 lg:w-2/5 md:px-0 flexbox gap-3 mr-5">
+        <div className="w-9/10 md:w-3/5 lg:w-2/5 md:px-0 flexbox gap-3 mx-auto">
           <label className="lg:ml-6 text-neutral-500">
             Click for a custom amount
           </label>
@@ -251,7 +251,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             <span>{tokenAddress === ZERO_ADDRESS ? nativeBalance.formatted : tokenBalance.formatted}</span>
             <span>&nbsp;{tokenAddress === ZERO_ADDRESS ? nativeBalance.symbol : tokenBalance.symbol}</span>
           </label>
-          <label className="absolute lg:ml-6 xl:ml-8 text-lg font-bold mt-28">
+          <label className="absolute ml-4 lg:ml-6 xl:ml-8 text-lg font-bold mt-28">
             $ {formatNumber(tokenAddress !== ZERO_ADDRESS
               ? (FIXED_CURRENCY_MAP[chainId][tokenAddress] ? tokenPrice * inputValue : tokenPrice * ethPrice * inputValue)
               : ethPrice * inputValue

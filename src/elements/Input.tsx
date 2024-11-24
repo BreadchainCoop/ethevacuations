@@ -6,17 +6,17 @@ interface Props {
   prefix: string;
   title?: string;
   inputType: string;
-  onChange: Dispatch<SetStateAction<string>>;
+  onChange: (value: string) => void;
 }
 
 function CircularInput({ title, onChange, prefix, inputType, value }: Props) {
   const isMobile = window.innerWidth < 540;
   const inputRef = useRef<HTMLInputElement>(null);
   const [prefixPosition, setPrefixPosition] = useState(0);
+  const [inputPaddingLeft, setInputPaddingLeft] = useState("10px");
 
   useEffect(() => {
     if (inputRef.current) {
-      // Create a temporary span to measure the text width
       const span = document.createElement('span');
       span.style.visibility = 'hidden';
       span.style.position = 'absolute';
@@ -25,27 +25,37 @@ function CircularInput({ title, onChange, prefix, inputType, value }: Props) {
       span.innerText = value || '';
       document.body.appendChild(span);
 
-      // Calculate the position
       const textWidth = span.offsetWidth;
+      const prefixSpan = document.createElement('span');
+      prefixSpan.style.visibility = 'hidden';
+      prefixSpan.style.position = 'absolute';
+      prefixSpan.style.fontSize = window.getComputedStyle(inputRef.current).fontSize;
+      prefixSpan.style.fontFamily = window.getComputedStyle(inputRef.current).fontFamily;
+      prefixSpan.innerText = prefix;
+      document.body.appendChild(prefixSpan);
+
+      const prefixWidth = prefixSpan.offsetWidth;
       document.body.removeChild(span);
+      document.body.removeChild(prefixSpan);
 
-      // Get input's padding and width
-      const inputStyles = window.getComputedStyle(inputRef.current);
-      const inputPadding = parseFloat(inputStyles.paddingLeft);
       const inputWidth = inputRef.current.offsetWidth;
+      const totalContentWidth = textWidth + prefixWidth; // 16px gap between text and prefix
+      const textStartPosition = (inputWidth - totalContentWidth) / 3;
 
-      // Center both the text and prefix
-      const totalContentWidth = textWidth + span.offsetWidth + (!isMobile ? 14 : 45); // 8px gap
-      const startPosition = (inputWidth - totalContentWidth) / 2 + (!isMobile ? 0 : 30);
-      const position = startPosition + textWidth - (!isMobile ? 14 : 45); // 8px gap between value and prefix
-      const referencePosition = inputRef.current.value.length < 7 && prefix?.length <= 4 && isMobile ? position - 40 : position;
+      // Adjust padding to maintain center alignment
+      const newPaddingLeft = `${textStartPosition}px`;
+      setInputPaddingLeft(newPaddingLeft);
 
-      setPrefixPosition(referencePosition);
+      // Calculate prefix position relative to centered text
+      const newPrefixPosition = textStartPosition + textWidth + 8; // 8px gap
+      setPrefixPosition(newPrefixPosition);
     }
-  }, [value]);
+  }, [value, prefix]);
 
   return (
-    <div className="relative w-full text-ellipsis">
+    <div
+      style={{ overflowX: 'hidden' }}
+      className="relative w-full text-ellipsis text-ellipsis border-solid border-[2px] border-black/10 bg-white rounded-[10px] pr-6">
       <input
         ref={inputRef}
         type={inputType}
@@ -53,7 +63,8 @@ function CircularInput({ title, onChange, prefix, inputType, value }: Props) {
         value={value === null ? '' : value}
         min={inputType === 'number' ? '0' : ''}
         onChange={(e) => onChange(e.target.value)}
-        className="flex w-full text-ellipsis border-black/10 bg-white font-light font-sans text-left md:text-center text-4xl md:text-[28px] pl-6 pr-0 md:pl-0 md:pr-6 lg:pr-14 pb-16 pt-7 rounded-[10px] focus:outline-none"
+        style={{ paddingLeft: inputPaddingLeft }}
+        className="flex w-full border-none bg-white font-light font-sans text-left text-4xl md:text-[28px] pb-16 pt-7 rounded-[10px] focus:outline-none"
       />
       <span
         className="absolute top-12 translate-y-[-18px] text-gray-500 font-light font-sans text-4xl md:text-[28px] pointer-events-none transition-all duration-200"
@@ -61,11 +72,12 @@ function CircularInput({ title, onChange, prefix, inputType, value }: Props) {
       >
         {prefix}
       </span>
-    </div>
+    </div >
   );
 }
-
 
 export default {
   Circular: CircularInput
 }
+
+
