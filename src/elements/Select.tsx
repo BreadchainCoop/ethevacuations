@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react'
 import { useSelect } from 'downshift'
 import clsx from "clsx";
@@ -12,7 +13,7 @@ interface Props {
   label: string;
   error?: boolean;
   options: Option[];
-  defaultValue?: number;
+  defaultValue?: any | undefined;
   onSelect(e: string | undefined): void;
 }
 
@@ -23,6 +24,7 @@ export default function Select({
   defaultValue,
   options
 }: Props) {
+  const [selectionOptions, setOptions] = useState<Array<Option>>([]);
   const {
     isOpen,
     getToggleButtonProps,
@@ -33,17 +35,22 @@ export default function Select({
     highlightedIndex,
     getItemProps,
   } = useSelect({
-    items: options,
+    items: selectionOptions,
     itemToString: (item: Option | null) => item ? item.title : '',
   })
 
   useEffect(() => {
-    if (defaultValue) selectItem(options[defaultValue])
-  }, [, defaultValue])
+    if (options) {
+      if (defaultValue) selectItem(defaultValue)
+
+      setOptions(options)
+    }
+  }, [, options, defaultValue])
 
   useEffect(() => {
-    onSelect(selectedItem?.id)
-  }, [selectedItem])
+    if (selectedItem) onSelect(selectedItem?.id)
+  }, [, options, selectedItem])
+
 
   return (
     <div className="w-full relative">
@@ -59,10 +66,10 @@ export default function Select({
             <div className="flex gap-3">
               <img
                 className="my-auto w-[30px] h-[30px]"
-                src={`${selectedItem ? selectedItem.logo : options[defaultValue || 0].logo}`}
+                src={`${selectedItem ? selectedItem.logo : defaultValue.logo}`}
               />
               <label className="my-auto leading–[30px] text-xl md:text-[16px]">
-                {selectedItem ? selectedItem.title : options[defaultValue || 0].title}
+                {selectedItem ? selectedItem.title : defaultValue.title}
               </label>
             </div>
           </span>

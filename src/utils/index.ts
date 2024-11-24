@@ -10,8 +10,13 @@ export function truncateAddress(address: string): string {
   return `${address.slice(0, 5)}...${address.slice(address.length - 5)} `;
 }
 
-export function formatNumber(n: number | string, d: number) {
-  return n.toLocaleString('en', { minimumFractionDigits: d });
+export function formatNumber(n: number | string, d: number): string {
+  if (typeof n === 'string') {
+    return Number(n).toLocaleString('en', { minimumFractionDigits: d });
+  } else {
+    return n.toFixed(d).toString();
+  }
+
 }
 
 export function formatV2Rate(rX: string, rY: string, dX: number, dY: number): number {

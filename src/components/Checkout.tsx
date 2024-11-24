@@ -1,5 +1,5 @@
 import type { SetStateAction, Dispatch } from "react";
-import type { NetworkId } from "@types";
+import type { NetworkId, Token } from "@types";
 
 import { useState, useEffect } from "react"
 import { useSwitchChain, useAccount } from "wagmi";
@@ -30,6 +30,27 @@ type Option = {
   title: string;
   logo: string;
 }
+
+const CheckoutButton = ({
+  option,
+  onClick
+}: {
+  option: number;
+  onClick?(): void;
+}) => (
+  <button
+    onClick={onClick}
+    className="border-[1px] border-black/10 bg-white rounded-[25px] shadow-2xl py-2 px-4 hover:bg-secondary/80 hover:translate-y-[-5px]"
+  >
+    <span className="float-left mr-2">
+      <img
+        src="/assets/logo.png"
+        className="frame h–[35px] w-[35px]"
+      />
+    </span>
+    <span className="font-bold text-xl">{option}</span>
+  </button>
+)
 
 function CheckoutRoot({ onClick }: Props) {
   const [hasConnected, setConnected] = useState(false);
@@ -151,11 +172,24 @@ function CheckoutReceipt({ onDismiss, onClick }: Props) {
   )
 }
 
+interface NetworkInfo {
+  selectionIndex: number;
+  currencyPrefix?: string
+  assetOptions: Array<Token>;
+  defaultAsset: number | undefined;
+}
+
+interface AssetSelection {
+  default: undefined | number;
+  assets: Array<Token>;
+}
+
 function CheckoutOrder({ onClick, onDismiss }: Props) {
   const [checkoutTotal, setCheckoutTotal] = useState(0);
-  const [currencyPrefix, setCurrencyPrefix] = useState<string | undefined>();
   const [selectionIndex, setSelectionIndex] = useState(0);
   const [tokenAddress, setTokenAddress] = useState<string>(ZERO_ADDRESS);
+  const [currencyPrefix, setCurrencyPrefix] = useState<string | undefined>();
+  const [assetSelection, setAssetSelection] = useState<AssetSelection>({ default: undefined, assets: [] });
   const [input, setInput]: [string, Dispatch<SetStateAction<string>>] = useState('');
 
   const account = useAccount();
@@ -163,77 +197,111 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   const chainId = `0x${account.chain?.id.toString(16)}`;
   const networkId = chainId as NetworkId;
 
-  const x = useTokenPrice(networkId, ZERO_ADDRESS, 6);
-  const y = useTokenPrice(networkId, tokenAddress, 18);
-  const ethPrice = x.isInvertedPair ? Math.pow(x.tokenPrice, -1) : x.tokenPrice;
-  const tokenPrice = y.isInvertedPair ? Math.pow(y.tokenPrice, -1) : y.tokenPrice;
-
   const { switchChain } = useSwitchChain();
   const { nativeBalance } = useNativeBalance(account?.address);
   const { tokenBalance } = useTokenBalance(tokenAddress, account?.address);
   const token = useTokenTransfer(tokenAddress, TRUSTEE_ADDRESS, input);
   const native = useTransfer(TRUSTEE_ADDRESS, input);
 
+  const x = useTokenPrice(networkId, ZERO_ADDRESS, 6);
+  const y = useTokenPrice(networkId, tokenAddress, 18);
+  const ethPrice = x.isInvertedPair ? Math.pow(x.tokenPrice, -1) : x.tokenPrice;
+  const tokenPrice = y.isInvertedPair ? Math.pow(y.tokenPrice, -1) : y.tokenPrice;
+
   const checkout = tokenAddress === ZERO_ADDRESS ? native.mutate : token.mutate;
 
-  const CheckoutButton = ({
-    option,
-    onClick
-  }: {
-    option: number;
-    onClick?(): void;
-  }) => (
-    <button
-      onClick={onClick}
-      className="border-[1px] border-black/10 bg-white rounded-[25px] shadow-2xl py-2 px-4 hover:bg-secondary/80 hover:translate-y-[-5px]"
-    >
-      <span className="float-left mr-2">
-        <img
-          src="/assets/logo.png"
-          className="frame h–[35px] w-[35px]"
-        />
-      </span>
-      <span className="font-bold text-xl">{option}</span>
-    </button>
-  )
+  const getNetworkInfo = (): NetworkInfo | undefined => {
+    const networkOption = NETWORK_SELECT_OPTIONS.find((option) => option.id === chainId);
 
-  useEffect(() => {
-    const i = NETWORK_SELECT_OPTIONS.find((e) => e.id === chainId);
+    if (!networkOption) return;
 
-    if (i) {
-      const e = ASSET_SELECT_OPTIONS.find((e) => i.logo === e.logo);
+    const assetOptions = ASSET_SELECT_OPTIONS.filter((asset) => asset.chainId === chainId);
+    const defaultAsset = assetOptions.find((asset) => asset.id === ZERO_ADDRESS);
+    var defaultSelection;
 
-      if (e) setCurrencyPrefix(e.title);
+    if (defaultAsset) defaultSelection = assetOptions.indexOf(defaultAsset);
 
-      setSelectionIndex(NETWORK_SELECT_OPTIONS.indexOf(i));
-    }
-  }, [, account.chain?.id])
+    return {
+      currencyPrefix: defaultAsset?.title,
+      selectionIndex: NETWORK_SELECT_OPTIONS.indexOf(networkOption),
+      defaultAsset: defaultSelection,
+      assetOptions
+    };
+  };
 
-  useEffect(() => {
-    if (
-      nativeBalance.symbol !== '' && tokenBalance.symbol !== '' &&
-      (nativeBalance.symbol !== currencyPrefix || tokenBalance.symbol !== currencyPrefix)
-    ) {
-      if (tokenAddress === ZERO_ADDRESS) setCurrencyPrefix(nativeBalance.symbol);
-      else setCurrencyPrefix(tokenBalance.symbol);
-    }
-  }, [tokenAddress, nativeBalance, tokenBalance])
+  const shouldUpdateCurrencyPrefix = (): boolean => {
+    if (nativeBalance.symbol === '' || tokenBalance.symbol === '') return false;
 
+    const isNativeToken = tokenAddress === ZERO_ADDRESS;
+    const currentSymbolMismatch = isNativeToken
+      ? nativeBalance.symbol !== currencyPrefix
+      : tokenBalance.symbol !== currencyPrefix;
 
-  useEffect(() => {
+    return currentSymbolMismatch;
+  };
+
+  const calculateCheckoutTotal = (input: string): number => {
     const inputValue = Number(input || 0);
 
-    if (tokenAddress !== ZERO_ADDRESS) {
-      const tokenAmountPrice = tokenPrice * inputValue;
-      const tokenEthPrice = tokenAmountPrice * ethPrice;
-      const isFixedCurrency = FIXED_CURRENCY_MAP[chainId][tokenAddress];
-
-      setCheckoutTotal(isFixedCurrency ? tokenAmountPrice : tokenEthPrice);
-    } else {
-      setCheckoutTotal(ethPrice * inputValue);
+    if (tokenAddress === ZERO_ADDRESS) {
+      return ethPrice * inputValue;
     }
 
-  }, [input, ethPrice, tokenPrice])
+    const tokenAmountPrice = tokenPrice * inputValue;
+    const isFixedCurrency = FIXED_CURRENCY_MAP[chainId][tokenAddress];
+
+    return isFixedCurrency ? tokenAmountPrice : tokenAmountPrice * ethPrice;
+  };
+
+  const calculateProceedUnitAmount = (uints: number): number => {
+    const isFixedCurrency = FIXED_CURRENCY_MAP[chainId][tokenAddress];
+    const uintTotalCost = Number(process.env.REACT_APP_PROCEED_UNIT || 2500) * uints;
+    const selectionCost = tokenAddress === ZERO_ADDRESS ? ethPrice : tokenPrice * ethPrice;
+
+    return isFixedCurrency ? uintTotalCost : uintTotalCost / selectionCost;
+  }
+
+  const setCheckoutAmount = (e: number) => {
+    let decimals = 3;
+    const isFixedCurrency = FIXED_CURRENCY_MAP[chainId][tokenAddress];
+
+    if (isFixedCurrency) decimals = 2;
+    if (tokenAddress === ZERO_ADDRESS) decimals = 4;
+
+    setInput(formatNumber(calculateProceedUnitAmount(e), decimals))
+  }
+
+  useEffect(() => {
+    if (shouldUpdateCurrencyPrefix()) {
+      const newPrefix = tokenAddress === ZERO_ADDRESS
+        ? nativeBalance.symbol
+        : tokenBalance.symbol;
+      setCurrencyPrefix(newPrefix);
+    }
+  }, [tokenAddress, nativeBalance.symbol, tokenBalance.symbol]);
+
+  useEffect(() => {
+    setCheckoutTotal(calculateCheckoutTotal(input));
+  }, [input, ethPrice, tokenPrice, tokenAddress, chainId]);
+
+  useEffect(() => {
+    const networkInfo = getNetworkInfo();
+
+    if (networkInfo) {
+      setSelectionIndex(networkInfo.selectionIndex);
+      if (networkInfo.currencyPrefix) {
+        setCurrencyPrefix(networkInfo.currencyPrefix);
+      }
+      if (networkInfo.assetOptions) {
+        setAssetSelection({
+          default: networkInfo.defaultAsset,
+          assets: networkInfo.assetOptions
+        })
+      }
+    }
+  }, [, account.chain?.id]);
+
+  console.log(assetSelection);
 
   return (
     <div className="pt-8 pb-11 px-2 sm:px-0">
@@ -254,15 +322,15 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
         <div className="w-9/10 md:w-7/10 lg:8/10 grid grid-cols-1 md:grid-cols-2 py-2 px-4 gap-4">
           <Select
             label="Network"
-            defaultValue={selectionIndex}
             options={NETWORK_SELECT_OPTIONS}
+            defaultValue={NETWORK_SELECT_OPTIONS[selectionIndex || 0]}
             onSelect={(chainId: string) => switchChain({ chainId: parseInt(chainId) })}
           />
           <Select
             label="Token"
-            defaultValue={0}
+            options={assetSelection.assets}
             onSelect={(e: string) => setTokenAddress(e || ZERO_ADDRESS)}
-            options={ASSET_SELECT_OPTIONS.filter((e) => e.chainId === chainId)}
+            defaultValue={assetSelection.default || ASSET_SELECT_OPTIONS[0]}
           />
         </div>
 
@@ -283,7 +351,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             <span>&nbsp;{currencyPrefix}</span>
           </label>
           <label className="absolute ml-4 text-lg font-bold mt-28">
-            $ {formatNumber(checkoutTotal, 2)}
+            $ {formatNumber(`${checkoutTotal.toFixed(2)}`, 2)}
           </label>
         </div>
 
@@ -292,7 +360,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             {[1, 2, 5].map((e: number) => (
               <CheckoutButton
                 option={e}
-                onClick={() => setInput(formatNumber(e, 3))}
+                onClick={() => setCheckoutAmount(e)}
               />
             ))}
           </div>
@@ -303,7 +371,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
                 className="frame h–[35px] w-[35px]"
               />
             </span>
-            <span className="float-center text-right font-lg"> =&nbsp;&nbsp;One life ($0.00)</span>
+            <span className="float-center text-right font-lg"> =&nbsp;&nbsp;One life (${Number(process.env.REACT_APP_PROCEED_UNIT || 0).toLocaleString('en', { minimumFractionDigits: 0 })})</span>
           </div>
         </div>
 
