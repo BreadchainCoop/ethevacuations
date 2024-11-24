@@ -51,13 +51,14 @@ export function useTokenPrice(chainId: NetworkId, address: string, decimals: num
       const e: Array<ContractCallReturn> = Object.values(payload.data);
 
       return isUniswapV2 ? getV2TokenPrice(e) : getV3TokenPrice(e)
-    };
+    }
+    return 0;
   }
 
   const { data, isError, error } = useQuery({
     queryKey: [`getTokenPrice(${address})`],
     queryFn: () => getTokenPrice(),
-    refetchInterval: 1000
+    refetchInterval: 500
   })
 
   useEffect(() => {
@@ -81,7 +82,7 @@ export function useTokenPrice(chainId: NetworkId, address: string, decimals: num
         tokenPrice: 0
       })
     }
-  }, [address])
+  }, [, address])
 
   useEffect(() => {
     if (FIXED_CURRENCY_MAP[chainId][address]) {

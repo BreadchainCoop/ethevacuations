@@ -58,9 +58,9 @@ export function Donations() {
     arbitrumDataStatus,
   ]);
   return (
-    <div className="ml-[50px] lg:ml–[200px] xl:ml-[405px]">
+    <div className="ml-6 lg:ml-22 xl:ml-52">
       <p className="text-2xl font-bold mb-6">Recent Donations</p>
-      <div className="h-[320px] lg:h-[500px] xl:h-[530px] overflow-hidden relative min-w-0">
+      <div className="h-[320px] lg:h-[425px] overflow-hidden relative min-w-0">
         <div className="h-full grid gap-4 overflow-y-scroll">
           {aggData && aggData.map((tx) =>
             <Donation key={`tx_${tx.hash}`} tx={tx} />

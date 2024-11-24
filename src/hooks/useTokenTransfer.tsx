@@ -33,9 +33,11 @@ export function useTokenTransfer(token: string, recipient: string, amount: strin
 
   const sendBalance = async () => {
     if (payload.data) {
-      const input = Number(amount || 0);
+      const i = amount || 0;
+      const e = typeof i === 'string' ? Number(i) : i;
+
       const decimals: ContractCallReturn = payload.data;
-      const value = input * Math.pow(10, decimals as number);
+      const value = e * Math.pow(10, decimals as number);
 
       try {
         await writeContract({
@@ -64,7 +66,7 @@ export function useTokenTransfer(token: string, recipient: string, amount: strin
 
   useEffect(() => {
     setDataState({ ...dataState, mutate: sendBalance });
-  }, [])
+  }, [, amount])
 
   return dataState;
 }

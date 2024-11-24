@@ -24,6 +24,7 @@ export const ASSET_SELECT_OPTIONS: Array<Token> = [
   { id: '0x6810e776880c02933d47db1b9fc05908e5386b96', chainId: '0x1', title: 'GNO', logo: 'assets/tokens/gnosis.png' },
   { id: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', chainId: '0x1', title: 'USDC', logo: 'assets/tokens/usdc.png' },
   { id: '0xdAC17F958D2ee523a2206206994597C13D831ec7', chainId: '0x1', title: 'USDT', logo: 'assets/tokens/usdt.png' },
+  { id: '0x0000000000000000000000000000000000000000', chainId: '0xa', title: 'ETH', logo: 'assets/tokens/ethereum.png' },
   { id: '0x4200000000000000000000000000000000000042', chainId: '0xa', title: 'OP', logo: 'assets/tokens/optimism.png' },
   { id: '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3', chainId: '0x64', title: 'BREAD', logo: 'assets/tokens/bread.png' }
 ];
@@ -70,7 +71,11 @@ export const FIXED_CURRENCY_MAP: CurrencyMap = {
   '0x64': {
     '0x0000000000000000000000000000000000000000': true,
     '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3': true
-  }
+  },
+  '0xa': {},
+  '0x2105': {},
+  '0xa4b1': {},
+  '0x76adf1': {}
 }
 
 export const CHAIN_MAP: Record<string, string> = {

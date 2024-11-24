@@ -28,7 +28,12 @@ export default function Home() {
   const initiateStep = () => {
     if (window.innerWidth < 600) setShowModal(true);
 
-    forwardStep();
+    setStep(1);
+  }
+
+  const dismissModal = () => {
+    setShowModal(false);
+    setStep(0);
   }
 
   const finalStep = () => setStep(0);
@@ -101,19 +106,24 @@ export default function Home() {
           </section>
           <section className="w-full flexbox">
             <div className="card px-0 h-auto md:w-8/10 lg:w-6/10">
-              {window.innerWidth > 600 || checkoutStep === 0
-                ? checkoutCanvas : (
+              {window.innerWidth > 600 ? checkoutCanvas : (
+                <>
+                  <Checkout.Root onClick={initiateStep} />
                   <Modal.Root
                     id="drawer"
                     isOpen={showModal}
-                    onClose={finalStep}
+                    onClose={dismissModal}
                   >
-                    <Modal.Content>{checkoutCanvas}</Modal.Content>
+                    <Modal.Content>
+                      <div className="mt-[-50px]">{checkoutCanvas}</div>
+                    </Modal.Content>
                   </Modal.Root >
-                )}
+                </>
+              )
+              }
             </div>
           </section>
-          <section className="md:mt-[-400px] lg:mt-[-700px]"></section>
+          <section className="md:mt-[-400px] lg:mt-[-475px] xl:mt-[-560px]"></section>
         </div>
         <Footer />
       </main >

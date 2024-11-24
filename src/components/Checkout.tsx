@@ -50,7 +50,7 @@ function CheckoutRoot({ onClick }: Props) {
   }, [, account.address])
 
   return (
-    <div className="flexbox text-center pt-8 pb-11 px-2 gap-8 lg:gap-24">
+    <div className="flexbox text-center pt-8 pb-11 px-2 gap-8 lg:gap-12 xl:gap-18">
       <div>
         <div className="grid justify-center px-4 py-2">
           <span className="font-medium text-xl rounded-full bg-white text-black">
@@ -61,7 +61,7 @@ function CheckoutRoot({ onClick }: Props) {
             <img
               alt="qr-unicode"
               src="assets/qr_code.png"
-              className="frame md:h-[175px] md:w-[175px] lg:h-[225px] lg:w-[225px] xl:w-[300px] xl:h-[300px]"
+              className="frame md:h-[175px] md:w-[175px] lg:h-[225px] lg:w-[225px] xl:w-[250px] xl:h-[250px]"
             />
           </div>
         </div>
@@ -75,7 +75,7 @@ function CheckoutRoot({ onClick }: Props) {
           />
           <label className="pt-2 lg:text-xl">Recommended networks</label>
         </div>
-        <div className="w-full mx-auto mt-2 text-sm text-neutral-500 md:w-2/3,">
+        <div className="w-full mx-auto mt-2 text-sm text-neutral-500 md:w-2/3">
           This address supports tokens on Ethereum, Zora, Arbitrum, Gnosis, Optimism, and Base.
         </div>
       </div>
@@ -152,6 +152,8 @@ function CheckoutReceipt({ onDismiss, onClick }: Props) {
 }
 
 function CheckoutOrder({ onClick, onDismiss }: Props) {
+  const [checkoutTotal, setCheckoutTotal] = useState(0);
+  const [currencyPrefix, setCurrencyPrefix] = useState<string | undefined>();
   const [selectionIndex, setSelectionIndex] = useState(0);
   const [tokenAddress, setTokenAddress] = useState<string>(ZERO_ADDRESS);
   const [input, setInput]: [string, Dispatch<SetStateAction<string>>] = useState('');
@@ -199,11 +201,39 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
     const i = NETWORK_SELECT_OPTIONS.find((e) => e.id === chainId);
 
     if (i) {
+      const e = ASSET_SELECT_OPTIONS.find((e) => i.logo === e.logo);
+
+      if (e) setCurrencyPrefix(e.title);
+
       setSelectionIndex(NETWORK_SELECT_OPTIONS.indexOf(i));
     }
-  }, [, selectionIndex, account.chain?.id])
+  }, [, account.chain?.id])
 
-  const inputValue = isNaN(Number(input)) ? 0 : Number(input);
+  useEffect(() => {
+    if (
+      nativeBalance.symbol !== '' && tokenBalance.symbol !== '' &&
+      (nativeBalance.symbol !== currencyPrefix || tokenBalance.symbol !== currencyPrefix)
+    ) {
+      if (tokenAddress === ZERO_ADDRESS) setCurrencyPrefix(nativeBalance.symbol);
+      else setCurrencyPrefix(tokenBalance.symbol);
+    }
+  }, [tokenAddress, nativeBalance, tokenBalance])
+
+
+  useEffect(() => {
+    const inputValue = Number(input || 0);
+
+    if (tokenAddress !== ZERO_ADDRESS) {
+      const tokenAmountPrice = tokenPrice * inputValue;
+      const tokenEthPrice = tokenAmountPrice * ethPrice;
+      const isFixedCurrency = FIXED_CURRENCY_MAP[chainId][tokenAddress];
+
+      setCheckoutTotal(isFixedCurrency ? tokenAmountPrice : tokenEthPrice);
+    } else {
+      setCheckoutTotal(ethPrice * inputValue);
+    }
+
+  }, [input, ethPrice, tokenPrice])
 
   return (
     <div className="pt-8 pb-11 px-2 sm:px-0">
@@ -231,7 +261,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           <Select
             label="Token"
             defaultValue={0}
-            onSelect={(e: string) => setTokenAddress(e)}
+            onSelect={(e: string) => setTokenAddress(e || ZERO_ADDRESS)}
             options={ASSET_SELECT_OPTIONS.filter((e) => e.chainId === chainId)}
           />
         </div>
@@ -243,19 +273,17 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           <Input.Circular
             inputType="number"
             onChange={setInput}
+            prefix={currencyPrefix}
+            isMobile={window.innerWidth < 600}
             value={input === '' ? null : input}
-            prefix={tokenAddress !== ZERO_ADDRESS ? tokenBalance.symbol : nativeBalance.symbol}
           />
           <label className="lg:ml-6 xl:ml-8 text-neutral-400">
             Balance:&nbsp;
             <span>{tokenAddress === ZERO_ADDRESS ? nativeBalance.formatted : tokenBalance.formatted}</span>
-            <span>&nbsp;{tokenAddress === ZERO_ADDRESS ? nativeBalance.symbol : tokenBalance.symbol}</span>
+            <span>&nbsp;{currencyPrefix}</span>
           </label>
-          <label className="absolute ml-4 lg:ml-6 xl:ml-8 text-lg font-bold mt-28">
-            $ {formatNumber(tokenAddress !== ZERO_ADDRESS
-              ? (FIXED_CURRENCY_MAP[chainId][tokenAddress] ? tokenPrice * inputValue : tokenPrice * ethPrice * inputValue)
-              : ethPrice * inputValue
-              , 2)}
+          <label className="absolute ml-4 text-lg font-bold mt-28">
+            $ {formatNumber(checkoutTotal, 2)}
           </label>
         </div>
 
