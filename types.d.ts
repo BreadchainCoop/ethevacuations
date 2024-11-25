@@ -15,7 +15,7 @@ declare module '@types' {
 
   export type ContractCallResult = unknown | Array<ContractCallParameter>;
 
-  export type NetworkId = '0x1' | '0xa' | '0x64' | '0x2105' | '0x76adf1' | '0xa4b1';
+  export type NetworkId = '0x1' | '0xa' | '0x64' | '0x2105' | '0x76adf1' | '0xa4b1' | '0x89';
 
   export type Network = {
     id: NetworkId;

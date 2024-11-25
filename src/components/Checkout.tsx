@@ -230,7 +230,10 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   };
 
   const shouldUpdateCurrencyPrefix = (): boolean => {
-    if (nativeBalance.symbol === '' || tokenBalance.symbol === '') return false;
+    const shouldntUpdateNative = nativeBalance.symbol === '' && currencyPrefix === nativeBalance.symbol;
+    const shouldntUpdateToken = tokenBalance.symbol === '' && currencyPrefix === tokenBalance.symbol;
+
+    if (shouldntUpdateNative || shouldntUpdateToken) return false;
 
     const isNativeToken = tokenAddress === ZERO_ADDRESS;
     const currentSymbolMismatch = isNativeToken
@@ -265,7 +268,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
     let decimals = 3;
     const isFixedCurrency = FIXED_CURRENCY_MAP[chainId][tokenAddress];
 
-    if (isFixedCurrency) decimals = 2;
+    if (isFixedCurrency) decimals = 0;
     if (tokenAddress === ZERO_ADDRESS) decimals = 4;
 
     setInput(formatNumber(calculateProceedUnitAmount(e), decimals))
@@ -300,8 +303,6 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
       }
     }
   }, [, account.chain?.id]);
-
-  console.log(assetSelection);
 
   return (
     <div className="pt-8 pb-11 px-2 sm:px-0">

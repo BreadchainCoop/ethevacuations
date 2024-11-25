@@ -24,6 +24,11 @@ export const ASSET_SELECT_OPTIONS: Array<Token> = [
   { id: '0x6810e776880c02933d47db1b9fc05908e5386b96', chainId: '0x1', title: 'GNO', logo: 'assets/tokens/gnosis.png' },
   { id: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', chainId: '0x1', title: 'USDC', logo: 'assets/tokens/usdc.png' },
   { id: '0xdAC17F958D2ee523a2206206994597C13D831ec7', chainId: '0x1', title: 'USDT', logo: 'assets/tokens/usdt.png' },
+  { id: '0xaf88d065e77c8cc2239327c5edb3a432268e5831', chainId: '0xa4b1', title: 'USDC', logo: 'assets/tokens/usdc.png' },
+  { id: '0x912ce59144191c1204e64559fe8253a0e49e6548', chainId: '0xa4b1', title: 'ARB', logo: 'assets/tokens/arbitrum.png' },
+  { id: '0x0000000000000000000000000000000000000000', chainId: '0xa4b1', title: 'ETH', logo: 'assets/tokens/ethereum.png' },
+  { id: '0x0000000000000000000000000000000000000000', chainId: '0x2105', title: 'ETH', logo: 'assets/tokens/ethereum.png' },
+  { id: '0x0000000000000000000000000000000000000000', chainId: '0x89', title: 'POL', logo: 'assets/tokens/polygon.png' },
   { id: '0x0000000000000000000000000000000000000000', chainId: '0xa', title: 'ETH', logo: 'assets/tokens/ethereum.png' },
   { id: '0x4200000000000000000000000000000000000042', chainId: '0xa', title: 'OP', logo: 'assets/tokens/optimism.png' },
   { id: '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3', chainId: '0x64', title: 'BREAD', logo: 'assets/tokens/bread.png' }
@@ -33,6 +38,7 @@ export const NETWORK_SELECT_OPTIONS: Array<Network> = [
   { id: '0x1', title: 'Ethereum', logo: 'assets/tokens/ethereum.png' },
   { id: '0x2105', title: 'Base', logo: 'assets/tokens/base.png' },
   { id: '0xa', title: 'Optimisim', logo: 'assets/tokens/optimism.png' },
+  { id: '0x89', title: 'Polygon', logo: 'assets/tokens/polygon.png' },
   { id: '0x76adf1', title: 'Zora', logo: 'assets/tokens/zora.png' },
   { id: '0xa4b1', title: 'Arbitrum', logo: 'assets/tokens/arbitrum.png' },
   { id: '0x64', title: 'Gnosis', logo: 'assets/tokens/gnosis.png' }
@@ -49,6 +55,11 @@ export const PAIR_MAP: TokenPairMap = {
     inverted: true,
     version: '3'
   },
+  '0x912ce59144191c1204e64559fe8253a0e49e6548': {
+    address: '0xC6F780497A95e246EB9449f5e4770916DCd6396A',
+    inverted: false,
+    version: '3'
+  },
   '0x0000000000000000000000000000000000000000': {
     '0x1': {
       address: '0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc',
@@ -60,6 +71,22 @@ export const PAIR_MAP: TokenPairMap = {
       inverted: true,
       version: '3'
     },
+    '0xa4b1': {
+      address: '0xC6962004f452bE9203591991D15f6b388e09E8D0',
+      inverted: false,
+      version: '3'
+    },
+    '0x2105': {
+      address: '0xd0b53D9277642d899DF5C87A3966A349A798F224',
+      inverted: false,
+      verison: '3'
+    },
+    // TODO: Arbitary pricing for native derivative assets
+    '0x89': {
+      address: '0xA4D8c89f0c20efbe54cBa9e7e7a7E509056228D9',
+      inverted: true,
+      version: '3'
+    }
   }
 }
 
@@ -74,7 +101,10 @@ export const FIXED_CURRENCY_MAP: CurrencyMap = {
   },
   '0xa': {},
   '0x2105': {},
-  '0xa4b1': {},
+  '0xa4b1': {
+    '0xaf88d065e77c8cc2239327c5edb3a432268e5831': true
+  },
+  '0x89': {},
   '0x76adf1': {}
 }
 

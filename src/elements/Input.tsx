@@ -56,7 +56,7 @@ function CircularInput({ title, onChange, prefix, inputType, value, isMobile: bo
   return (
     <div
       style={{ overflowX: 'hidden' }}
-      className="relative w-full text-ellipsis text-ellipsis border-solid border-[2px] border-black/10 bg-white rounded-[10px] pr-6 lg:pr-12 xl:pr-28"
+      className="relative w-full text-ellipsis text-ellipsis border-solid border-[2px] border-black/10 bg-white rounded-[10px] pr-6 md:pr-20 lg:pr-12 xl:pr-28"
     >
       <input
         ref={inputRef}
