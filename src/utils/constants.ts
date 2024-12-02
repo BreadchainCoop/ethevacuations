@@ -41,8 +41,25 @@ export const NETWORK_SELECT_OPTIONS: Array<Network> = [
   { id: '0x89', title: 'Polygon', logo: 'assets/tokens/polygon.png' },
   { id: '0x76adf1', title: 'Zora', logo: 'assets/tokens/zora.png' },
   { id: '0xa4b1', title: 'Arbitrum', logo: 'assets/tokens/arbitrum.png' },
-  { id: '0x64', title: 'Gnosis', logo: 'assets/tokens/gnosis.png' }
+  { id: '0x64', title: 'Gnosis', logo: 'assets/tokens/gnosis.png' },
+  { id: '0x89', title: 'Polygon', logo: 'assets/tokens/polygon.png' }
 ];
+
+export const ASSET_TICKER_MAP: Record<string, string> = {
+  '0x0000000000000000000000000000000000000000': 'ETH',
+  '0x6810e776880c02933d47db1b9fc05908e5386b96': 'GNO',
+  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': 'USDC',
+  '0xdac17f958d2ee523a2206206994597c13d831ec7': 'USDT',
+  '0xaf88d065e77c8cc2239327c5edb3a432268e5831': 'USDC',
+  '0x912ce59144191c1204e64559fe8253a0e49e6548': 'ARB',
+  '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3': 'BREAD',
+  '0x0000000000000000000000000000000000001010': 'POL'
+};
+
+export const CURRENCY_MAP: Record<string, string> = {
+  "Gnosis": 'XDAI',
+  "Polygon": 'POL'
+}
 
 export const PAIR_MAP: TokenPairMap = {
   '0x6810e776880c02933d47db1b9fc05908e5386b96': {

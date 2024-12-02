@@ -8,10 +8,10 @@ import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
 
 import { config } from "../utils/provider";
 
-const DUNE_ECHO_API_KEY = process.env.REACT_APP_DUNE_ECHO_API_KEY;
-
-if (!DUNE_ECHO_API_KEY)
+if (!process.env.REACT_APP_DUNE_ECHO_API_KEY)
   throw new Error("DUNE_ECHO_API_KEY not provided");
+
+const DUNE_ECHO_API_KEY = process.env.REACT_APP_DUNE_ECHO_API_KEY;
 
 const queryClient = new QueryClient();
 

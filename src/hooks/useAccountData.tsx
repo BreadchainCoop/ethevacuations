@@ -7,12 +7,21 @@ import { useTransactions } from '@duneanalytics/hooks';
 import { CHAIN_MAP, TRUSTEE_ADDRESS, BALANCE_FROM_BLOCK } from "../utils/constants";
 import { INSTANCE_SUPPORTED_CHAINS } from "../utils/provider";
 
-export function useAccountData(
-  network: keyof typeof CHAIN_MAP,
-  account: string
-): DataState {
+interface ExtendedDataState extends DataState {
+  mutate: () => void;
+  lastOffset: string | null;
+}
+
+export function useAccountData(account: string): ExtendedDataState {
+  const [dataState, setDataState] = useState<ExtendedDataState>({
+    lastOffset: null,
+    status: "loading",
+    mutate: () => { },
+    data: [],
+  });
+
   const {
-    data: transactionData,
+    data,
     isLoading,
     error,
     nextPage,
@@ -20,25 +29,36 @@ export function useAccountData(
     currentPage
   } = useTransactions(account, {
     decode: true,
-    methodId: '0xa9059cbb',
-    chainIds:
-      INSTANCE_SUPPORTED_CHAINS
-        .map(e => e.id)
-        .sort((a, b) => a - b)
-        .join(',')
+    chainIds: INSTANCE_SUPPORTED_CHAINS.map(e => e.id).sort((a, b) => a - b).join(',')
   });
 
-  const [dataState, setDataState] = useState<DataState>({
-    status: "loading",
-    data: [],
-  });
+  const recievedTransactions = data?.transactions
+    .filter((e) => e.transaction_type !== 'Sender');
 
-  const { data } = useQuery({
-    queryKey: [`accountData_${network}`],
-    queryFn: () => { },
-    placeholderData: keepPreviousData,
-    refetchInterval: 600000,
-  });
+  useEffect(() => {
+    if (recievedTransactions && dataState.status === 'loading') {
+      const txs = recievedTransactions
+        .map((tx: any) => ({
+          ...tx,
+          chain_id: `0x${tx.chain_id.toString(16)}`
+        }));
+
+      setDataState({
+        status: 'success',
+        lastOffset: data?.next_offset,
+        mutate: nextPage,
+        data: txs
+      })
+    }
+  }, [recievedTransactions, dataState.status])
+
+  useEffect(() => {
+    if (data && dataState.lastOffset) {
+      if (dataState.lastOffset !== data.next_offset) {
+        setDataState({ ...dataState, status: 'loading' })
+      }
+    }
+  }, [data])
 
   return dataState;
 }
