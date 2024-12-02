@@ -10,6 +10,7 @@
     "build:css": "npx unocss -c uno.config.ts -o public/index.css -w --write-transformed src/**"
   },
   "dependencies": {
+    "@duneanalytics/hooks": "^1.0.8",
     "@rainbow-me/rainbowkit": "^2.1.7",
     "@tanstack/react-query": "^5.37.1",
     "@types/micromodal": "^0.3.5",

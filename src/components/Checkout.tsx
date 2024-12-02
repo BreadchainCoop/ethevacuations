@@ -319,8 +319,8 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           </label>
         </div>
       </div>
-      <div className="w-full flexbox gap-8 mt-4 lg:gap-18">
-        <div className="w-9/10 md:w-7/10 lg:8/10 grid grid-cols-1 md:grid-cols-2 py-2 px-4 gap-4">
+      <div className="w-full flexbox gap-8 mt-4">
+        <div className="w-9/10 grid grid-cols-1 md:grid-cols-2 py-2 px-4 gap-4">
           <Select
             label="Network"
             options={NETWORK_SELECT_OPTIONS}
@@ -335,7 +335,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           />
         </div>
 
-        <div className="w-9/10 md:w-3/5 lg:w-2/5 md:px-0 flexbox gap-3 mx-auto">
+        <div className="w-9/10 md:w-3/5 md:px-0 flexbox gap-3 mx-auto">
           <label className="lg:ml-6 text-neutral-500">
             Click for a custom amount
           </label>

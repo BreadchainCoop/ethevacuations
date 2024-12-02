@@ -63,7 +63,7 @@ export default function Home() {
       <main className={clsx(PAGE_WRAP, "min-h-screen grid grid-cols-1 items-start justify-between gap-y-10 lg:gap-y-6 md:w-4/5")}>
         <Navigation />
         <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 md:gap-2 lg:gap-4 md:grid-cols-2 gap-x-36">
-          <section className="grid grid-cols-1 flex-center gap-4 lg:gap-6">
+          <section className="md:absolute grid grid-cols-1 flex-center gap-4 lg:gap-6 order-1">
             <div className="mx-auto text-left sm:h-auto">
               <h1 className="m-0 p-0 mb-2 text-[33px] font-bold tracking-[-.02em]">
                 Fund evacuations from Gaza with crypto <br></br>
@@ -104,7 +104,7 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <section className="w-full flexbox">
+          <section className="w-full flexbox order-2">
             <div className="card px-0 h-auto md:w-8/10 lg:w-6/10">
               {window.innerWidth > 600 ? checkoutCanvas : (
                 <>
@@ -115,7 +115,9 @@ export default function Home() {
                     onClose={dismissModal}
                   >
                     <Modal.Content>
-                      <div className="mt-[-50px]">{checkoutCanvas}</div>
+                      <div className="mt-[-50px]">
+                        {checkoutCanvas}
+                      </div>
                     </Modal.Content>
                   </Modal.Root >
                 </>
@@ -123,7 +125,7 @@ export default function Home() {
               }
             </div>
           </section>
-          <section className="md:mt-[-400px] lg:mt-[-475px] xl:mt-[-560px]"></section>
+          <section className="order-3 md:order-1 md:mt-70"><h1>DONATIONS</h1></section>
         </div>
         <Footer />
       </main >
