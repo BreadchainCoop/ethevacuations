@@ -17,8 +17,10 @@ const WALLET_CONNECT_PROJECT_ID = process.env.REACT_APP_WALLET_CONNECT_PROJECT_I
 if (!WALLET_CONNECT_PROJECT_ID)
   throw new Error("WALLET_CONNECT_PROJECT_ID not provided");
 
+export const INSTANCE_SUPPORTED_CHAINS = [mainnet, optimism, arbitrum, polygon, base, gnosis, zora];
+
 export const config = createConfig({
-  chains: [mainnet, optimism, arbitrum, polygon, base, gnosis, zora],
+  chains: INSTANCE_SUPPORTED_CHAINS,
   connectors: [
     injected(),
     walletConnect({ projectId: WALLET_CONNECT_PROJECT_ID })

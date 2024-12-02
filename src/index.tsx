@@ -121,11 +121,10 @@ export default function Home() {
                     </Modal.Content>
                   </Modal.Root >
                 </>
-              )
-              }
+              )}
             </div>
           </section>
-          <section className="order-3 md:order-1 md:mt-70"><h1>DONATIONS</h1></section>
+          <section className="order-3 md:order-1 md:mt-70"><Donations /></section>
         </div>
         <Footer />
       </main >

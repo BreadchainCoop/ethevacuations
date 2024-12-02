@@ -2,80 +2,43 @@ import type { DataState } from "@types";
 
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useTransactions } from '@duneanalytics/hooks';
 
-import {
-  CHAIN_MAP,
-  MORALIS_API_BALANCE_CALL,
-  TRUSTEE_ADDRESS,
-  BALANCE_FROM_BLOCK
-} from "../utils/constants";
-
-const MORALIS_API_KEY = process.env.REACT_APP_MORALIS_API_KEY;
-
-if (!MORALIS_API_KEY)
-  throw new Error("MORALIS_API_KEY not provided");
+import { CHAIN_MAP, TRUSTEE_ADDRESS, BALANCE_FROM_BLOCK } from "../utils/constants";
+import { INSTANCE_SUPPORTED_CHAINS } from "../utils/provider";
 
 export function useAccountData(
   network: keyof typeof CHAIN_MAP,
   account: string
 ): DataState {
+  const {
+    data: transactionData,
+    isLoading,
+    error,
+    nextPage,
+    previousPage,
+    currentPage
+  } = useTransactions(account, {
+    decode: true,
+    methodId: '0xa9059cbb',
+    chainIds:
+      INSTANCE_SUPPORTED_CHAINS
+        .map(e => e.id)
+        .sort((a, b) => a - b)
+        .join(',')
+  });
+
   const [dataState, setDataState] = useState<DataState>({
     status: "loading",
     data: [],
   });
 
-  const fetchTransactions = () => {
-    const headers: HeadersInit = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('X-API-Key', MORALIS_API_KEY || '');
-
-    return fetch(
-      MORALIS_API_BALANCE_CALL(TRUSTEE_ADDRESS, CHAIN_MAP[network], BALANCE_FROM_BLOCK),
-      {
-        headers,
-        method: 'GET'
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        return data;
-      })
-      .catch((err) => {
-        console.log(err);;
-        setDataState({ status: 'error', data: [] });
-      });
-  };
-
   const { data } = useQuery({
     queryKey: [`accountData_${network}`],
-    queryFn: () => fetchTransactions(),
+    queryFn: () => { },
     placeholderData: keepPreviousData,
     refetchInterval: 600000,
   });
-
-  useEffect(() => {
-    if (!data) return;
-
-    const parsedData = data.result.length
-      ? data.result
-        .filter((tx: any) => {
-          return (
-            (tx.category === "receive" || tx.category == "token receive") &&
-            !tx.possible_spam &&
-            tx.block_timestamp
-          );
-        })
-        .map((tx: any) => {
-          return {
-            ...tx,
-            chain: network,
-          };
-        })
-      : [];
-
-    setDataState({ status: 'success', data: parsedData });
-  }, [data, account, network]);
 
   return dataState;
 }
