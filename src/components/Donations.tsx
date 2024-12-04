@@ -14,7 +14,7 @@ export function Donations() {
   return (
     <div className="md:ml-6 lg:ml-22 xl:ml-52">
       <p className="text-2xl font-bold mb-6">Recent Donations</p>
-      <div className="h-[300px] lg:h-[425px] overflow-hidden relative min-w-0">
+      <div className="h-[300px] lg:h-[400px] overflow-hidden relative min-w-0">
         <div className="h-full grid gap-4 overflow-y-scroll">
           {txs && txs.map((tx) =>
             <Donation key={`tx_${tx.hash}`} tx={tx} />
@@ -28,14 +28,14 @@ export function Donations() {
 function Donation({ tx }: { tx: any }) {
 
   return (
-    <div className="md:text-lg bg-white rounded-2xl px-4 py-3 flex justify-between gap-4 min-w-0">
+    <div className="md:text-lg bg-white rounded-2xl px-6 py-3 flex justify-between gap-4 min-w-0">
       <div className="col-span-3 min-w-0 text-[#8b8b8b]">
         <div className="inline-flexbox gap-4">
           <img
             className="frame h-[32px] w-[32px]"
             src={`assets/tokens/${tx.chain.toLowerCase()}.png`}
           />
-          <div className="w-full flexbox flex-start text-[10px] md:text-lg">
+          <div className="w-full flexbox flex-start md:text-lg">
             <label className="font-medium">
               {formatDistanceStrict(new Date(tx.block_time), new Date(), { addSuffix: true })}
             </label>

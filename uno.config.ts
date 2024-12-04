@@ -25,7 +25,10 @@ export default defineConfig({
     colors: {
       primary: process.env.REACT_APP_PRIMARY_COLOR || '#ff7777',
       secondary: process.env.REACT_APP_SECONDARY_COLOR || '#ffd0d0',
-      ternary: process.env.REACT_APP_TERNARY_COLOR || '#dd2e44'
+      ternary: process.env.REACT_APP_TERNARY_COLOR || '#dd2e44',
+      error: '#d80000',
+      success: '#1eb16a',
+      warning: '#dead2e'
     },
     breakpoints: {
       sm: '460px',

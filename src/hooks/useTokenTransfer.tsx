@@ -11,16 +11,16 @@ type UseReadContractReturnType = ReturnType<typeof useReadContract>;
 
 interface ExtendedDataState extends DataState {
   error?: string;
-  mutate: () => void;
   tokenAddress: string;
   transactionHash?: string;
+  mutate: () => Promise<void>;
 }
 
 export function useTokenTransfer(token: string, recipient: string, amount: string | number): ExtendedDataState {
   const [dataState, setDataState] = useState<ExtendedDataState>({
     status: 'loading',
     tokenAddress: token,
-    mutate: () => { }
+    mutate: () => new Promise((resolve) => resolve())
   })
 
   const { data, writeContract } = useWriteContract();
@@ -46,10 +46,10 @@ export function useTokenTransfer(token: string, recipient: string, amount: strin
           functionName: 'transfer',
           args: [recipient, BigInt(value)]
         })
+
+        await setDataState({ ...dataState, status: 'success', transactionHash: data })
       } catch {
         throw new Error();
-      } finally {
-        setDataState({ ...dataState, status: 'success', transactionHash: data })
       }
     }
   }

@@ -4,13 +4,14 @@ import { useRef, useState, useEffect } from "react";
 interface Props {
   value: string | null;
   prefix: string | undefined;
+  error?: string | undefined | null;
   title?: string;
   inputType: string;
   isMobile: boolean;
   onChange: (value: string) => void;
 }
 
-function CircularInput({ title, onChange, prefix, inputType, value, isMobile: boolean }: Props) {
+function CircularInput({ title, error, onChange, prefix, inputType, value, isMobile: boolean }: Props) {
   const isMobile = window.innerWidth < 540;
   const inputRef = useRef<HTMLInputElement>(null);
   const [prefixPosition, setPrefixPosition] = useState(0);
@@ -56,7 +57,7 @@ function CircularInput({ title, onChange, prefix, inputType, value, isMobile: bo
   return (
     <div
       style={{ overflowX: 'hidden' }}
-      className="relative w-full text-ellipsis text-ellipsis border-solid border-[2px] border-black/10 bg-white rounded-[10px] pr-6 md:pr-20 lg:pr-12 xl:pr-28"
+      className={`relative w-full text-ellipsis text-ellipsis border-solid border-[2px] border-black/10 bg-white rounded-[10px] pr-6 md:pr-20 lg:pr-12 xl:pr-28 ${error ? 'border-error/80' : ''} `}
     >
       <input
         ref={inputRef}
@@ -75,6 +76,7 @@ function CircularInput({ title, onChange, prefix, inputType, value, isMobile: bo
         {prefix}
       </span>
     </div >
+
   );
 }
 

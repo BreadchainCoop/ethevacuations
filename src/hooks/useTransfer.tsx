@@ -10,14 +10,14 @@ import { formatNumber, formatAddress } from "../utils";
 
 interface ExtendedDataState extends DataState {
   error?: string;
-  mutate: () => void;
+  mutate: () => Promise<void>;
   transactionHash?: string;
 }
 
 export function useTransfer(recipient: string, amount: string | number): ExtendedDataState {
   const [dataState, setDataState] = useState<ExtendedDataState>({
     status: 'loading',
-    mutate: () => { }
+    mutate: () => new Promise((resolve) => resolve())
   })
 
   const { data, sendTransaction } = useSendTransaction();
@@ -28,10 +28,10 @@ export function useTransfer(recipient: string, amount: string | number): Extende
 
     try {
       await sendTransaction({ to, value: parseEther(value) })
+
+      await setDataState({ ...dataState, status: 'success', transactionHash: data })
     } catch {
       throw new Error();
-    } finally {
-      setDataState({ ...dataState, status: 'success', transactionHash: data })
     }
   }
 
