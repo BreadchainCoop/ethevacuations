@@ -124,7 +124,7 @@ export default function Home() {
               )}
             </div>
           </section>
-          <section className="order-3 md:order-1 md:mt-60"><Donations /></section>
+          <section className="order-3 md:order-1 md:mt-56"><Donations /></section>
         </div>
         <Footer />
       </main >

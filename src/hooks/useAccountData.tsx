@@ -9,8 +9,10 @@ import { INSTANCE_SUPPORTED_CHAINS } from "../utils/provider";
 
 interface ExtendedDataState extends DataState {
   mutate: () => void;
-  lastOffset: string | null;
+  lastOffset: string | null | undefined;
 }
+
+const CHAIN_IDS = INSTANCE_SUPPORTED_CHAINS.map(e => e.id).sort((a, b) => a - b).join(',');
 
 export function useAccountData(account: string): ExtendedDataState {
   const [dataState, setDataState] = useState<ExtendedDataState>({
@@ -21,18 +23,15 @@ export function useAccountData(account: string): ExtendedDataState {
   });
 
   const {
-    data,
+    data: nativeData,
     isLoading,
     error,
-    nextPage,
-    previousPage,
-    currentPage
-  } = useTransactions(account, {
-    decode: true,
-    chainIds: INSTANCE_SUPPORTED_CHAINS.map(e => e.id).sort((a, b) => a - b).join(',')
-  });
+    nextPage: nativeNextPage,
+    previousPage: nativePrevPage,
+    currentPage: nativeCurrentPage
+  } = useTransactions(account, { chainIds: CHAIN_IDS });
 
-  const recievedTransactions = data?.transactions
+  const recievedTransactions = nativeData?.transactions
     .filter((e) => e.transaction_type !== 'Sender');
 
   useEffect(() => {
@@ -45,20 +44,20 @@ export function useAccountData(account: string): ExtendedDataState {
 
       setDataState({
         status: 'success',
-        lastOffset: data?.next_offset,
-        mutate: nextPage,
+        lastOffset: nativeData?.next_offset,
+        mutate: nativeNextPage,
         data: txs
       })
     }
   }, [recievedTransactions, dataState.status])
 
   useEffect(() => {
-    if (data && dataState.lastOffset) {
-      if (dataState.lastOffset !== data.next_offset) {
+    if (nativeData && dataState.lastOffset) {
+      if (dataState.lastOffset !== nativeData.next_offset) {
         setDataState({ ...dataState, status: 'loading' })
       }
     }
-  }, [data])
+  }, [nativeData])
 
   return dataState;
 }

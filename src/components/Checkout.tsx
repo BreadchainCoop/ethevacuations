@@ -71,7 +71,7 @@ function CheckoutRoot({ onClick }: Props) {
   }, [, account.address])
 
   return (
-    <div className="flexbox text-center pt-8 pb-11 px-2 gap-8 lg:gap-12 xl:gap-18">
+    <div className="flexbox text-center pt-8 pb-11 px-2 gap-10 lg:gap-12 xl:gap-18">
       <div>
         <div className="grid justify-center px-4 py-2">
           <span className="font-medium text-xl rounded-full bg-white text-black">
@@ -120,9 +120,9 @@ function CheckoutReceipt({ onDismiss, onClick }: Props) {
       <div className="mt-[-15px] mb-[25px]">
         <button
           onClick={onDismiss}
-          className="absolute bg-transparent font-sans font-light text-neutral-300 border-none text-4xl scale-x-90 scale-y-155"
+          className="absolute bg-transparent font-sans text-neutral-300 border-none text-4xl scale-x-90 scale-y-155"
         >
-          &#60;
+          {'<'}`
         </button>
         <div className="w-full text-center pt-[8px]">
           <label className="text-2xl font-medium">
@@ -188,6 +188,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   const [checkoutTotal, setCheckoutTotal] = useState(0);
   const [selectionIndex, setSelectionIndex] = useState(0);
   const [tokenAddress, setTokenAddress] = useState<string>(ZERO_ADDRESS);
+  const [checkoutError, setCheckoutError] = useState<null | string>(null);
   const [currencyPrefix, setCurrencyPrefix] = useState<string | undefined>();
   const [assetSelection, setAssetSelection] = useState<AssetSelection>({ default: undefined, assets: [] });
   const [input, setInput]: [string, Dispatch<SetStateAction<string>>] = useState('');
@@ -207,8 +208,6 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   const y = useTokenPrice(networkId, tokenAddress, 18);
   const ethPrice = x.isInvertedPair ? Math.pow(x.tokenPrice, -1) : x.tokenPrice;
   const tokenPrice = y.isInvertedPair ? Math.pow(y.tokenPrice, -1) : y.tokenPrice;
-
-  const checkout = tokenAddress === ZERO_ADDRESS ? native.mutate : token.mutate;
 
   const getNetworkInfo = (): NetworkInfo | undefined => {
     const networkOption = NETWORK_SELECT_OPTIONS.find((option) => option.id === chainId);
@@ -265,13 +264,48 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   }
 
   const setCheckoutAmount = (e: number) => {
+    setCheckoutError(null);
+
     let decimals = 3;
+
     const isFixedCurrency = FIXED_CURRENCY_MAP[chainId][tokenAddress];
 
+    if (isNaN(Number(e))) e = 0;
     if (isFixedCurrency) decimals = 0;
     if (tokenAddress === ZERO_ADDRESS) decimals = 4;
 
-    setInput(formatNumber(calculateProceedUnitAmount(e), decimals))
+    const proceedUnitAmount = calculateProceedUnitAmount(e);
+
+    checkInputs(proceedUintAmount);
+    setInput(formatNumber(proceedUnitAmount, decimals));
+  }
+
+  const handleInput = (value: string) => {
+    setCheckoutError(null);
+    checkInputs(isNaN(Number(value)) ? 0 : value);
+    setInput(value);
+  }
+
+  const checkInputs = (string: value) => {
+    if (tokenAddress === ZERO_ADDRESS) {
+      if (Number(nativeBalance.formatted) < Number(total)) {
+        setCheckoutError('Insufficient native balance')
+      }
+    } else {
+      if (Number(tokenBalance.formatted) < Number(total)) {
+        setCheckoutError('Insufficient token balance')
+      }
+    }
+  }
+
+  const checkout = () => {
+    if (checkoutError) return;
+
+    if (tokenAddress === ZERO_ADDRESS) {
+      native.mutate();
+    } else {
+      token.mutate();
+    }
   }
 
   useEffect(() => {
@@ -305,11 +339,11 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   }, [, account.chain?.id]);
 
   return (
-    <div className="pt-8 pb-11 px-2 sm:px-0">
-      <div className="mt-[-15px] mb-[25px]">
+    <div className="pt-6 pb-8 px-2 sm:px-0">
+      <div className="mt-[-16px] ml-4">
         <button
           onClick={onDismiss}
-          className="absolute bg-transparent font-sans font-light text-neutral-300 border-none text-4xl scale-x-90 scale-y-155"
+          className="absolute font-medium bg-transparent font-sans text-neutral-300 border-none text-4xl scale-x-90 scale-y-140"
         >
           &#60;
         </button>
@@ -319,7 +353,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           </label>
         </div>
       </div>
-      <div className="w-full flexbox gap-8 mt-4">
+      <div className="w-full flexbox gap-8 md:gap-4 mt-2">
         <div className="w-9/10 grid grid-cols-1 md:grid-cols-2 py-2 px-4 gap-4">
           <Select
             label="Network"
@@ -341,7 +375,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           </label>
           <Input.Circular
             inputType="number"
-            onChange={setInput}
+            onChange={handleInput}
             prefix={currencyPrefix}
             isMobile={window.innerWidth < 600}
             value={input === '' ? null : input}

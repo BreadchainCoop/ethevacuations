@@ -31,7 +31,8 @@ export const ASSET_SELECT_OPTIONS: Array<Token> = [
   { id: '0x0000000000000000000000000000000000000000', chainId: '0x89', title: 'POL', logo: 'assets/tokens/polygon.png' },
   { id: '0x0000000000000000000000000000000000000000', chainId: '0xa', title: 'ETH', logo: 'assets/tokens/ethereum.png' },
   { id: '0x4200000000000000000000000000000000000042', chainId: '0xa', title: 'OP', logo: 'assets/tokens/optimism.png' },
-  { id: '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3', chainId: '0x64', title: 'BREAD', logo: 'assets/tokens/bread.png' }
+  { id: '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3', chainId: '0x64', title: 'BREAD', logo: 'assets/tokens/bread.png' },
+  { id: '0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb', chainId: '0x64', title: 'GNO', logo: 'assets/tokens/gnosis.png' }
 ];
 
 export const NETWORK_SELECT_OPTIONS: Array<Network> = [

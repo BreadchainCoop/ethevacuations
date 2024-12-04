@@ -20,7 +20,7 @@ if (!WALLET_CONNECT_PROJECT_ID)
 export const INSTANCE_SUPPORTED_CHAINS = [mainnet, optimism, arbitrum, polygon, base, gnosis, zora];
 
 export const config = createConfig({
-  chains: INSTANCE_SUPPORTED_CHAINS,
+  chains: [mainnet, optimism, arbitrum, polygon, base, gnosis, zora],
   connectors: [
     injected(),
     walletConnect({ projectId: WALLET_CONNECT_PROJECT_ID })

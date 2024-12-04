@@ -41,7 +41,7 @@ export default function Select({
 
   useEffect(() => {
     if (options) {
-      if (defaultValue) selectItem(defaultValue)
+      // if (defaultValue) selectItem(defaultValue)
 
       setOptions(options)
     }
@@ -49,7 +49,7 @@ export default function Select({
 
   useEffect(() => {
     if (selectedItem) onSelect(selectedItem?.id)
-  }, [, options, selectedItem])
+  }, [options, selectedItem])
 
 
   return (
