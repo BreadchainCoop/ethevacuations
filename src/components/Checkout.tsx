@@ -361,7 +361,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
       <div className="mt-[-32px] ml-4">
         <button
           onClick={onDismiss}
-          className="absolute font-medium bg-transparent font-sans text-neutral-300 border-none text-4xl scale-x-90 scale-y-140"
+          className="absolute font-normal bg-transparent font-sans text-neutral-300 border-none text-4xl scale-x-90 scale-y-140"
         >
           &#60;
         </button>

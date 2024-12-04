@@ -45,7 +45,7 @@ function Donation({ tx }: { tx: any }) {
           </div>
         </div>
       </div>
-      <div className="col-span-3 flex items-center text-xl font-medium text-green/80">
+      <div className="col-span-3 flex items-center text-xl font-medium text-success">
         {tx ? (
           <>
             <span>

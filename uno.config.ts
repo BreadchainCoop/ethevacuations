@@ -27,7 +27,7 @@ export default defineConfig({
       secondary: process.env.REACT_APP_SECONDARY_COLOR || '#ffd0d0',
       ternary: process.env.REACT_APP_TERNARY_COLOR || '#dd2e44',
       error: '#d80000',
-      success: '#1eb16a',
+      success: '#02a61a',
       warning: '#dead2e'
     },
     breakpoints: {

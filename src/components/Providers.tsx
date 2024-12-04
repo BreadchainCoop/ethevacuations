@@ -6,7 +6,7 @@ import { DuneProvider } from '@duneanalytics/hooks';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
 
-import { config } from "../utils/provider";
+import { rainbowKitConfig } from "../utils/provider";
 
 if (!process.env.REACT_APP_DUNE_ECHO_API_KEY)
   throw new Error("DUNE_ECHO_API_KEY not provided");
@@ -18,7 +18,7 @@ const queryClient = new QueryClient();
 export default function Providers({ children }: { children: ReactNode }) {
   return (
     <DuneProvider duneApiKey={DUNE_ECHO_API_KEY}>
-      <WagmiProvider config={config}>
+      <WagmiProvider config={rainbowKitConfig}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider theme={
             lightTheme({
