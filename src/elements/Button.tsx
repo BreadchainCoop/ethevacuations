@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
 
-import { ETH_EVACUATONS_ADDRESS } from "../utils/constants";
+import { TRUSTEE_ADDRESS } from "../utils/constants";
+import { truncateAddress } from "../utils";
 
-function truncateAddress(address: string): string {
-  return `${address.slice(0, 5)}...${address.slice(address.length - 5)}`;
-}
-
-function PrimaryButton({ 
+function PrimaryButton({
   onClick,
   children,
   className
-} : { 
-  onClick(): void;
-  children: React.ReactNode;
-  className: string;
+}: {
+  onClick?(): void;
+  className?: string;
+  children?: React.ReactNode;
 }) {
   return (
     <button
       onClick={onClick}
-      className={`w-full flex text-center border-none shadow-lg shadow-ternary/20 justify-center items-center bg-[#ffd0d0] px-3 py-3 rounded-[30px] hover:bg-primary hover:text-white 
+      className={`w-full flex text-center text-black border-none shadow-lg shadow-ternary/20 justify-center items-center bg-[#ffd0d0] px-6 py-3 rounded-[30px] md:text-xl hover:bg-primary hover:text-white 
       ${className}
     `}>
       {children}
@@ -26,7 +23,27 @@ function PrimaryButton({
   )
 }
 
- function CopyButton() {
+function SecondaryButton({
+  onClick,
+  children,
+  className
+}: {
+  onClick?(): void;
+  children?: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full flex text-center text-black border-primary/40 border-solid border-2px justify-center items-center bg-white px-6 py-3 rounded-[30px] md:text-xl hover:bg-primary hover:text-white 
+      ${className}
+    `}>
+      {children}
+    </button>
+  )
+}
+
+function CopyButton() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -42,7 +59,7 @@ function PrimaryButton({
   return (
     <button
       onClick={() => {
-        navigator.clipboard.writeText(ETH_EVACUATONS_ADDRESS);
+        navigator.clipboard.writeText(TRUSTEE_ADDRESS);
         setCopied(true);
       }}
       className="flex h-[40px] gap-2 bg-white border-none items-center justify-center font-medium text-neutral-400 pt-2 hover:text-neutral-600 active:text-black transition-all"
@@ -67,7 +84,7 @@ function PrimaryButton({
         </span>
       ) : (
         <>
-          <span className="text-lg text-grey">{truncateAddress(ETH_EVACUATONS_ADDRESS)}</span>
+          <span className="text-lg text-grey">{truncateAddress(TRUSTEE_ADDRESS)}</span>
           <svg
             width="16"
             height="16"
@@ -84,6 +101,7 @@ function PrimaryButton({
 }
 
 export default {
+  Secondary: SecondaryButton,
   Primary: PrimaryButton,
   Copy: CopyButton
 }

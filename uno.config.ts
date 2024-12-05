@@ -1,10 +1,10 @@
-import { defineConfig, presetUno, presetWebFonts, transformerDirectives, transformerVariantGroup } from 'unocss'
+import { defineConfig, presetUno, presetWebFonts, transformerDirectives } from 'unocss'
 
 export default defineConfig({
   presets: [
     presetUno(),
     presetWebFonts({
-      provider: 'google',     
+      provider: 'google',
       fonts: {
         sans: {
           name: 'Roboto',
@@ -17,20 +17,24 @@ export default defineConfig({
   content: {
     filesystem: [
       './src/components/*.{ts,tsx}',
+      './src/elements/*.{ts,tsx}',
       './src/index.{ts,tsx}'
     ],
   },
   theme: {
     colors: {
-      primary: '#ff7777',
-      secondary: '#ffd0d0',
-      ternary: '#dd2e44',
-      input: '#f5f5f5'
+      primary: process.env.REACT_APP_PRIMARY_COLOR || '#ff7777',
+      secondary: process.env.REACT_APP_SECONDARY_COLOR || '#ffd0d0',
+      ternary: process.env.REACT_APP_TERNARY_COLOR || '#dd2e44',
+      error: '#d80000',
+      success: '#02a61a',
+      warning: '#dead2e'
     },
     breakpoints: {
       sm: '460px',
       md: '840px',
-      lg: '1360px'
+      lg: '1800px',
+      xl: '2200px'
     },
     fontWeight: {
       thin: '100',
@@ -41,8 +45,7 @@ export default defineConfig({
       bold: '700',
     }
   },
-  transformers: [ 
-    transformerDirectives(), 
-    transformerVariantGroup() 
-  ],
+  transformers: [
+    transformerDirectives()
+  ]
 })

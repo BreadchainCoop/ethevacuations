@@ -3,104 +3,55 @@ import { formatDistanceStrict } from "date-fns";
 
 import { useAccountData } from "../hooks/useAccountData";
 
-import { ETH_EVACUATONS_ADDRESS } from "../utils/constants";
+import { TRUSTEE_ADDRESS, ASSET_TICKER_MAP, CURRENCY_MAP } from "../utils/constants";
+import { truncateAddress } from "../utils/index";
 
 export function Donations() {
   const [aggData, setAggData] = useState<Array<any>>([]);
 
-  const { data: ethData, status: ethDataStatus } = useAccountData(
-    "eth",
-    ETH_EVACUATONS_ADDRESS
-  );
-  const { data: optimismData, status: optimismDataStatus } = useAccountData(
-    "optimism",
-    ETH_EVACUATONS_ADDRESS
-  );
-  const { data: gnosisData, status: gnosisDataStatus } = useAccountData(
-    "gnosis",
-    ETH_EVACUATONS_ADDRESS
-  );
-  const { data: arbitrumData, status: arbitrumDataStatus } = useAccountData(
-    "arbitrum",
-    ETH_EVACUATONS_ADDRESS
-  );
+  const { data: txs, status, mutate } = useAccountData(TRUSTEE_ADDRESS);
 
-  useEffect(() => {
-    if (
-      ethDataStatus === "loading" ||
-      optimismDataStatus === "loading" ||
-      gnosisDataStatus === "loading" ||
-      arbitrumDataStatus === "loading"
-    ) {
-      return;
-    }
-
-    let combinedArray: Array<any> = [];
-
-    if (ethDataStatus === "success")
-      combinedArray = [...combinedArray, ...ethData];
-    if (optimismDataStatus === "success")
-      combinedArray = [...combinedArray, ...optimismData];
-    if (gnosisDataStatus === "success")
-      combinedArray = [...combinedArray, ...gnosisData];
-    if (arbitrumDataStatus === "success")
-      combinedArray = [...combinedArray, ...arbitrumData];
-
-    const sortedArray = combinedArray.sort((a, b) => {
-      return (
-        new Date(b.block_timestamp).getTime() -
-        new Date(a.block_timestamp).getTime()
-      );
-    });
-
-    setAggData(sortedArray);
-  }, [
-    ethData,
-    optimismData,
-    gnosisData,
-    arbitrumData,
-    ethDataStatus,
-    optimismDataStatus,
-    gnosisDataStatus,
-    arbitrumDataStatus,
-  ]);
   return (
-    <div>
+    <div className="">
       <p className="text-2xl font-bold mb-6">Recent Donations</p>
-      <div className="h-[150px] lg:h-[250px] overflow-hidden relative min-w-0">
-        <div className="h-full grid gap-2 overflow-y-scroll">
-          {aggData && aggData.map((tx) => 
+      <div className="w-full h-[300px] lg:h-[400px] overflow-hidden relative min-w-0">
+        <div className="h-full w-full grid gap-4 overflow-y-scroll">
+          {txs && txs.map((tx) =>
             <Donation key={`tx_${tx.hash}`} tx={tx} />
           )}
         </div>
-        <div className="absolute -bottom-0 left-0 right-0 h-16 transactions-gradient-bg" />
       </div>
     </div>
   );
 }
 
 function Donation({ tx }: { tx: any }) {
+
   return (
-    <div className="text-lg bg-white rounded-lg p-4 flex justify-between gap-4 min-w-0">
-      <span className="col-span-3 min-w-0 text-[#8b8b8b]">
-        {formatDistanceStrict(new Date(tx.block_timestamp), new Date(), {
-          addSuffix: true,
-        })}
-      </span>
-      <div className="col-span-3 flex items-center font-medium">
-        {tx.erc20_transfers.length ? (
+    <div className="md:text-lg bg-white rounded-2xl px-6 py-3 flex justify-between gap-4 min-w-0">
+      <div className="col-span-3 min-w-0 text-[#8b8b8b]">
+        <div className="inline-flexbox gap-4">
+          <img
+            className="frame h-[32px] w-[32px]"
+            src={`assets/tokens/${tx.chain.toLowerCase()}.png`}
+          />
+          <div className="w-full flexbox flex-start md:text-lg">
+            <label className="font-medium mt-2 md:mt-0">
+              {formatDistanceStrict(new Date(tx.block_time), new Date(), { addSuffix: true })}
+            </label>
+            <label className="hidden md:block text-neutral-400">
+              from {tx.logs.length ? truncateAddress(tx.logs[0].topics[1]) : truncateAddress(tx.from)}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div className="col-span-3 flex items-center text-xl font-medium text-success">
+        {tx ? (
           <>
             <span>
-              {formatBalance(tx.erc20_transfers[0].value_formatted, 2)}
+              + {formatBalance(tx.value, 4)}
             </span>
-            <span>{tx.erc20_transfers[0].token_symbol}</span>
-          </>
-        ) : tx.native_transfers.length ? (
-          <>
-            <span>
-              {formatBalance(tx.native_transfers[0].value_formatted, 2)}
-            </span>
-            <span>{tx.native_transfers[0].token_symbol}</span>
+            <span>&nbsp;{CURRENCY_MAP[tx.chain] || 'ETH'}</span>
           </>
         ) : (
           "err"
@@ -117,5 +68,5 @@ function formatBalance(value: number, decimals: number) {
     minimumIntegerDigits: 1,
     useGrouping: true,
   });
-  return balanceFormatter.format(value);
+  return balanceFormatter.format(value / Math.pow(10, 18));
 }

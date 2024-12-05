@@ -4,32 +4,39 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx react-scripts dev",
     "build": "npx react-scripts build",
-    "start": "npm run build-css & react-scripts start",
+    "start": "npm run build-css & npx react-scripts start",
     "build-css": "npx postcss ./src/index.css -o ./public/index.css -w",
     "build:css": "npx unocss -c uno.config.ts -o public/index.css -w --write-transformed src/**"
   },
   "dependencies": {
+    "@duneanalytics/hooks": "^1.0.8",
+    "@rainbow-me/rainbowkit": "^2.1.7",
     "@tanstack/react-query": "^5.37.1",
+    "@types/micromodal": "^0.3.5",
     "@unocss/postcss": "0.61.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "downshift": "^9.0.8",
+    "eslint": "7.32.0",
+    "jsbi": "^4.3.0",
+    "micromodal": "^0.4.10",
     "postcss": "^8.4.47",
     "postcss-cli": "^11.0.0",
     "react": "^18",
     "react-dom": "^18",
     "react-scripts": "^5.0.1",
-    "unocss": "0.61.0"
+    "unocss": "0.61.2",
+    "wagmi": "^2.13.0"
   },
   "devDependencies": {
+    "@rsbuild/core": "^1.1.4",
+    "@rsbuild/plugin-react": "^1.0.7",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.16.1",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
-    "eslint": "^8",
-    "typescript": "^4"
+    "typescript": "^5.0.4"
   },
   "browserslist": {
     "production": [
@@ -42,5 +49,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "overrides": {
+    "typescript": "^5.0.4",
+    "react-refresh": "0.11.0"
   }
 }
