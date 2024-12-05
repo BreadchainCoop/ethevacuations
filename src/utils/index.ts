@@ -19,7 +19,7 @@ export function formatNumber(n: number | string, d: number): string {
 
 }
 
-export function formatV2Rate(rX: string, rY: string, dX: number, dY: number): number {
+export function formatV2Rate(rX: bigint, rY: bigint, dX: number, dY: number): number {
   if (dY === dX) {
     return (Number(BigInt(rY)) / Math.pow(10, dY)) / (Number(BigInt(rX)) / Math.pow(10, dX));
   } else {
@@ -28,7 +28,7 @@ export function formatV2Rate(rX: string, rY: string, dX: number, dY: number): nu
 }
 
 export function formatV3Rate(tick: bigint, dX: number, dY: number): number {
-  const d = (dY - dX) === 0 ? Math.abs(dY - dX) : dY - dX;
+  const d = (dY - dX) === 0 || dX > dY ? Math.abs(dY - dX) : dY - dX;
 
   return (1.0001 ** Number(tick) / (10 ** d));
 } 

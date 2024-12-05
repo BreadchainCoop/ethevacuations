@@ -44,18 +44,25 @@ export function useTokenPrice(chainId: string, address: string, variable?: boole
 
   const getTokenPrice = () => {
     if (payload.data) {
-      const e: Array<ContractCallReturn> = Object.values(payload.data);
+      const entries: Array<ContractCallReturn> = Object.values(payload.data);
 
-      const o: ContractCallResult = e[1].result;
+      const resultEntry = entries[1];
+      const result = resultEntry.result;
 
-      const x = o[0] as bigint;
-      const y = o[1] as bigint;
-      const d = e[0].error ? 18 : e[0].result as number;
+      if (result === undefined) return 0;
+
+      const processedResult = Array.isArray(result)
+        ? result
+        : [result];
+
+      const x = processedResult[0] as bigint;
+      const y = processedResult[1] as bigint;
+      const d = entries[0].error ? 18 : entries[0].result as number;
 
       if (isUniswapV2) {
         return formatV2Rate(x, y, 18, d);
       } else {
-        const z = o[1] as bigint;
+        const z = processedResult[1] as bigint;
         const x = !pair.inverted ? 18 : d;
         const y = !pair.inverted ? d : 18;
 

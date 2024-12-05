@@ -36,7 +36,7 @@ function Donation({ tx }: { tx: any }) {
             src={`assets/tokens/${tx.chain.toLowerCase()}.png`}
           />
           <div className="w-full flexbox flex-start md:text-lg">
-            <label className="font-medium">
+            <label className="font-medium mt-2 md:mt-0">
               {formatDistanceStrict(new Date(tx.block_time), new Date(), { addSuffix: true })}
             </label>
             <label className="hidden md:block text-neutral-400">

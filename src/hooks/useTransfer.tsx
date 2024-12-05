@@ -28,9 +28,12 @@ export function useTransfer(recipient: string, amount: string | number): Extende
     const value = typeof amount === 'number' ? `${amount}` : amount;
 
     try {
-      await sendTransaction({ to, value: parseEther(value) })
-        .then((e: SendTransactionReturnType) => {
-          setDataState({ ...dataState, status: 'success', transactionHash: e })
+      await new Promise((resolve) => {
+        sendTransaction({ to, value: parseEther(value) })
+        resolve(true)
+      })
+        .then(() => {
+          setDataState({ ...dataState, status: 'success' })
         })
     } catch {
       throw new Error();

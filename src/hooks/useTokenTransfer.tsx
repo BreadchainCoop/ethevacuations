@@ -40,15 +40,17 @@ export function useTokenTransfer(token: string, recipient: string, amount: strin
       const value = e * Math.pow(10, decimals as number);
 
       try {
-        await writeContract({
-          abi: ERC20_ABI,
-          address: formatAddress(token),
-          functionName: 'transfer',
-          args: [recipient, BigInt(value)]
-        })
-          .then(() => {
-            setDataState({ ...dataState, status: 'success', transactionHash: '' })
+        await new Promise((resolve) => {
+          writeContract({
+            abi: ERC20_ABI,
+            address: formatAddress(token),
+            functionName: 'transfer',
+            args: [recipient, BigInt(value)]
           })
+          resolve(true)
+        }).then(() => {
+          setDataState({ ...dataState, status: 'success' })
+        })
       } catch {
         throw new Error();
       }
