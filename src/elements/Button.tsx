@@ -15,7 +15,7 @@ function PrimaryButton({
   return (
     <button
       onClick={onClick}
-      className={`w-full flex text-center border-none shadow-lg shadow-ternary/20 justify-center items-center bg-[#ffd0d0] px-6 py-3 rounded-[30px] md:text-xl hover:bg-primary hover:text-white 
+      className={`w-full flex text-center text-black border-none shadow-lg shadow-ternary/20 justify-center items-center bg-[#ffd0d0] px-6 py-3 rounded-[30px] md:text-xl hover:bg-primary hover:text-white 
       ${className}
     `}>
       {children}
@@ -35,7 +35,7 @@ function SecondaryButton({
   return (
     <button
       onClick={onClick}
-      className={`w-full flex text-center border-primary/40 border-solid border-2px justify-center items-center bg-white px-6 py-3 rounded-[30px] md:text-xl hover:bg-primary hover:text-white 
+      className={`w-full flex text-center text-black border-primary/40 border-solid border-2px justify-center items-center bg-white px-6 py-3 rounded-[30px] md:text-xl hover:bg-primary hover:text-white 
       ${className}
     `}>
       {children}

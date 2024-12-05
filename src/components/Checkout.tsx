@@ -364,7 +364,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   }, [tokenAddress])
 
   return (
-    <div className="pt-8 pb-8 px-4 sm:px-0">
+    <div className="pt-8 pb-8 px-4 sm:px-0 w-full">
       <div className="mt-[-22px] ml-4">
         <button
           onClick={onDismiss}
@@ -378,7 +378,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           </label>
         </div>
       </div>
-      <div className="w-full flexbox gap-8 md:gap-4 mt-2">
+      <div className="w-full flexbox gap-8 md:gap-4">
         <div className="w-9/10 grid grid-cols-1 md:grid-cols-2 py-6 px-4 gap-4">
           <Select
             label="Network"

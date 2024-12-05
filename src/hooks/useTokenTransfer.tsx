@@ -23,7 +23,7 @@ export function useTokenTransfer(token: string, recipient: string, amount: strin
     mutate: () => new Promise((resolve) => resolve())
   })
 
-  const { data, writeContract } = useWriteContract();
+  const { data, writeContractAsync } = useWriteContract();
 
   const payload: UseReadContractReturnType = useReadContract({
     abi: ERC20_ABI,
@@ -40,16 +40,15 @@ export function useTokenTransfer(token: string, recipient: string, amount: strin
       const value = e * Math.pow(10, decimals as number);
 
       try {
-        await new Promise((resolve) => {
-          writeContract({
-            abi: ERC20_ABI,
-            address: formatAddress(token),
-            functionName: 'transfer',
-            args: [recipient, BigInt(value)]
-          })
-          resolve(true)
-        }).then(() => {
-          setDataState({ ...dataState, status: 'success' })
+        await writeContractAsync({
+          abi: ERC20_ABI,
+          address: formatAddress(token),
+          functionName: 'transfer',
+          args: [recipient, BigInt(value)]
+        }, {
+          onSuccess: () => {
+            setDataState({ ...dataState, status: 'success' })
+          }
         })
       } catch {
         throw new Error();

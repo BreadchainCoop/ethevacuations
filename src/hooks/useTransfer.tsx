@@ -21,20 +21,18 @@ export function useTransfer(recipient: string, amount: string | number): Extende
     mutate: () => new Promise((resolve) => resolve())
   })
 
-  const { data, sendTransaction } = useSendTransaction();
+  const { data, sendTransactionAsync } = useSendTransaction();
 
   const sendBalance = async () => {
     const to = formatAddress(recipient);
     const value = typeof amount === 'number' ? `${amount}` : amount;
 
     try {
-      await new Promise((resolve) => {
-        sendTransaction({ to, value: parseEther(value) })
-        resolve(true)
-      })
-        .then(() => {
+      await sendTransactionAsync({ to, value: parseEther(value) }, {
+        onSuccess: () => {
           setDataState({ ...dataState, status: 'success' })
-        })
+        }
+      })
     } catch {
       throw new Error();
     }

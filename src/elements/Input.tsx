@@ -15,7 +15,7 @@ function CircularInput({ title, error, onChange, prefix, inputType, value, isMob
   const isMobile = window.innerWidth < 540;
   const inputRef = useRef<HTMLInputElement>(null);
   const [prefixPosition, setPrefixPosition] = useState(0);
-  const [inputPaddingLeft, setInputPaddingLeft] = useState(isMobile ? "10px" : "56px");
+  const [inputPaddingLeft, setInputPaddingLeft] = useState(isMobile ? "10px" : "20px");
 
   useEffect(() => {
     if (inputRef.current) {
@@ -42,7 +42,7 @@ function CircularInput({ title, error, onChange, prefix, inputType, value, isMob
 
       const inputWidth = inputRef.current.offsetWidth;
       const totalContentWidth = textWidth + prefixWidth; // 16px gap between text and prefix
-      const textStartPosition = (inputWidth - totalContentWidth) / 3 + (isMobile ? 0 : 30);
+      const textStartPosition = (inputWidth - totalContentWidth) / 3 + (isMobile ? 0 : 25);
 
       // Adjust padding to maintain center alignment
       const newPaddingLeft = `${textStartPosition}px`;
