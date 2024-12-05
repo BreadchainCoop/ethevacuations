@@ -10,7 +10,7 @@ import {
   sepolia
 } from "wagmi/chains";
 import { http, createConfig } from "wagmi";
-import { injected } from 'wagmi/connectors'
+import { walletConnect, injected } from 'wagmi/connectors'
 
 export const WALLET_CONNECT_PROJECT_ID = process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID
 

@@ -190,22 +190,23 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   const [tokenAddress, setTokenAddress] = useState<string>(ZERO_ADDRESS);
   const [checkoutError, setCheckoutError] = useState<null | string>(null);
   const [currencyPrefix, setCurrencyPrefix] = useState<string | undefined>();
-  const [assetSelection, setAssetSelection] = useState<AssetSelection>({ default: undefined, assets: [] });
+  const [assetSelection, setAssetSelection] = useState<AssetSelection>({ default: 0, assets: [] });
+
   const [input, setInput]: [string, Dispatch<SetStateAction<string>>] = useState('');
 
   const account = useAccount();
   const value = useDebounce(input, 1000);
   const chainId = `0x${account.chain?.id.toString(16)}`;
-  const networkId = chainId as NetworkId;
 
   const { switchChain } = useSwitchChain();
   const { nativeBalance } = useNativeBalance(account?.address);
   const { tokenBalance } = useTokenBalance(tokenAddress, account?.address);
   const token = useTokenTransfer(tokenAddress, TRUSTEE_ADDRESS, input);
   const native = useTransfer(TRUSTEE_ADDRESS, input);
+  const isNativeFixedCurrency = chainId === '0x64';
 
-  const x = useTokenPrice(networkId, ZERO_ADDRESS, 6);
-  const y = useTokenPrice(networkId, tokenAddress, 18);
+  const y = useTokenPrice(chainId, tokenAddress, true);
+  const x = useTokenPrice(chainId, PAIR_MAP[ZERO_ADDRESS][chainId].token, isNativeFixedCurrency);
   const ethPrice = x.isInvertedPair ? Math.pow(x.tokenPrice, -1) : x.tokenPrice;
   const tokenPrice = y.isInvertedPair ? Math.pow(y.tokenPrice, -1) : y.tokenPrice;
 
@@ -237,7 +238,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
     return {
       currencyPrefix: defaultAsset?.title,
       selectionIndex: NETWORK_SELECT_OPTIONS.indexOf(networkOption),
-      defaultAsset: defaultSelection,
+      defaultAsset: defaultSelection || 0,
       assetOptions
     };
   };
@@ -383,7 +384,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             label="Token"
             options={assetSelection.assets}
             onSelect={(e: string) => setTokenAddress(e || ZERO_ADDRESS)}
-            defaultValue={assetSelection.default || ASSET_SELECT_OPTIONS[0]}
+            defaultValue={assetSelection.default || 0}
           />
         </div>
 
@@ -428,7 +429,12 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
                 className="frame h–[35px] w-[35px]"
               />
             </span>
-            <span className="float-center text-right font-lg"> =&nbsp;&nbsp;One life (${Number(process.env.REACT_APP_PROCEED_UNIT || 0).toLocaleString('en', { minimumFractionDigits: 0 })})</span>
+            <span className="float-center text-right font-lg">
+              =&nbsp;&nbsp;One life (${
+                Number(process.env.REACT_APP_PROCEED_UNIT || 0)
+                  .toLocaleString('en', { minimumFractionDigits: 0 })
+              })
+            </span>
           </div>
         </div>
 

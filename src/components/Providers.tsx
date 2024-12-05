@@ -22,7 +22,7 @@ export default function Providers({ children }: { children: ReactNode }) {
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider theme={
             lightTheme({
-              accentColor: process.env.REACT_APP_SECONDARY_COLOR || '#ffd0d0'
+              accentColor: process.env.REACT_APP_SECONDARY_COLOR || '#ffd0d0',
             })}
           >
             {children}

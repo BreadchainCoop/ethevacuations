@@ -24,6 +24,7 @@ export default function Select({
   defaultValue,
   options
 }: Props) {
+  const [defaultSelection, setSelection] = useState(null);
   const [selectionOptions, setOptions] = useState<Array<Option>>([]);
   const {
     isOpen,
@@ -41,15 +42,21 @@ export default function Select({
 
   useEffect(() => {
     if (options) {
-      // if (defaultValue) selectItem(defaultValue)
-
       setOptions(options)
+      setSelection(defaultValue)
     }
-  }, [, options, defaultValue])
+  }, [, defaultValue, options])
 
   useEffect(() => {
     if (selectedItem) onSelect(selectedItem?.id)
-  }, [options, selectedItem])
+  }, [, selectedItem])
+
+  useEffect(() => {
+    if (selectionOptions[defaultValue]) {
+      setSelection(defaultValue)
+      selectItem(selectionOptions[defaultValue])
+    }
+  }, [, defaultValue, selectionOptions])
 
 
   return (

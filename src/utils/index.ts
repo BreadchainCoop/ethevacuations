@@ -27,6 +27,8 @@ export function formatV2Rate(rX: string, rY: string, dX: number, dY: number): nu
   }
 }
 
-export function formatV3Rate(tick: string, dX: number, dY: number): number {
-  return (1.0001 ** Number(tick)) / (10 ** Math.abs(dY - dX));
+export function formatV3Rate(tick: bigint, dX: number, dY: number): number {
+  const d = (dY - dX) === 0 ? Math.abs(dY - dX) : dY - dX;
+
+  return (1.0001 ** Number(tick) / (10 ** d));
 } 

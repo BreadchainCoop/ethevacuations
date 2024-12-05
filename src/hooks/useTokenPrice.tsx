@@ -1,13 +1,13 @@
 import type { DataState, NetworkId, ContractCallReturn, ContractCallResult } from "@types";
 
 import { useEffect, useState } from "react";
-import { useReadContract } from 'wagmi';
+import { useReadContracts } from 'wagmi';
 import { useQuery } from "@tanstack/react-query";
 
-import { ZERO_ADDRESS, FIXED_CURRENCY_MAP, UNIV2_POOL_ABI, UNIV3_POOL_ABI, PAIR_MAP } from "../utils/constants";
+import { ZERO_ADDRESS, FIXED_CURRENCY_MAP, ERC20_ABI, UNIV2_POOL_ABI, UNIV3_POOL_ABI, PAIR_MAP } from "../utils/constants";
 import { formatNumber, formatAddress, formatV2Rate, formatV3Rate } from "../utils";
 
-type UseReadContractReturnType = ReturnType<typeof useReadContract>;
+type UseReadContractsReturnType = ReturnType<typeof useReadContracts>;
 
 interface ExtendedDataState extends DataState {
   tokenPrice: number;
@@ -15,7 +15,8 @@ interface ExtendedDataState extends DataState {
   isInvertedPair: boolean;
 }
 
-export function useTokenPrice(chainId: NetworkId, address: string, decimals: number): ExtendedDataState {
+export function useTokenPrice(chainId: string, address: string, variable?: boolean): ExtendedDataState {
+
   const [dataState, setDataState] = useState<ExtendedDataState>({
     status: "loading",
     tokenPrice: 0,
@@ -23,34 +24,43 @@ export function useTokenPrice(chainId: NetworkId, address: string, decimals: num
     tokenAddress: ZERO_ADDRESS
   });
 
-  const pair = address === ZERO_ADDRESS ? PAIR_MAP[ZERO_ADDRESS][chainId] : PAIR_MAP[address];
+  const pair = PAIR_MAP[address];
   const isUniswapV2 = pair?.version === '2';
 
-  const payload: UseReadContractReturnType = useReadContract({
-    abi: isUniswapV2 ? UNIV2_POOL_ABI : UNIV3_POOL_ABI,
-    functionName: isUniswapV2 ? 'getReserves' : 'slot0',
-    address: formatAddress(pair?.address)
+  const payload: UseReadContractsReturnType = useReadContracts({
+    contracts: [
+      {
+        abi: ERC20_ABI,
+        functionName: 'decimals',
+        address: formatAddress(address)
+      },
+      {
+        abi: isUniswapV2 ? UNIV2_POOL_ABI : UNIV3_POOL_ABI,
+        functionName: isUniswapV2 ? 'getReserves' : 'slot0',
+        address: formatAddress(pair?.address)
+      }
+    ]
   });
-
-  const getV2TokenPrice = (data: Array<ContractCallReturn>) => {
-    const reservesX: bigint = data[0] as bigint;
-    const reservesY: bigint = data[1] as bigint;
-
-    return formatV2Rate(`${reservesX}`, `${reservesY}`, 18, decimals);
-  }
-
-  const getV3TokenPrice = (data: Array<ContractCallReturn>) => {
-    const sqrtPrice: bigint = data[0] as bigint;
-    const currentTick: bigint = data[1] as bigint;
-
-    return formatV3Rate(`${currentTick}`, 18, decimals);
-  }
 
   const getTokenPrice = () => {
     if (payload.data) {
       const e: Array<ContractCallReturn> = Object.values(payload.data);
 
-      return isUniswapV2 ? getV2TokenPrice(e) : getV3TokenPrice(e)
+      const o: ContractCallResult = e[1].result;
+
+      const x = o[0] as bigint;
+      const y = o[1] as bigint;
+      const d = e[0].error ? 18 : e[0].result as number;
+
+      if (isUniswapV2) {
+        return formatV2Rate(x, y, 18, d);
+      } else {
+        const z = o[1] as bigint;
+        const x = !pair.inverted ? 18 : d;
+        const y = !pair.inverted ? d : 18;
+
+        return formatV3Rate(z, x, y);
+      }
     }
     return 0;
   }
@@ -62,8 +72,8 @@ export function useTokenPrice(chainId: NetworkId, address: string, decimals: num
   })
 
   useEffect(() => {
-    if (FIXED_CURRENCY_MAP[chainId][address]) return;
-    if (data) {
+    if (FIXED_CURRENCY_MAP[chainId][address] && variable) return;
+    if (data && dataState.status === 'loading') {
       setDataState({
         status: "success",
         tokenPrice: data,
@@ -71,7 +81,8 @@ export function useTokenPrice(chainId: NetworkId, address: string, decimals: num
         isInvertedPair: pair.inverted
       });
     }
-  }, [data]);
+  }, [data, dataState]);
+
 
   useEffect(() => {
     if (address && dataState.tokenAddress !== address) {
@@ -85,12 +96,12 @@ export function useTokenPrice(chainId: NetworkId, address: string, decimals: num
   }, [, address])
 
   useEffect(() => {
-    if (FIXED_CURRENCY_MAP[chainId][address]) {
+    if (FIXED_CURRENCY_MAP[chainId][address] && variable) {
       setDataState({
         status: 'success',
         tokenPrice: 1,
         isInvertedPair: false,
-        tokenAddress: ZERO_ADDRESS,
+        tokenAddress: address,
       })
     }
   }, [, address])

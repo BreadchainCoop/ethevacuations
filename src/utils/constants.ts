@@ -32,7 +32,9 @@ export const ASSET_SELECT_OPTIONS: Array<Token> = [
   { id: '0x0000000000000000000000000000000000000000', chainId: '0xa', title: 'ETH', logo: 'assets/tokens/ethereum.png' },
   { id: '0x4200000000000000000000000000000000000042', chainId: '0xa', title: 'OP', logo: 'assets/tokens/optimism.png' },
   { id: '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3', chainId: '0x64', title: 'BREAD', logo: 'assets/tokens/bread.png' },
-  { id: '0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb', chainId: '0x64', title: 'GNO', logo: 'assets/tokens/gnosis.png' }
+  { id: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913', chainId: '0x2105', title: 'USDC', logo: 'assets/tokens/usdc.png' },
+  { id: '0x0b2c639c533813f4aa9d7837caf62653d097ff85', chainId: '0xa', title: 'USDC', logo: 'assets/tokens/usdc.png' },
+  { id: '0x0000000000000000000000000000000000000000', chainId: '0x76adf1', title: 'ETH', logo: 'assets/tokens/ethereum.png' }
 ];
 
 export const NETWORK_SELECT_OPTIONS: Array<Network> = [
@@ -64,46 +66,71 @@ export const CURRENCY_MAP: Record<string, string> = {
 
 export const PAIR_MAP: TokenPairMap = {
   '0x6810e776880c02933d47db1b9fc05908e5386b96': {
-    address: '0xa46466ad5507bE77Ff5aBDc27DF9dFeDA9bD7aee',
+    address: '0xa46466ad5507be77ff5abdc27df9dfeda9bd7aee',
     inverted: false,
     version: '3'
   },
   '0x4200000000000000000000000000000000000042': {
-    address: '0x68F5C0A2DE713a54991E01858Fd27a3832401849',
+    address: '0x68f5c0a2de713a54991e01858fd27a3832401849',
     inverted: true,
     version: '3'
   },
   '0x912ce59144191c1204e64559fe8253a0e49e6548': {
-    address: '0xC6F780497A95e246EB9449f5e4770916DCd6396A',
+    address: '0xc6f780497a95e246eb9449f5e4770916dcd6396a',
+    inverted: true,
+    version: '3'
+  },
+  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
+    address: '0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640',
+    inverted: true,
+    version: '3'
+  },
+  '0x0b2c639c533813f4aa9d7837caf62653d097ff85': {
+    address: '0x1fb3cf6e48f1e7b10213e7b6d87d4c073c7fdb7b',
+    inverted: true,
+    version: '3'
+  },
+  '0xaf88d065e77c8cc2239327c5edb3a432268e5831': {
+    address: '0xc6962004f452be9203591991d15f6b388e09e8d0',
+    inverted: false,
+    version: '3'
+  },
+  '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913': {
+    address: '0xd0b53d9277642d899df5c87a3966a349a798f224',
+    inverted: false,
+    version: '3'
+  },
+  '0xcccccccc7021b32ebb4e8c08314bd62f7c653ec4': {
+    address: '0xbc59f8f3b275aa56a90d13bae7cce5e6e11a3b17',
+    inverted: false,
+    version: '3'
+  },
+  '0x2791bca1f2de4661ed88a30c99a7a9449aa84174': {
+    address: '0xa374094527e1673a86de625aa59517c5de346d32',
     inverted: false,
     version: '3'
   },
   '0x0000000000000000000000000000000000000000': {
     '0x1': {
-      address: '0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc',
-      inverted: true,
-      version: '2'
+      token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
     },
     '0xa': {
-      address: '0x1fb3cf6e48F1E7B10213E7b6d87D4c073C7Fdb7b',
-      inverted: true,
-      version: '3'
+      token: '0x0b2c639c533813f4aa9d7837caf62653d097ff85'
     },
     '0xa4b1': {
-      address: '0xC6962004f452bE9203591991D15f6b388e09E8D0',
-      inverted: false,
-      version: '3'
+      token: '0xaf88d065e77c8cc2239327c5edb3a432268e5831'
     },
     '0x2105': {
-      address: '0xd0b53D9277642d899DF5C87A3966A349A798F224',
-      inverted: false,
-      verison: '3'
+      token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913'
     },
-    // TODO: Arbitary pricing for native derivative assets
     '0x89': {
-      address: '0xA4D8c89f0c20efbe54cBa9e7e7a7E509056228D9',
-      inverted: true,
-      version: '3'
+      token: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174'
+    },
+    '0x64': {
+      token: '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3'
+    },
+    '0x76adf1': {
+      token: '0xcccccccc7021b32ebb4e8c08314bd62f7c653ec4'
     }
   }
 }
@@ -111,20 +138,27 @@ export const PAIR_MAP: TokenPairMap = {
 export const FIXED_CURRENCY_MAP: CurrencyMap = {
   '0x1': {
     '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': true,
-    '0xdAC17F958D2ee523a2206206994597C13D831ec7': true,
+    '0xdac17f958d2ee523a2206206994597c13d831ec7': true,
   },
   '0x64': {
     '0x0000000000000000000000000000000000000000': true,
     '0xa555d5344f6fb6c65da19e403cb4c1ec4a1a5ee3': true
   },
-  '0xa': {},
-  '0x2105': {},
+  '0xa': {
+    '0x0b2c639c533813f4aa9d7837caf62653d097ff85': true,
+  },
+  '0x2105': {
+    '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913': true
+  },
   '0xa4b1': {
     '0xaf88d065e77c8cc2239327c5edb3a432268e5831': true
   },
   '0x89': {},
-  '0x76adf1': {}
+  '0x76adf1': {
+    '0x4200000000000000000000000000000000000006': true
+  }
 }
+
 
 export const CHAIN_MAP: Record<string, string> = {
   'ethereum': '0x1',

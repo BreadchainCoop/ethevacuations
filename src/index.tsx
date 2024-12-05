@@ -64,7 +64,7 @@ export default function Home() {
         <Navigation />
         <div className="h-full grid grid-cols-1 flex-start py-4 gap-6 lg:gap-4 md:grid-cols-2 gap-x-36">
           <section className="md:absolute grid grid-cols-1 flex-center gap-4 lg:gap-6 order-1">
-            <div className="md:ml-24 text-left sm:h-auto">
+            <div className="md:ml-16 text-left sm:h-auto">
               <h1 className="m-0 mb-2 p-0 text-4xl font-bold text-neutral-500 tracking-[-.02em]">
                 Fund evacuations from <span className="text-black">Gaza</span>
                 <br></br>
@@ -74,8 +74,8 @@ export default function Home() {
                 Crypto was made for this
               </label>
             </div>
-            <div className="md:ml-42 w-full grid grid-cols-2 items-center justify-between gap-6">
-              <div className="grid grid-cols-1 gap-4">
+            <div className="md:ml-16 w-full flex grid grid-cols-2 items-end justify-end gap-12 md:gap-42">
+              <div className="grid grid-cols-1 gap-4 items-center">
                 <label className="text-lg text-neutral-400 font-medium lg:text-xl">
                   Total Raised
                 </label>
