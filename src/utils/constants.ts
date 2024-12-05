@@ -112,8 +112,8 @@ export const PAIR_MAP: TokenPairMap = {
     version: '3'
   },
   '0x68f180fcce6836688e9084f035309e29bf0a2095': {
-    address: '0x85c31ffa3706d1cce9d525a00f1c7d4a2911754c',
-    inverted: true,
+    address: '0x73b14a78a0d396c521f954532d43fd5ffe385216',
+    inverted: false,
     version: '3'
   },
   '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f': {
@@ -142,9 +142,9 @@ export const PAIR_MAP: TokenPairMap = {
     version: '3'
   },
   '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
-    address: '0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640',
-    inverted: true,
-    version: '3'
+    address: '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc',
+    inverted: false,
+    version: '2'
   },
   '0x0b2c639c533813f4aa9d7837caf62653d097ff85': {
     address: '0x1fb3cf6e48f1e7b10213e7b6d87d4c073c7fdb7b',
@@ -202,7 +202,8 @@ export const FIXED_CURRENCY_MAP: CurrencyMap = {
     '0xdac17f958d2ee523a2206206994597c13d831ec7': true,
     '0x853d955acef822db058eb8505911ed77f175b99e': true,
     '0x6b175474e89094c44da98b954eedeac495271d0f': true,
-    '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f': true
+    '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f': true,
+    '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9': true
   },
   '0x64': {
     '0x0000000000000000000000000000000000000000': true,

@@ -55,16 +55,21 @@ export function useTokenPrice(chainId: string, address: string, variable?: boole
         ? result
         : [result];
 
-      const x = processedResult[0] as bigint;
-      const y = processedResult[1] as bigint;
+      const x = processedResult[0];
+      const y = processedResult[1]
       const d = entries[0].error ? 18 : entries[0].result as number;
 
       if (isUniswapV2) {
-        return formatV2Rate(x, y, 18, d);
+        return Math.pow(formatV2Rate(x as bigint, y as bigint, 18, 6), -1);
       } else {
         const z = processedResult[1] as bigint;
-        const x = !pair.inverted ? 18 : d;
-        const y = !pair.inverted ? d : 18;
+        let x = !pair.inverted ? 18 : d;
+        let y = !pair.inverted ? d : 18;
+
+        if (chainId !== '0x1' && d === 8) {
+          x = 5
+          y = 18
+        }
 
         return formatV3Rate(z, x, y);
       }

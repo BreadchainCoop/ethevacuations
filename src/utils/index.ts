@@ -28,7 +28,9 @@ export function formatV2Rate(rX: bigint, rY: bigint, dX: number, dY: number): nu
 }
 
 export function formatV3Rate(tick: bigint, dX: number, dY: number): number {
-  const d = (dY - dX) === 0 || dX > dY ? Math.abs(dY - dX) : dY - dX;
+  let d = dY - dX === 0 ? Math.abs(dY - dX) : dY - dX;
+
+  if ((dX === 8 || dY === 8)) d = 10;
 
   return (1.0001 ** Number(tick) / (10 ** d));
 } 
