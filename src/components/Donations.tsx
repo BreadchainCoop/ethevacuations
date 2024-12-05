@@ -12,10 +12,10 @@ export function Donations() {
   const { data: txs, status, mutate } = useAccountData(TRUSTEE_ADDRESS);
 
   return (
-    <div className="md:ml-6 lg:ml-22 xl:ml-52">
+    <div className="">
       <p className="text-2xl font-bold mb-6">Recent Donations</p>
-      <div className="h-[300px] lg:h-[400px] overflow-hidden relative min-w-0">
-        <div className="h-full grid gap-4 overflow-y-scroll">
+      <div className="w-full h-[300px] lg:h-[400px] overflow-hidden relative min-w-0">
+        <div className="h-full w-full grid gap-4 overflow-y-scroll">
           {txs && txs.map((tx) =>
             <Donation key={`tx_${tx.hash}`} tx={tx} />
           )}

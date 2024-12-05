@@ -1,4 +1,5 @@
 import type { ContractCallReturn, DataState } from "@types"
+import type { SendTransactionReturnType } from '@wagmi/core'
 
 import { useState, useEffect } from "react";
 import { useSendTransaction } from "wagmi";
@@ -28,8 +29,9 @@ export function useTransfer(recipient: string, amount: string | number): Extende
 
     try {
       await sendTransaction({ to, value: parseEther(value) })
-
-      await setDataState({ ...dataState, status: 'success', transactionHash: data })
+        .then((e: SendTransactionReturnType) => {
+          setDataState({ ...dataState, status: 'success', transactionHash: e })
+        })
     } catch {
       throw new Error();
     }

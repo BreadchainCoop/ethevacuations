@@ -215,9 +215,9 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
       if (checkoutError || !onClick) return;
 
       if (tokenAddress === ZERO_ADDRESS) {
-        await native.mutate().then(() => onClick());
+        await native.mutate();
       } else {
-        await token.mutate().then(() => onClick());
+        await token.mutate();
       }
     } catch (e) {
       console.log(e);
@@ -287,7 +287,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
 
     if (isNaN(Number(e))) e = 0;
     if (isFixedCurrency) decimals = 0;
-    if (tokenAddress === ZERO_ADDRESS) decimals = 4;
+    if (tokenAddress === ZERO_ADDRESS && chainId !== '0x64') decimals = 4;
 
     const proceedUnitAmount = calculateProceedUnitAmount(e);
 
@@ -354,12 +354,18 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
   }, [, account.chain?.id]);
 
   useEffect(() => {
+    if (native.status === 'success' || token.status === 'success') {
+      if (onClick) onClick();
+    }
+  }, [native.status, token.status])
+
+  useEffect(() => {
     checkInputs(input);
   }, [tokenAddress])
 
   return (
     <div className="pt-8 pb-8 px-4 sm:px-0">
-      <div className="mt-[-32px] ml-4">
+      <div className="mt-[-22px] ml-4">
         <button
           onClick={onDismiss}
           className="absolute font-normal bg-transparent font-sans text-neutral-300 border-none text-4xl scale-x-90 scale-y-140"
@@ -372,7 +378,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
           </label>
         </div>
       </div>
-      <div className="w-full flexbox gap-8 md:gap-10 mt-2">
+      <div className="w-full flexbox gap-8 md:gap-4 mt-2">
         <div className="w-9/10 grid grid-cols-1 md:grid-cols-2 py-6 px-4 gap-4">
           <Select
             label="Network"
@@ -409,7 +415,7 @@ function CheckoutOrder({ onClick, onDismiss }: Props) {
             <span>&nbsp;{currencyPrefix}</span>
           </label>
           <label className="absolute ml-4 text-lg font-bold mt-28">
-            $ {formatNumber(`${checkoutTotal}`, 2)}
+            $ {formatNumber(`${checkoutTotal.toFixed(2)}`, 2)}
           </label>
         </div>
 

@@ -46,8 +46,9 @@ export function useTokenTransfer(token: string, recipient: string, amount: strin
           functionName: 'transfer',
           args: [recipient, BigInt(value)]
         })
-
-        await setDataState({ ...dataState, status: 'success', transactionHash: data })
+          .then(() => {
+            setDataState({ ...dataState, status: 'success', transactionHash: '' })
+          })
       } catch {
         throw new Error();
       }

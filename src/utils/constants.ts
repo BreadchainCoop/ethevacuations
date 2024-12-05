@@ -153,7 +153,8 @@ export const FIXED_CURRENCY_MAP: CurrencyMap = {
   '0xa4b1': {
     '0xaf88d065e77c8cc2239327c5edb3a432268e5831': true
   },
-  '0x89': {},
+  '0x89': {
+  },
   '0x76adf1': {
     '0x4200000000000000000000000000000000000006': true
   }
