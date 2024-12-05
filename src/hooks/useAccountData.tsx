@@ -1,83 +1,63 @@
+import type { DataState } from "@types";
+
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useTransactions } from '@duneanalytics/hooks';
 
-const FROM_BLOCK = "19435069";
+import { CHAIN_MAP, TRUSTEE_ADDRESS, BALANCE_FROM_BLOCK } from "../utils/constants";
+import { INSTANCE_SUPPORTED_CHAINS } from "../utils/provider";
 
-import { ETH_EVACUATONS_ADDRESS } from "../utils/constants";
+interface ExtendedDataState extends DataState {
+  mutate: () => void;
+  lastOffset: string | null | undefined;
+}
 
-const chainMap = {
-  eth: "0x1",
-  gnosis: "0x64",
-  polygon: "0x89",
-  optimism: "0xa",
-  base: "0x2105",
-  arbitrum: "0xa4b1",
-};
+const CHAIN_IDS = INSTANCE_SUPPORTED_CHAINS.map(e => e.id).sort((a, b) => a - b).join(',');
 
-const MORALIS_API_KEY = process.env.REACT_APP_MORALIS_API_KEY;
-
-if (!MORALIS_API_KEY)
-  throw new Error("MORALIS_API_KEY not provided");
-
-export function useAccountData(
-  chainString: keyof typeof chainMap,
-  account: string
-) {
-  const [dataState, setDataState] = useState<{
-    status: "loading" | "success" | "error";
-    data: any[];
-  }>({
+export function useAccountData(account: string): ExtendedDataState {
+  const [dataState, setDataState] = useState<ExtendedDataState>({
+    lastOffset: null,
     status: "loading",
+    mutate: () => { },
     data: [],
   });
 
-  const fetchTransactions = () => {
-    return fetch(
-      `https://deep-index.moralis.io/api/v2.2/wallets/${ETH_EVACUATONS_ADDRESS}/history?chain=${chainMap[chainString]}&from_block=${FROM_BLOCK}&include_internal_transactions=false&order=DESC`, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-Key": MORALIS_API_KEY,
-      }
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      // setCursor(data.cursor);
-      return data;
-    })
-    .catch((err) => {
-      setDataState({ status: "error", data: [] });
-    });
-  };
+  const {
+    data: nativeData,
+    isLoading,
+    error,
+    nextPage: nativeNextPage,
+    previousPage: nativePrevPage,
+    currentPage: nativeCurrentPage
+  } = useTransactions(account, { chainIds: CHAIN_IDS });
 
-  const { data } = useQuery({
-    queryKey: [`accountData_${chainString}`],
-    queryFn: () => fetchTransactions(),
-    placeholderData: keepPreviousData,
-    refetchInterval: 600000,
-  });
+  const recievedTransactions = nativeData?.transactions
+    .filter((e) => e.transaction_type !== 'Sender');
 
   useEffect(() => {
-    if (!data) return;
+    if (recievedTransactions && dataState.status === 'loading') {
+      const txs = recievedTransactions
+        .map((tx: any) => ({
+          ...tx,
+          chain_id: `0x${tx.chain_id.toString(16)}`
+        }));
 
-    const parsedData = data.result.length
-      ? data.result
-          .filter((tx: any) => {
-            return (
-              (tx.category === "receive" || tx.category == "token receive") &&
-              !tx.possible_spam &&
-              tx.block_timestamp
-            );
-          })
-          .map((tx: any) => {
-            return {
-              ...tx,
-              chain: chainString,
-            };
-          })
-      : [];
+      setDataState({
+        status: 'success',
+        lastOffset: nativeData?.next_offset,
+        mutate: nativeNextPage,
+        data: txs
+      })
+    }
+  }, [recievedTransactions, dataState.status])
 
-    setDataState({ status: "success", data: parsedData });
-  }, [data, account, chainString]);
+  useEffect(() => {
+    if (nativeData && dataState.lastOffset) {
+      if (dataState.lastOffset !== nativeData.next_offset) {
+        setDataState({ ...dataState, status: 'loading' })
+      }
+    }
+  }, [nativeData])
 
   return dataState;
 }
